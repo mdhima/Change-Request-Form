@@ -71,6 +71,17 @@
     input[type="date"]:not(.has-value)::-webkit-clear-button,
     input[type="date"]:not(.has-value)::-webkit-inner-spin-button,
     input[type="date"]:not(.has-value)::-webkit-calendar-picker-indicator{ opacity:0 !important; }
+    input[disabled] {
+      pointer-events: auto;
+      color: black;
+    }
+    input[disabled]:disabled {
+      -webkit-text-fill-color: black; /* for Chrome */
+    }
+    input[disabled] {
+      background: white;
+      border: 1px solid #000;
+    }
     /* Hide required asterisks, outlines, errors, previews on print */
     .required-asterisk{ display:none !important; }
     .required-border{ outline:none !important; }

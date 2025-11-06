@@ -372,7 +372,7 @@ function updateGreyouts(){
   if(active.addremove) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.agent)     fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.mortgage)  fieldGroups.mortgage.forEach(id=>relevant.add(id));
-  fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
+  if(active.values(activeInternalFlags).some()) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
   qsa('input,textarea,select').forEach(el=>{
     const id = el.id;

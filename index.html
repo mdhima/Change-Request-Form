@@ -253,11 +253,11 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 
 /* Requirements per request */
 const requirements = {
-  ownership: ['ticket','roll','property','owner','sale','action'],
-  mailing:   ['ticket','roll','property','mailing','mailOption'],
-  addremove: ['ticket','roll','property','owner','action'],
-  agent:     ['ticket','roll','property','agentName','owner'],
-  mortgage:  ['ticket','roll','property','mortgage','mortDate']
+  ownership: ['ticket','roll','property','owner','sale','action','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
+  addremove: ['ticket','roll','property','owner','action','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','agentName','owner','sigDate','printName','phone'],
+  mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */

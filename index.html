@@ -151,10 +151,10 @@
           <div style="grid-column: span 2;">
             <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
             <div class="inline-hint">
-              <label><input type="radio" name="actionType" value="New"> New</label>
-              <label><input type="radio" name="actionType" value="Add"> Add</label>
-              <label><input type="radio" name="actionType" value="Remove"> Remove</label>
-              <label><input type="radio" name="actionType" value="Correct"> Correct</label>
+              <label><input type="radio" name="actionType" value="New" id="accountCorrection"> New</label>
+              <label><input type="radio" name="actionType" value="Add" id="accountCorrection"> Add</label>
+              <label><input type="radio" name="actionType" value="Remove" id="accountCorrection"> Remove</label>
+              <label><input type="radio" name="actionType" value="Correct" id="accountCorrection"> Correct</label>
             </div>
           </div>
         </div>
@@ -265,7 +265,7 @@ const requirements = {
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: ['ticketNumber','rollNumber','accountNumber','propertyAddress','sigDate','signature','printName','phone'],
-  owner: ['ownerName','isOrganization','saleDate'],
+  owner: ['ownerName','isOrganization','saleDate', 'accountCorrection'],
   mailing: ['mailingAddress','sameAsSite'],
   action: [],
   mortgage: ['deleteMortgage','effectiveDate'],

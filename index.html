@@ -1,57 +1,95 @@
-<!doctype html >
+
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Change Request Form — Offline</title>
+<title>Change Request Form — Revenue Services (2001 Style)</title>
 <style>
-  :root{--accent:#c41e3a;--muted:#666;--paper-width:800px;}
-  body{font-family:Arial,Helvetica,sans-serif;margin:12px;background:#fff;color:#111;}
-  .container{max-width:900px;margin:0 auto;border:1px solid #ddd;padding:12px;}
-  .menu{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
-  .btn{flex:1 0 160px;padding:10px;border-radius:6px;border:1px solid #bbb;background:#f7f7f7;cursor:pointer;text-align:center;font-weight:600;}
-  .btn.active{background:var(--accent);color:#fff;border-color:darkred;box-shadow:0 1px 0 rgba(0,0,0,0.1);}
-  header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-  h1{font-size:18px;margin:0;}
-  .barcode-wrap{width:220px;height:56px;text-align:right;}
-  .form-area{display:block;}
-  fieldset{border:1px solid #bbb;padding:8px;margin-bottom:8px;}
-  legend{font-weight:700;padding:0 6px;}
-  label{display:block;font-size:13px;margin-top:8px;}
-  input[type="text"], input[type="tel"], input[type="date"], textarea{width:100%;padding:6px;border:1px solid #bbb;border-radius:3px;box-sizing:border-box;}
-  .inline{display:inline-block;vertical-align:top;width:49%;}
-  .small{width:48%;display:inline-block;}
-  .required-asterisk{color:var(--accent);margin-left:6px;font-weight:700;display:none;}
-  .required-border{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(196,30,58,0.06);}
-  .error{color:var(--accent);font-size:12px;margin-top:4px;display:none;}
-  .preview-text{font-size:12px;color:var(--muted);margin-top:4px;}
-  .controls{display:flex;gap:8px;margin:8px 0 12px;}
-  button.action{padding:8px 12px;border-radius:6px;border:none;background:#0b79d0;color:#fff;cursor:pointer;font-weight:700;}
-  button.secondary{background:#eee;color:#111;border:1px solid #ccc;}
-  /* condensed print layout */
-  @media print{
-    body{margin:0;}
-    .menu, .controls{display:none;}
-    .container{border:none;padding:6px;margin:0;}
-    h1{font-size:14px;}
-    label{font-size:12px;}
-    input,textarea{font-size:12px;padding:4px;}
-    input::placeholder{color: transparent;}
-    placeholder{color: transparent;}
-    :-ms-input-placeholder{color: transparent;}
-    .barcode-wrap{width:180px;height:45px;}
+  :root{ --accent:#000; --muted:#444; }
+
+  @page { size: letter portrait; margin: 10mm; }
+
+  body{ font-family: Arial, Helvetica, sans-serif; color:#000; background:#fff; margin:0;
+        -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .container{ max-width:720px; margin:10px auto; border:1px solid #000; padding:10px; }
+
+  header{ display:flex; align-items:center; justify-content:space-between; gap:8px;
+           border-bottom:2px solid #000; padding-bottom:6px; margin-bottom:6px; }
+  .logo img{ height:36px; display:block; }
+  .hdr-text{ flex:1; text-align:right; }
+  .hdr-text h1{ font-family:'Times New Roman', Times, serif; font-size:16px; letter-spacing:.2px; margin:0; text-transform:uppercase; }
+  .hdr-text .dept{ font-size:11px; margin-top:2px; }
+
+  .menu{ display:flex; gap:6px; flex-wrap:wrap; margin:6px 0; }
+  .btn{ flex:1 0 140px; padding:6px 8px; border:1px solid #000; border-radius:0; background:#f5f5f5;
+         font-size:11px; font-weight:700; text-align:center; cursor:pointer; user-select:none; }
+  .btn.active{ background:#000; color:#fff; }
+
+  fieldset{ border:1px solid #000; padding:6px; margin-bottom:6px; }
+  legend{ font-weight:700; font-size:12px; padding:0 4px; }
+  label{ display:block; font-size:11px; margin-top:6px; }
+  input[type="text"], input[type="tel"], input[type="date"], textarea{
+    width:100%; padding:4px 5px; border:1px solid #000; border-radius:0; box-sizing:border-box; font-size:11px;
   }
-  /* compact table-like appearance for print */
-  .two-col{display:flex;gap:8px;flex-wrap:wrap;}
-  .note{font-size:12px;color:#333;margin-top:8px;}
+
+  .row{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .row-3{ grid-template-columns:1fr 1fr 1fr; }
+
+  .inline-hint{ font-size:10px; color:var(--muted); margin-top:2px; }
+  .error{ color:#b00020; font-size:10px; margin-top:3px; display:none; }
+  .preview-text{ font-size:10px; color:var(--muted); margin-top:3px; }
+  .required-asterisk{ color:#b00020; margin-left:4px; font-weight:700; display:none; }
+  .required-border{ outline:2px solid rgba(176,0,32,0.15); }
+
+  .controls{ display:flex; gap:6px; margin:6px 0; }
+  button.action{ padding:6px 10px; border:none; background:#000; color:#fff; font-weight:700; font-size:11px; cursor:pointer; }
+  button.secondary{ background:#eee; color:#000; border:1px solid #000; }
+
+  /* Equal-sized, side-by-side internal notes & stamp */
+  .equal-boxes{ display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .equal-boxes textarea{ height:200px; min-height:180px; resize:vertical; }
+
+  /* Grey-out helper for non-relevant sections */
+  .greyed{ background:#f0f0f0 !important; }
+  .disabled input, .disabled textarea, .disabled select{ background:#f0f0f0 !important; pointer-events:none; }
+  .disabled label{ color:#777; }
+
+  /* Fit to one page when printing */
+  @media print{
+    .menu, .controls{ display:none !important; }
+    .container{ border:1px solid #000; padding:6mm; max-width:190mm; }
+    input, textarea, label, legend{ font-size:10px !important; }
+    .hdr-text h1{ font-size:14px !important; }
+    .logo img{ height:30px !important; }
+    /* Hide placeholders in print (including WebKit date placeholders) */
+    input::placeholder, textarea::placeholder{ color:transparent !important; }
+    input::-webkit-input-placeholder, textarea::-webkit-input-placeholder{ color:transparent !important; }
+    input[type="date"]:not(.has-value){ color:transparent !important; }
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit{ color:transparent !important; }
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-fields-wrapper{ color:transparent !important; }
+    input[type="date"]:not(.has-value)::-webkit-clear-button,
+    input[type="date"]:not(.has-value)::-webkit-inner-spin-button,
+    input[type="date"]:not(.has-value)::-webkit-calendar-picker-indicator{ opacity:0 !important; }
+    /* Hide required asterisks, outlines, errors, previews on print */
+    .required-asterisk{ display:none !important; }
+    .required-border{ outline:none !important; }
+    .error, .preview-text{ display:none !important; }
+  }
+
+  /* tiny-print sections */
+  .tiny{ font-size:9px; line-height:1.25; color:#000; }
+  .tiny ul{ margin:4px 0 0 16px; padding:0; }
+  .tiny li{ margin:0; }
 </style>
 </head>
 <body>
 <div class="container" id="container">
   <header>
-    <h1>City of Toronto — Change Request Form</h1>
-    <div class="barcode-wrap">
-      <canvas id="barcodeCanvas" width="400" height="80" title="Ticket barcode"></canvas>
+    <div class="logo"><img alt="City of Toronto" src="data:image/jpeg;base64,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"/></div>
+    <div class="hdr-text">
+      <h1>Change Request Form</h1>
+      <div class="dept">Revenue Services — City of Toronto</div>
     </div>
   </header>
 
@@ -70,135 +108,185 @@
   </div>
 
   <form id="changeForm" class="form-area" onsubmit="return false;">
-    <fieldset>
+    <fieldset id="fs-account">
       <legend>Account Information — Mailing Address</legend>
-
-      <label>Ticket # <span class="required-asterisk" id="ast_ticket">*</span></label>
-      <input type="text" id="ticketNumber" placeholder="Enter Ticket Number">
-      <div class="error" id="ticketError">Ticket must not be empty when required.</div>
-
-      <label>Assessment Roll Number <small>(15 digits)</small> <span class="required-asterisk" id="ast_roll">*</span></label>
-      <input type="text" id="rollNumber" maxlength="20" placeholder="Enter digits only (no dashes)">
-      <div class="error" id="rollError">Roll number must be 15 digits.</div>
-      <div class="preview-text" id="rollPreview"></div>
-
-      <label>Account # <small>(first 9 digits)</small> <span class="required-asterisk" id="ast_account">*</span></label>
-      <input type="text" id="accountNumber" maxlength="12" placeholder="Enter up to 9 digits">
-      <div class="error" id="accError">Account # must be 9 digits.</div>
-      <div class="preview-text" id="accPreview"></div>
-
-      <label id="propertyLabel">Property Address <span class="required-asterisk" id="ast_property">*</span></label>
-      <input type="text" id="propertyAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
-
-      <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
-      <input type="text" id="ownerName" placeholder="First and Last Name(s) or Organization Name(s)">
-
-      <div class="two-col">
-        <div class="small">
-          <label>Sale Date <span class="required-asterisk" id="ast_sale">*</span></label>
-          <input type="date" id="saleDate">
+      <div class="row">
+        <div>
+          <label>Ticket # <span class="required-asterisk" id="ast_ticket">*</span></label>
+          <input type="text" id="ticketNumber" placeholder="Enter Ticket Number">
+          <div class="error" id="ticketError">Ticket must not be empty when required.</div>
         </div>
-        <div class="small">
-          <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
-          <div style="margin-top:6px;">
-            <label><input type="checkbox" name="actionType" value="New"> New</label>
-            <label><input type="checkbox" name="actionType" value="Add"> Add</label>
-            <label><input type="checkbox" name="actionType" value="Remove"> Remove</label>
-            <label><input type="checkbox" name="actionType" value="Correct"> Correct</label>
+        <div>
+          <label>Assessment Roll Number <small>(15 digits)</small> <span class="required-asterisk" id="ast_roll">*</span></label>
+          <input type="text" id="rollNumber" maxlength="15" inputmode="numeric" placeholder="Enter digits only (no dashes)">
+          <div class="error" id="rollError">Roll number must be exactly 15 digits (0–9 only).</div>
+          <div class="preview-text" id="rollPreview"></div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>Utility Account # <small>(first 9 digits)</small> <span class="required-asterisk" id="ast_account">*</span></label>
+          <input type="text" id="accountNumber" maxlength="9" inputmode="numeric" placeholder="Enter 9 digits">
+          <div class="error" id="accError">Utility Account # must be exactly 9 digits (0–9 only).</div>
+          <div class="preview-text" id="accPreview"></div>
+        </div>
+        <div>
+          <label id="propertyLabel">Property Address <span class="required-asterisk" id="ast_property">*</span></label>
+          <input type="text" id="propertyAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
+          <input type="text" id="ownerName" placeholder="First and Last Name(s)">
+          <div class="inline-hint"><label><input type="checkbox" id="isOrganization"> Owner is an Organization</label></div>
+        </div>
+        <div class="row-3" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+          <div>
+            <label>Sale Date <span class="required-asterisk" id="ast_sale">*</span></label>
+            <input type="date" id="saleDate" placeholder="YYYY-MM-DD">
+          </div>
+          <div style="grid-column: span 2;">
+            <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
+            <div class="inline-hint">
+              <label><input type="checkbox" name="actionType" value="New"> New</label>
+              <label><input type="checkbox" name="actionType" value="Add"> Add</label>
+              <label><input type="checkbox" name="actionType" value="Remove"> Remove</label>
+              <label><input type="checkbox" name="actionType" value="Correct"> Correct</label>
+            </div>
           </div>
         </div>
       </div>
 
-      <label>Mailing Address</label>
-      <input type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
-      <label style="margin-top:6px;"><input type="checkbox" id="sameAsSite"> Same as Site</label>
+      <div>
+        <label>Mailing Address <span class="required-asterisk" id="ast_mailing">*</span></label>
+        <input type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
+        <label style="margin-top:4px;"><input type="checkbox" id="sameAsSite"> Same as Site</label>
+        <div class="error" id="mailingError">Mailing Address is required for a Mailing Address Change request.</div>
+      </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="fs-docs">
       <legend>Documentation</legend>
-      <div class="two-col">
-        <div class="small">
+      <div class="row">
+        <div>
           <label>Documents Attached</label>
-          <input type="text" id="docsAttached">
+          <input type="text" id="docsAttached" placeholder="e.g., Transfer, Deed">
         </div>
-        <div class="small">
+        <div>
           <label>Total Pages</label>
-          <input type="text" id="totalPages">
+          <input type="text" id="totalPages" placeholder="e.g., 3">
         </div>
       </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="fs-mortgage">
       <legend>Mortgage</legend>
       <label><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
-      <label>Effective Date</label>
-      <input type="date" id="effectiveDate" placeholder="">
-      <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
+      <div class="row">
+        <div>
+          <label>Effective Date</label>
+          <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD">
+          <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
+        </div>
+      </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="fs-sign">
       <legend>Signature</legend>
-      <label>Owner/Agent Signature</label>
-      <input type="text" id="signature">
-      <label>Print Name</label>
-      <input type="text" id="printName">
-      <label>Date</label>
-      <input type="date" id="sigDate">
-      <label>Phone Number</label>
-      <input type="tel" id="phone">
+      <div class="row">
+        <div>
+          <label>Owner/Agent Signature</label>
+          <input type="text" id="signature" placeholder="Sign here">
+        </div>
+        <div>
+          <label>Print Name</label>
+          <input type="text" id="printName" placeholder="Your printed name">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>Date</label>
+          <input type="date" id="sigDate" placeholder="YYYY-MM-DD">
+        </div>
+        <div>
+          <label>Phone Number</label>
+          <input type="tel" id="phone" placeholder="Digits only">
+          <div class="error" id="phoneError">Phone number must contain digits only.</div>
+        </div>
+      </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset id="fs-internal">
       <legend>For Internal Use Only — Notes / Receipt Stamp</legend>
-      <textarea id="notes" rows="3"></textarea>
-      <textarea id="stamp" rows="2" style="margin-top:8px;"></textarea>
+      <div class="equal-boxes">
+        <textarea id="notes" placeholder="Internal notes"></textarea>
+        <textarea id="stamp" placeholder="Receipt stamp area (landscape)"></textarea>
+      </div>
     </fieldset>
 
-    <p class="note">Personal information on this form is collected under the authority of City of Toronto Act... <strong>V-02-06-2019</strong></p>
+    <div class="tiny" style="margin-top:6px;">
+      <strong>Consent & Acknowledgement</strong>
+      <ul>
+        <li>By signing this Change Request Form, I authorize the City of Toronto to follow my expressed wishes with regard to where and to whom my Tax/Utility Bill and notices are mailed. I further agree:</li>
+        <li>That I will, at all times, provide the City with current contact information.</li>
+        <li>Signing below signifies my consent to the method of collection of personal information outlined in this form.</li>
+      </ul>
+    </div>
+
+    <div class="tiny" style="margin-top:6px;">
+      <strong>Notice of Collection</strong><br/>
+      Personal information on this form is collected under the authority of City of Toronto Act, S.O. 2006, Chapter 11, Schedule A, s.136 (c), 261 and 264, Ontario Regulation 594/06 (Fees and Charges–Priority Lien Status) and the City of Toronto Municipal Code, Chapter 849 (Water and Sewage Services and Utility Bill). The information will be used for proper administration of taxes, fees, and charges that are imposed by the City for the supply of services, which will include but is not limited to the updating of ownership/mailing information concerning the tax/utility bill account(s) for the affected properties, mailing required bills and notices and collection of unpaid amounts. The information may also be used for purposes of identifying agents of owners for purposes of authorizing changes to Tax/Utility accounts on behalf of the owner. Questions about this collection can be directed to the Manager, Customer Service, Revenue Services, 5100 Yonge St, Toronto ON M2N 5V7 or by phone at 416-395-1048.
+    </div>
+
   </form>
 </div>
 
 <script>
-/* ---------- Utilities ---------- */
 function qs(sel, root=document){ return root.querySelector(sel); }
 function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
 
-/* ---------- Buttons / toggles ---------- */
+/* Toggle buttons & state */
 const btns = qsa('.btn');
-const active = {}; // keys: ownership, mailing, addremove, agent, mortgage
+const active = {};
+btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; active[key]=!active[key]; b.classList.toggle('active', !!active[key]); applyRequirements(); updateOwnerLabelAndPlaceholder(); updateGreyouts(); }); });
 
-btns.forEach(b=>{
-  b.addEventListener('click', ()=>{
-    const key = b.dataset.key;
-    // toggle
-    active[key] = !active[key];
-    b.classList.toggle('active', !!active[key]);
-    applyRequirements();
-  });
-});
-
-/* ---------- Mapping of required fields per request type ---------- */
+/* Requirements per request */
 const requirements = {
   ownership: ['ticket','roll','property','owner','sale','action'],
-  mailing:   ['ticket','roll','property','mailOption'],
-  addremove: ['ticket','roll','property','action'],
-  agent:     ['ticket','roll','property','agentName'],
+  mailing:   ['ticket','roll','property','mailing','mailOption'],
+  addremove: ['ticket','roll','property','owner','action'],
+  agent:     ['ticket','roll','property','agentName','owner'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate']
 };
 
-/* element refs */
+/* Map of field ids for greying/enabling */
+const fieldGroups = {
+  base: ['ticketNumber','rollNumber','accountNumber','propertyAddress'],
+  owner: ['ownerName','isOrganization','saleDate','sigDate','signature','printName','phone'],
+  mailing: ['mailingAddress','sameAsSite'],
+  action: [],
+  mortgage: ['deleteMortgage','effectiveDate'],
+  docs: ['docsAttached','totalPages'],
+  internal: ['notes','stamp']
+};
+
 const elems = {
   ticket: qs('#ticketNumber'),
   roll: qs('#rollNumber'),
   account: qs('#accountNumber'),
   property: qs('#propertyAddress'),
   owner: qs('#ownerName'),
+  isOrg: qs('#isOrganization'),
   sale: qs('#saleDate'),
   action: qsa('input[name="actionType"]'),
   mailing: qs('#mailingAddress'),
   sameAs: qs('#sameAsSite'),
   deleteMortgage: qs('#deleteMortgage'),
   effectiveDate: qs('#effectiveDate'),
+  phone: qs('#phone'),
   ast: {
     ticket: qs('#ast_ticket'),
     roll: qs('#ast_roll'),
@@ -207,215 +295,196 @@ const elems = {
     owner: qs('#ast_owner'),
     sale: qs('#ast_sale'),
     action: qs('#ast_action'),
-    mortgage: qs('#ast_mortgage')
-  },
-  labels: {
-    ownerLabel: qs('#ownerLabel'),
-    propertyLabel: qs('#propertyLabel')
+    mortgage: qs('#ast_mortgage'),
+    mailing: qs('#ast_mailing')
   },
   errors: {
     ticket: qs('#ticketError'),
     roll: qs('#rollError'),
     acc: qs('#accError'),
-    mort: qs('#mortError')
+    mort: qs('#mortError'),
+    mailing: qs('#mailingError'),
+    phone: qs('#phoneError')
   },
   previews: {
     roll: qs('#rollPreview'),
     acc: qs('#accPreview')
-  }
+  },
+  sections: {
+    account: qs('#fs-account'),
+    docs: qs('#fs-docs'),
+    mortgage: qs('#fs-mortgage'),
+    sign: qs('#fs-sign'),
+    internal: qs('#fs-internal')
+  },
+  labels: { ownerLabel: qs('#ownerLabel') }
 };
 
-/* Reset visibility of required markers */
+/* Helpers */
 function clearRequiredMarkers(){
   qsa('.required-asterisk').forEach(el=> el.style.display = 'none');
-  // remove red borders
-  ['ticketNumber','rollNumber','accountNumber','propertyAddress','ownerName','saleDate','effectiveDate'].forEach(id=>{
-    const el = qs('#'+id);
-    if(el) el.classList.remove('required-border');
-  });
-  // remove required-border from mortgage checkbox label container
-  qs('#deleteMortgage').classList.remove('required-border');
+  qsa('input,textarea,select').forEach(el=> el.classList.remove('required-border'));
 }
 
-/* Apply union of active requirements */
+function updateOwnerLabelAndPlaceholder(){
+  const ownerField = elems.owner;
+  if(active.agent){
+    elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
+    ownerField.placeholder = 'Authorized Agent Name(s)';
+  } else if(elems.isOrg && elems.isOrg.checked){
+    elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
+    ownerField.placeholder = 'Organization Name(s)';
+  } else {
+    elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
+    ownerField.placeholder = 'First and Last Name(s)';
+  }
+}
+
+/* Apply union of active requirements + make Mailing Address mandatory when 'mailing' is toggled */
 function applyRequirements(){
   clearRequiredMarkers();
-  // gather required set
   const reqSet = new Set();
-  Object.keys(active).forEach(k=>{
-    if(active[k]){
-      (requirements[k]||[]).forEach(r=>reqSet.add(r));
-    }
-  });
-  // Map requirement keys to UI
-  if(reqSet.has('ticket')) { elems.ast.ticket.style.display='inline'; elems.ticket.classList.add('required-border'); }
-  if(reqSet.has('roll')) { elems.ast.roll.style.display='inline'; elems.roll.classList.add('required-border'); }
-  if(reqSet.has('property')) { elems.ast.property.style.display='inline'; elems.property.classList.add('required-border'); }
-  if(reqSet.has('owner')) { elems.ast.owner.style.display='inline'; elems.owner.classList.add('required-border'); }
-  if(reqSet.has('sale')) { elems.ast.sale.style.display='inline'; elems.sale.classList.add('required-border'); }
-  if(reqSet.has('action')) { elems.ast.action.style.display='inline'; /* action checkboxes visually indicated via owner field border */ }
-  if(reqSet.has('mortgage')) { elems.ast.mortgage.style.display='inline'; qs('#deleteMortgage').classList.add('required-border'); }
-  if(reqSet.has('mortDate')) { elems.effectiveDate.classList.add('required-border'); }
-  if(reqSet.has('agentName')) { elems.ast.owner.style.display='inline'; elems.owner.classList.add('required-border'); }
-  // mailing special: show ast on mailing field label if mailOption required
-  if(reqSet.has('mailOption')) { /* show ast on property & mailing */
-    elems.ast.property.style.display='inline';
-    // can't set a separate ast for mailing label, so show property ast as indicator
+  Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
+
+  function req(el, ast){ if(el){ el.classList.add('required-border'); } if(ast){ ast.style.display='inline'; } }
+
+  if(reqSet.has('ticket'))   req(elems.ticket,   elems.ast.ticket);
+  if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
+  if(reqSet.has('property')) req(elems.property, elems.ast.property);
+  if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
+  if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
+  if(reqSet.has('action'))   elems.ast.action.style.display='inline';
+  if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
+  if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
+
+  // Mailing Address mandatory when mailing is active
+  const mailingActive = !!active.mailing;
+  if(mailingActive){
+    req(elems.mailing, elems.ast.mailing);
   }
-  // If agent active, change owner label
-  if(active.agent){ elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name '; }
-  else { elems.labels.ownerLabel.textContent = 'Property Owner(s) Name '; }
 }
 
-/* ---------- Barcode: Code128 implementation (B) and canvas render ----------
-   Minimal implementation to encode Code128 (subset B) and draw bars to canvas.
-*/
-(function(){
-  const CODE128_CHART = [
-    " ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", 
-    "0","1","2","3","4","5","6","7","8","9",":",";","<","=",">","?","@",
-    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
-    "[","\\","]","^","_","`","a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z",
-    "{","|","}","~"
-  ];
-  const PATTERNS = [
-"11011001100","11001101100","11001100110","10010011000","10010001100","10001001100","10011001000","10011000100","10001100100","11001001000",
-"11001000100","11000100100","10110011100","10011011100","10011001110","10111001100","10011101100","10011100110","11001110010","11001011100",
-"11001001110","11011100100","11001110100","11101101110","11101001100","11100101100","11100100110","11101100100","11100110100","11100110010",
-"11011011000","11011000110","11000110110","10100011000","10001011000","10001000110","10110001000","10001101000","10001100010","11010001000",
-"11000101000","11000100010","10110111000","10110001110","10001101110","10111011000","10111000110","10001110110","11101110110","11010001110",
-"11000101110","11011101000","11011100010","11011101110","11101011000","11101000110","11100010110","11101101000","11101100010","11100011010",
-"11101111010","11001000010","11110001010","10100110000","10100001100","10010110000","10010000110","10000101100","10000100110","10110010000",
-"10110000100","10011010000","10011000010","10000110100","10000110010","11000010010","11001010000","11110111010","11000010100","10001111010",
-"10100111100","10010111100","10010011110","10111100100","10011110100","10011110010","11110100100","11110010100","11110010010","11011011110",
-"11011110110","11110110110","10101111000","10100011110","10001011110","10111101000","10111100010","11110101000","11110100010","10111011110",
-"10111101110","11101011110","11110101110","11010000100","11010010000","11010011100","11000111010"
-  ];
-  const charToCodeB = {};
-  CODE128_CHART.forEach((c,i)=> charToCodeB[c]=i);
+/* Grey out non-relevant sections */
+function updateGreyouts(){
+  const relevant = new Set(fieldGroups.base);
+  if(active.ownership) fieldGroups.owner.concat(fieldGroups.docs).forEach(id=>relevant.add(id));
+  if(active.mailing)   fieldGroups.mailing.forEach(id=>relevant.add(id));
+  if(active.addremove) fieldGroups.owner.forEach(id=>relevant.add(id));
+  if(active.agent)     fieldGroups.owner.forEach(id=>relevant.add(id));
+  if(active.mortgage)  fieldGroups.mortgage.forEach(id=>relevant.add(id));
+  fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
-  function encodeCode128B(str){
-    const codes = [104];
-    for(let i=0;i<str.length;i++){
-      const ch = str[i];
-      const code = charToCodeB[ch];
-      codes.push( (typeof code === 'number') ? code : charToCodeB[' '] );
+  qsa('input,textarea,select').forEach(el=>{
+    const id = el.id;
+    const container = el.closest('div,fieldset');
+    if(!id || !container) return;
+    if(relevant.has(id)){
+      el.disabled = false;
+      container.classList.remove('disabled');
+    } else {
+      el.disabled = true;
+      container.classList.add('disabled');
     }
-    let checksum = 104;
-    for(let i=0;i<codes.length-1;i++){ checksum += codes[i+1]*(i+1); }
-    checksum = checksum % 103;
-    codes.push(checksum);
-    codes.push(106); // stop
-    return codes.map(c=> PATTERNS[c]).join('');
+  });
+}
+
+/* Digit-only + previews for roll & account */
+(function(){
+  function formatRollMask(d){
+    // ##-##-##-#-###-#####
+    return d.replace(/(\d{2})(\d{2})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5-$6');
   }
 
-  function drawBarcode(text){
-    const canvas = qs('#barcodeCanvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    if(!text) return;
-    // sanitize
-    let s = String(text).split('').map(ch=> (ch.charCodeAt(0)>=32 && ch.charCodeAt(0)<=127) ? ch : ' ' ).join('');
-    if(s.length===0) return;
-    const pattern = encodeCode128B(s);
-    const moduleWidth = Math.max(1, Math.floor((canvas.width - 20) / pattern.length));
-    const xStart = 10 + Math.floor((canvas.width - 20 - pattern.length*moduleWidth)/2);
-    let x = xStart;
-    ctx.fillStyle = '#fff'; ctx.fillRect(0,0,canvas.width,canvas.height);
-    ctx.fillStyle = '#000';
-    for(let i=0;i<pattern.length;i++){
-      if(pattern[i] === '1') ctx.fillRect(x,8,moduleWidth,canvas.height - 28);
-      x += moduleWidth;
-    }
-    ctx.font = '12px monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText(text, canvas.width/2, canvas.height - 6);
-  }
-
-  const ticketInput = qs('#ticketNumber');
-  ticketInput.addEventListener('input', ()=> drawBarcode(ticketInput.value));
-  drawBarcode('');
-})();
-
-/* ---------- Roll and Account preview + validation ---------- */
-(function(){
-  const roll = elems.roll;
-  const rollErr = elems.errors.roll;
-  const rollPrev = elems.previews.roll;
+  const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
   roll.addEventListener('input', ()=>{
-    const digits = roll.value.replace(/\D/g,'');
-    roll.value = digits;
-    if(digits.length > 15) { rollErr.style.display='block'; rollErr.textContent='Roll number must be 15 digits maximum.'; rollPrev.textContent=''; }
-    else if(digits.length < 15) { rollErr.style.display='none'; rollPrev.textContent=''; }
-    else { // 15 digits -> format 2-4-3-3-3
-      rollErr.style.display='none';
-      const fmt = digits.replace(/(\d{2})(\d{4})(\d{3})(\d{3})(\d{3})/,'$1-$2-$3-$4-$5');
-      rollPrev.textContent = 'Preview: ' + fmt;
-    }
+    const raw = roll.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
+    if(raw !== digits) roll.value = digits;
+
+    if(digits.length>0){
+      rollPrev.textContent = 'Preview: ' + (digits.length===15 ? formatRollMask(digits) : digits + ' ('+digits.length+'/15)');
+    } else { rollPrev.textContent = ''; }
+
+    if(hadNondigit){ rollErr.textContent='Digits only (0–9).'; rollErr.style.display='block'; }
+    else if(digits.length===0){ rollErr.style.display='none'; }
+    else if(digits.length!==15){ rollErr.textContent='Roll number must be exactly 15 digits.'; rollErr.style.display='block'; }
+    else { rollErr.style.display='none'; }
   });
 
-  const acc = elems.account;
-  const accErr = elems.errors.acc;
-  const accPrev = elems.previews.acc;
+  const acc = elems.account, accErr = elems.errors.acc, accPrev = elems.previews.acc;
   acc.addEventListener('input', ()=>{
-    const digits = acc.value.replace(/\D/g,'');
-    acc.value = digits;
-    if(digits.length > 9) { accErr.style.display='block'; accErr.textContent='Account number must be 9 digits maximum.'; accPrev.textContent=''; }
-    else if(digits.length === 9){ accErr.style.display='none'; accPrev.textContent = 'Preview: ' + digits; }
-    else { accErr.style.display='none'; accPrev.textContent=''; }
+    const raw = acc.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
+    if(raw !== digits) acc.value = digits;
+
+    if(digits.length>0){ accPrev.textContent = 'Preview: ' + (digits.length===9 ? digits : digits + ' ('+digits.length+'/9)'); }
+    else { accPrev.textContent=''; }
+
+    if(hadNondigit){ accErr.textContent='Digits only (0–9).'; accErr.style.display='block'; }
+    else if(digits.length===0){ accErr.style.display='none'; }
+    else if(digits.length!==9){ accErr.textContent='Utility Account # must be exactly 9 digits.'; accErr.style.display='block'; }
+    else { accErr.style.display='none'; }
   });
 })();
 
-/* ---------- Same as Site behavior ---------- */
-elems.sameAs.addEventListener('change', ()=>{
-  if(elems.sameAs.checked){
-    elems.mailing.value = elems.property.value;
-    elems.mailing.classList.add('greyed');
+/* Phone digits-only validation */
+elems.phone.addEventListener('input', ()=>{
+  const raw = elems.phone.value;
+  const digits = raw.replace(/\D/g,'');
+  const hadNondigit = raw !== digits;
+  if(raw !== digits) elems.phone.value = digits;
+  if(hadNondigit){
+    elems.errors.phone.style.display='block';
   } else {
-    elems.mailing.classList.remove('greyed');
-    elems.mailing.value = '';
+    elems.errors.phone.style.display = 'none';
   }
 });
-elems.property.addEventListener('input', ()=>{ if(elems.sameAs.checked) elems.mailing.value = elems.property.value; });
 
-/* ---------- Preview (clean) button ---------- */
-let previewClean = false;
-const previewBtn = qs('#previewBtn');
-previewBtn.addEventListener('click', ()=>{
+/* Same as Site copy */
+if(elems.sameAs) elems.sameAs.addEventListener('change', ()=>{
+  if(elems.sameAs.checked){ elems.mailing.value = elems.property.value; }
+});
+if(elems.property) elems.property.addEventListener('input', ()=>{ if(elems.sameAs && elems.sameAs.checked) elems.mailing.value = elems.property.value; });
+
+if(elems.isOrg) elems.isOrg.addEventListener('change', updateOwnerLabelAndPlaceholder);
+
+/* Print placeholder handling for date inputs */
+function updateDateValueClasses(){
+  const dates = [qs('#saleDate'), qs('#effectiveDate'), qs('#sigDate')].filter(Boolean);
+  dates.forEach(d=>{ if(d.value && d.value.trim()!==''){ d.classList.add('has-value'); } else { d.classList.remove('has-value'); }});
+}
+['input','change','blur'].forEach(evt=>{ [qs('#saleDate'), qs('#effectiveDate'), qs('#sigDate')].forEach(el=>{ if(el){ el.addEventListener(evt, updateDateValueClasses); }}); });
+window.addEventListener('beforeprint', updateDateValueClasses);
+
+/* Preview / Print / Reset */
+let previewClean=false;
+const previewBtn=qs('#previewBtn');
+if(previewBtn) previewBtn.addEventListener('click', ()=>{
   previewClean = !previewClean;
   if(previewClean){
     qsa('.required-asterisk').forEach(el=> el.style.display='none');
     qsa('.required-border').forEach(el=> el.classList.remove('required-border'));
     qsa('.error').forEach(el=> el.style.display='none');
     qsa('.preview-text').forEach(el=> el.style.display='none');
-    previewBtn.textContent = 'Exit Preview (show requirements)';
+    previewBtn.textContent='Exit Preview (show requirements)';
   } else {
-    applyRequirements();
+    applyRequirements(); updateGreyouts();
     qsa('.preview-text').forEach(el=> el.style.display='block');
-    previewBtn.textContent = 'Preview Form (clean)';
+    previewBtn.textContent='Preview Form (clean)';
   }
 });
-
-/* ---------- Print button ---------- */
-qs('#printBtn').addEventListener('click', ()=>{
-  window.print();
-});
-
-/* ---------- Reset button ---------- */
-qs('#resetBtn').addEventListener('click', ()=>{
+const printBtn=qs('#printBtn');
+if(printBtn) printBtn.addEventListener('click', ()=>{ updateDateValueClasses(); window.print(); });
+const resetBtn=qs('#resetBtn');
+if(resetBtn) resetBtn.addEventListener('click', ()=>{
   document.getElementById('changeForm').reset();
   qsa('.error').forEach(el=> el.style.display='none');
   qsa('.preview-text').forEach(el=> el.textContent='');
-  const c = qs('#barcodeCanvas'); c.getContext('2d').clearRect(0,0,c.width,c.height);
   Object.keys(active).forEach(k=> active[k]=false);
   btns.forEach(b=> b.classList.remove('active'));
-  clearRequiredMarkers();
-  elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
+  clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 });
 
-/* ---------- On load ---------- */
-applyRequirements();
-
+/* On load */
+applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 </script>
 </body>
 </html>

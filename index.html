@@ -367,7 +367,7 @@ function applyRequirements(){
 /* Grey out non-relevant sections */
 function updateGreyouts(){
   const relevant = new Set(fieldGroups.base);
-  if(active.ownership) fieldGroups.owner.concat(fieldGroups.docs).forEach(id=>relevant.add(id));
+  if(active.ownership) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.mailing)   fieldGroups.mailing.forEach(id=>relevant.add(id));
   if(active.addremove) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.agent)     fieldGroups.owner.forEach(id=>relevant.add(id));

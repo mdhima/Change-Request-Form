@@ -200,7 +200,7 @@
           <input type="text" id="signature" placeholder="Sign here">
         </div>
         <div>
-          <label>Print Name</label>
+          <label id="ast_printName">Print Name</label>
           <input type="text" id="printName" placeholder="Your printed name">
         </div>
       </div>
@@ -286,6 +286,7 @@ const elems = {
   effectiveDate: qs('#effectiveDate'),
   phone: qs('#phone'),
   sigDate: qs('#sigDate'),
+  printName: qs('#printName')
   ast: {
     ticket: qs('#ast_ticket'),
     roll: qs('#ast_roll'),
@@ -296,6 +297,8 @@ const elems = {
     action: qs('#ast_action'),
     mortgage: qs('#ast_mortgage'),
     mailing: qs('#ast_mailing'),
+    sigDate: qs('#ast_sigDate'),
+    printName: qs('#ast_printName'),
     sigDate: qs('#ast_sigDate')
   },
   errors: {
@@ -372,6 +375,7 @@ function applyRequirements(){
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('sigDate'))  req(elems.sigDate, elems.ast.sigDate);
+  if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
 
   // Mailing Address mandatory when mailing is active
   const mailingActive = !!active.mailing;

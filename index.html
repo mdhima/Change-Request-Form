@@ -364,7 +364,7 @@ function applyRequirements(){
   const reqSet = new Set();
   Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
 
-  function req(el, ast){ if(el){ el.classList.add('required-border'); } if(ast){ ast.style.display='inline'; } }
+  function req(el, ast){ if(el){ el.classList.add('required-border'); }  }
 
   if(reqSet.has('ticket'))   req(elems.ticket,   elems.ast.ticket);
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);

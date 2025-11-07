@@ -206,7 +206,7 @@
       </div>
       <div class="row">
         <div>
-          <label>Date</label>
+          <label id="ast_sigDate">Date</label>
           <input type="date" id="sigDate" placeholder="YYYY-MM-DD">
         </div>
         <div>
@@ -285,6 +285,7 @@ const elems = {
   deleteMortgage: qs('#deleteMortgage'),
   effectiveDate: qs('#effectiveDate'),
   phone: qs('#phone'),
+  sigDate: qs('#sigDate'),
   ast: {
     ticket: qs('#ast_ticket'),
     roll: qs('#ast_roll'),
@@ -294,7 +295,8 @@ const elems = {
     sale: qs('#ast_sale'),
     action: qs('#ast_action'),
     mortgage: qs('#ast_mortgage'),
-    mailing: qs('#ast_mailing')
+    mailing: qs('#ast_mailing'),
+    sigDate: qs('#ast_sigDate')
   },
   errors: {
     ticket: qs('#ticketError'),
@@ -369,6 +371,7 @@ function applyRequirements(){
   if(reqSet.has('action')) { elems.ast.action.style.display='inline'; setActionRadiosEnabled(true); } else { elems.ast.action.style.display='none'; setActionRadiosEnabled(false); qsa('input[name="actionType"]').forEach(r=>r.checked=false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
+  if(reqSet.has('sigDate'))  req(elems.sigDate, elems.ast.sigDate);
 
   // Mailing Address mandatory when mailing is active
   const mailingActive = !!active.mailing;

@@ -210,7 +210,7 @@
           <input type="date" id="sigDate" placeholder="YYYY-MM-DD">
         </div>
         <div>
-          <label>Phone Number</label>
+          <label id="ast_phone">Phone Number</label>
           <input type="tel" id="phone" placeholder="Digits only">
           <div class="error" id="phoneError">Phone number must contain digits only.</div>
         </div>
@@ -284,9 +284,9 @@ const elems = {
   sameAs: qs('#sameAsSite'),
   deleteMortgage: qs('#deleteMortgage'),
   effectiveDate: qs('#effectiveDate'),
-  phone: qs('#phone'),
+  printName: qs('#printName'),
   sigDate: qs('#sigDate'),
-  printName: qs('#printName')
+  phone: qs('#phone')
   ast: {
     ticket: qs('#ast_ticket'),
     roll: qs('#ast_roll'),
@@ -297,9 +297,9 @@ const elems = {
     action: qs('#ast_action'),
     mortgage: qs('#ast_mortgage'),
     mailing: qs('#ast_mailing'),
-    sigDate: qs('#ast_sigDate'),
     printName: qs('#ast_printName'),
-    sigDate: qs('#ast_sigDate')
+    sigDate: qs('#ast_sigDate'),
+    phone: qs('#ast_phone')
   },
   errors: {
     ticket: qs('#ticketError'),
@@ -374,8 +374,9 @@ function applyRequirements(){
   if(reqSet.has('action')) { elems.ast.action.style.display='inline'; setActionRadiosEnabled(true); } else { elems.ast.action.style.display='none'; setActionRadiosEnabled(false); qsa('input[name="actionType"]').forEach(r=>r.checked=false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
-  if(reqSet.has('sigDate'))  req(elems.sigDate, elems.ast.sigDate);
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
+  if(reqSet.has('sigDate'))    req(elems.sigDate, elems.ast.sigDate);
+  if(reqSet.has('phone'))      req(elems.phone, elems.ast.phone);
 
   // Mailing Address mandatory when mailing is active
   const mailingActive = !!active.mailing;

@@ -48,6 +48,19 @@
   .row-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; }
 
   .inline-hint{ font-size:10px; color:var(--muted); margin-top:1px; }
+/* Put radio options on one line */
+  .radios-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;              /* space between options */
+    flex-wrap: wrap;        /* let them wrap if the line gets too long */
+  }
+  .radios-inline > label {
+    display: inline-flex;   /* override the global block label */
+    align-items: center;
+    gap: 4px;               /* space between the dot and the text */
+    margin: 0;              /* remove the top margin from your label rule */
+  }
   .error{ color:#b00020; font-size:10px; margin-top:3px; display:none; }
   .preview-text{ font-size:10px; color:var(--muted); margin-top:3px; }
   .required-asterisk{ color:#b00020; margin-left:4px; font-weight:700; display:none; }
@@ -159,11 +172,11 @@
           </div>
           <div style="float: left; clear: none;">
             <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
-            <div class="inline-hint" style="float: left; clear: none; display: block">
-              <label style="float: left; clear: none; display: block;"><input style="float: left; clear: none; display: block" type="radio" name="actionType" value="New"> New</label>
-              <label style="float: left; clear: none; display: block;"><input style="float: left; clear: none; display: block" type="radio" name="actionType" value="Add"> Add</label>
-              <label style="float: left; clear: none; display: block;"><input style="float: left; clear: none; display: block" type="radio" name="actionType" value="Remove"> Remove</label>
-              <label style="float: left; clear: none; display: block;"><input style="float: left; clear: none; display: block"  type="radio" name="actionType" value="Correct"> Correct</label>
+            <div class="radios-inline">
+              <label><input type="radio" name="actionType" value="New"> New</label>
+              <label><input type="radio" name="actionType" value="Add"> Add</label>
+              <label><input type="radio" name="actionType" value="Remove"> Remove</label>
+              <label><input type="radio" name="actionType" value="Correct"> Correct</label>
             </div>
           </div>
         </div>

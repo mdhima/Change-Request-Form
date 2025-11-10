@@ -135,7 +135,7 @@
       <div class="row">
         <div>
           <label>Ticket # <span class="required-asterisk" id="ast_ticket">*</span></label>
-          <input type="text" id="ticketNumber" placeholder="Enter Ticket Number">
+          <input type="text" id="ticketNumber" maxlength="7" placeholder="Enter Ticket Number">
           <div class="error" id="ticketError">Ticket must not be empty when required.</div>
         </div>
         <div>
@@ -239,7 +239,7 @@
         </div>
         <div>
           <label id="ast_phone">Phone Number</label>
-          <input type="tel" id="phone" placeholder="Digits only">
+          <input type="tel" id="phone" maxlength="15" placeholder="Digits only">
           <div class="error" id="phoneError">Phone number must contain digits only.</div>
         </div>
       </div>

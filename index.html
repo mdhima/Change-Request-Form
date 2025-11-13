@@ -357,12 +357,12 @@ const elems = {
 const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
-// function setActionRadiosEnabled(enabled){
-//   qsa('input[name="actionType"]').forEach(r=>{
-//     r.disabled = !enabled;
-//     if(!enabled){ r.checked = false; }
-//   });
-// }
+function setActionRadiosEnabled(enabled){
+  qsa('input[name="actionType"]').forEach(r=>{
+    r.disabled = !enabled;
+    if(!enabled){ r.checked = false; }
+  });
+}
 
 
 /* Helpers */
@@ -402,7 +402,7 @@ function applyRequirements(){
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('action')) { elems.ast.action.style.display='inline'; setActionRadiosEnabled(true); } else { elems.ast.action.style.display='none'; setActionRadiosEnabled(false); qsa('input[name="actionType"]').forEach(r=>r.checked=false); }
+  if(reqSet.has('action')) { setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);

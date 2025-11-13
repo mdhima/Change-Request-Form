@@ -436,7 +436,7 @@ function updateGreyouts(){
       console.log(container);
       console.log();
     if(!id || !container) return;
-    if(relevant.has(id)){
+    if(relevant.has(id) || relevant.has(id.slice(0, 5))) {
       el.disabled = false;
       container.classList.remove('disabled');
     } else {

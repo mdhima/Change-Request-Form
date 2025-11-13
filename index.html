@@ -172,7 +172,7 @@
           </div>
           <div>
             <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
-            <div class="radios-inline" id="action">
+            <div class="radios-inline" id="actionType">
               <label><input type="radio" id="action1" name="actionType" value="New"> New</label>
               <label><input type="radio" id="action2" name="actionType" value="Add"> Add</label>
               <label><input type="radio" id="action3" name="actionType" value="Remove"> Remove</label>
@@ -308,7 +308,7 @@ const elems = {
   owner: qs('#ownerName'),
   isOrg: qs('#isOrganization'),
   sale: qs('#saleDate'),
-  action: qs('#action'),
+  action: qs('#actionType'),
   actions: qsa('input[name="actionType"]'),
   mailing: qs('#mailingAddress'),
   sameAs: qs('#sameAsSite'),
@@ -371,7 +371,7 @@ function setActionRadiosEnabled(enabled){
 function clearRequiredMarkers(){
   qsa('.required-asterisk').forEach(el=> el.style.display = 'none');
   qsa('input,textarea,select').forEach(el=> el.classList.remove('required-border'));
-  qs('action').classList.remove('required-border');
+  qs('actionType').classList.remove('required-border');
 }
 
 function updateOwnerLabelAndPlaceholder(){

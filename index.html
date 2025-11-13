@@ -291,9 +291,10 @@ const requirements = {
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','isOrganization','saleDate', 'action'],
+  owner: ['ownerName','isOrganization','saleDate','action'],
   mailing: ['mailingAddress','sameAsSite'],
   action: ['action'],
+  agent: ['ownerName','isOrganization','action'],
   mortgage: ['deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']

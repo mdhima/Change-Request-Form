@@ -432,11 +432,11 @@ function updateGreyouts(){
   qsa('input,textarea,select').forEach(el=>{
     const id = el.id;
     const container = el.closest('div,fieldset');
-    if(!id || !container) return;
-    if(relevant.has(id)){
       console.log(id);
       console.log(container);
       console.log();
+    if(!id || !container) return;
+    if(relevant.has(id)){
       el.disabled = false;
       container.classList.remove('disabled');
     } else {

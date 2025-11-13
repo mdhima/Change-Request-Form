@@ -284,16 +284,16 @@ const requirements = {
   ownership: ['ticket','roll','property','owner','sale','action','sigDate','printName','phone'],
   mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
   addremove: ['ticket','roll','property','owner','action','sigDate','printName','phone'],
-  agent:     ['ticket','roll','property','agentName','owner','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','agentName','owner', 'action','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','isOrganization','saleDate'],
+  owner: ['ownerName','isOrganization','saleDate', 'action'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: [],
+  action: ['action'],
   mortgage: ['deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']

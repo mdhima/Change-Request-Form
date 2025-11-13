@@ -371,6 +371,7 @@ function setActionRadiosEnabled(enabled){
 function clearRequiredMarkers(){
   qsa('.required-asterisk').forEach(el=> el.style.display = 'none');
   qsa('input,textarea,select').forEach(el=> el.classList.remove('required-border'));
+  qs('action').classList.remove('required-border');
 }
 
 function updateOwnerLabelAndPlaceholder(){

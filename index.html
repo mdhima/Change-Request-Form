@@ -395,14 +395,16 @@ function applyRequirements(){
   const reqSet = new Set();
   Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
 
-  function req(el, ast){ if(el){ el.classList.add('required-border'); }  if(ast){ ast.style.display='inline'; } }
+  function req1(el) { if(el)  el.classList.add('required-border'); }
+  function req2(ast){ if(ast) ast.style.display='inline'; }
+  function req(el, ast) { req1(el); req2(ast); }
 
   if(reqSet.has('ticket'))   req(elems.ticket,   elems.ast.ticket);
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('action')) { req(elems.action,     elems.ast.action); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
+  if(reqSet.has('action')) { req1(elems.action); elems.ast.action.forEach(r=> req2(r)); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);

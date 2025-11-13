@@ -408,8 +408,8 @@ function applyRequirements(){
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('action')) { 
     req(elems.action, elems.ast.action); 
-    // elems.actions.forEach(r=> {req1(r);}); setActionRadiosEnabled(true); } 
-  else { setActionRadiosEnabled(false); }
+    // elems.actions.forEach(r=> {req1(r);}); setActionRadiosEnabled(true); 
+  } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);

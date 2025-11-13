@@ -370,7 +370,10 @@ function setActionRadiosEnabled(enabled){
 /* Helpers */
 function clearRequiredMarkers(){
   qsa('.required-asterisk').forEach(el=> el.style.display = 'none');
-  qsa('input,textarea,select').forEach(el=> el.classList.remove('required-border'));
+  qsa('input,textarea,select').forEach(el=> {console.log(el.classList); el.classList.remove('required-border'));};
+  console.log();
+  console.log(qs('actionType');
+  console.log(qs('actionType').classList);
   qs('actionType').classList.remove('required-border');
 }
 

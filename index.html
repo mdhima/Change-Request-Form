@@ -404,7 +404,7 @@ function applyRequirements(){
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('action')) { req2(elems.ast.action); elems.action.forEach(r=> {req1(r); console.log(r);}); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
+  if(reqSet.has('action')) { req2(elems.ast.action); elems.action.forEach(r=> {req1(r);}); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
@@ -423,8 +423,8 @@ function updateGreyouts(){
   const relevant = new Set(fieldGroups.base);
   if(active.ownership) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.mailing)   fieldGroups.mailing.forEach(id=>relevant.add(id));
-  if(active.addremove) fieldGroups.owner.forEach(id=>relevant.add(id));
-  if(active.agent)     fieldGroups.owner.forEach(id=>relevant.add(id));
+  if(active.addremove) fieldGroups.action.forEach(id=>relevant.add(id));
+  if(active.agent)     fieldGroups.agent.forEach(id=>relevant.add(id));
   if(active.mortgage)  fieldGroups.mortgage.forEach(id=>relevant.add(id));
   if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
@@ -433,6 +433,9 @@ function updateGreyouts(){
     const container = el.closest('div,fieldset');
     if(!id || !container) return;
     if(relevant.has(id)){
+      console.log(id);
+      console.log(container);
+      console.log();
       el.disabled = false;
       container.classList.remove('disabled');
     } else {

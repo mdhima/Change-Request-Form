@@ -404,7 +404,7 @@ function applyRequirements(){
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('action')) { req1(elems.action); elems.ast.action.forEach(r=> {req2(r); console.log(r);}); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
+  if(reqSet.has('action')) { req2(elems.ast.action); elems.action.forEach(r=> {req1(r); console.log(r);}); setActionRadiosEnabled(true); } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);

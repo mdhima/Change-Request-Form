@@ -450,55 +450,55 @@ function updateGreyouts(){
   });
 }
 
-// /* Digit-only + previews for roll & account */
-// (function(){
-//   function formatRollMask(d){
-//     // ##-##-##-#-###-#####
-//     return d.replace(/(\d{2})(\d{2})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5-$6');
-//   }
+/* Digit-only + previews for roll & account */
+(function(){
+  function formatRollMask(d){
+    // ##-##-##-#-###-#####
+    return d.replace(/(\d{2})(\d{2})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5-$6');
+  }
 
-//   const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
-//   roll.addEventListener('input', ()=>{
-//     const raw = roll.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
-//     if(raw !== digits) roll.value = digits;
+  const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
+  roll.addEventListener('input', ()=>{
+    const raw = roll.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
+    if(raw !== digits) roll.value = digits;
 
-//     if(digits.length>0){
-//       rollPrev.textContent = 'Preview: ' + (digits.length===15 ? formatRollMask(digits) : digits + ' ('+digits.length+'/15)');
-//     } else { rollPrev.textContent = ''; }
+    if(digits.length>0){
+      rollPrev.textContent = 'Preview: ' + (digits.length===15 ? formatRollMask(digits) : digits + ' ('+digits.length+'/15)');
+    } else { rollPrev.textContent = ''; }
 
-//     if(hadNondigit){ rollErr.textContent='Digits only (0–9).'; rollErr.style.display='block'; }
-//     else if(digits.length===0){ rollErr.style.display='none'; }
-//     else if(digits.length!==15){ rollErr.textContent='Roll number must be exactly 15 digits.'; rollErr.style.display='block'; }
-//     else { rollErr.style.display='none'; }
-//   });
+    if(hadNondigit){ rollErr.textContent='Digits only (0–9).'; rollErr.style.display='block'; }
+    else if(digits.length===0){ rollErr.style.display='none'; }
+    else if(digits.length!==15){ rollErr.textContent='Roll number must be exactly 15 digits.'; rollErr.style.display='block'; }
+    else { rollErr.style.display='none'; }
+  });
 
-//   const acc = elems.account, accErr = elems.errors.acc, accPrev = elems.previews.acc;
-//   acc.addEventListener('input', ()=>{
-//     const raw = acc.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
-//     if(raw !== digits) acc.value = digits;
+  const acc = elems.account, accErr = elems.errors.acc, accPrev = elems.previews.acc;
+  acc.addEventListener('input', ()=>{
+    const raw = acc.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
+    if(raw !== digits) acc.value = digits;
 
-//     if(digits.length>0){ accPrev.textContent = 'Preview: ' + (digits.length===9 ? digits : digits + ' ('+digits.length+'/9)'); }
-//     else { accPrev.textContent=''; }
+    if(digits.length>0){ accPrev.textContent = 'Preview: ' + (digits.length===9 ? digits : digits + ' ('+digits.length+'/9)'); }
+    else { accPrev.textContent=''; }
 
-//     if(hadNondigit){ accErr.textContent='Digits only (0–9).'; accErr.style.display='block'; }
-//     else if(digits.length===0){ accErr.style.display='none'; }
-//     else if(digits.length!==9){ accErr.textContent='Utility Account # must be exactly 9 digits.'; accErr.style.display='block'; }
-//     else { accErr.style.display='none'; }
-//   });
-// })();
+    if(hadNondigit){ accErr.textContent='Digits only (0–9).'; accErr.style.display='block'; }
+    else if(digits.length===0){ accErr.style.display='none'; }
+    else if(digits.length!==9){ accErr.textContent='Utility Account # must be exactly 9 digits.'; accErr.style.display='block'; }
+    else { accErr.style.display='none'; }
+  });
+})();
 
-// /* Phone digits-only validation */
-// elems.phone.addEventListener('input', ()=>{
-//   const raw = elems.phone.value;
-//   const digits = raw.replace(/\D/g,'');
-//   const hadNondigit = raw !== digits;
-//   if(raw !== digits) elems.phone.value = digits;
-//   if(hadNondigit){
-//     elems.errors.phone.style.display='block';
-//   } else {
-//     elems.errors.phone.style.display = 'none';
-//   }
-// });
+/* Phone digits-only validation */
+elems.phone.addEventListener('input', ()=>{
+  const raw = elems.phone.value;
+  const digits = raw.replace(/\D/g,'');
+  const hadNondigit = raw !== digits;
+  if(raw !== digits) elems.phone.value = digits;
+  if(hadNondigit){
+    elems.errors.phone.style.display='block';
+  } else {
+    elems.errors.phone.style.display = 'none';
+  }
+});
 
 /* Ticket digits-only validation */
 elems.ticket.addEventListener('input', ()=>{
@@ -510,6 +510,19 @@ elems.ticket.addEventListener('input', ()=>{
     elems.errors.ticket.style.display='block';
   } else {
     elems.errors.ticket.style.display = 'none';
+  }
+});
+
+/* Total Pages digits-only validation */
+elems.totalPages.addEventListener('input', ()=>{
+  const raw = elems.totalPages.value;
+  const digits = raw.replace(/\D/g,'');
+  const hadNondigit = raw !== digits;
+  if(raw !== digits) elems.totalPages.value = digits;
+  if(hadNondigit){
+    elems.errors.totalPages.style.display='block';
+  } else {
+    elems.errors.totalPages.style.display = 'none';
   }
 });
 

@@ -500,6 +500,19 @@ elems.phone.addEventListener('input', ()=>{
   }
 });
 
+/* Ticket digits-only validation */
+elems.ticket.addEventListener('input', ()=>{
+  const raw = elems.ticket.value;
+  const digits = raw.replace(/\D/g,'');
+  const hadNondigit = raw !== digits;
+  if(raw !== digits) elems.ticket.value = digits;
+  if(hadNondigit){
+    elems.errors.ticket.style.display='block';
+  } else {
+    elems.errors.ticket.style.display = 'none';
+  }
+});
+
 /* Same as Site copy */
 if(elems.sameAs) elems.sameAs.addEventListener('change', ()=>{
   if(elems.sameAs.checked){ elems.mailing.value = elems.property.value; }

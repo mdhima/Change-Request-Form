@@ -204,7 +204,7 @@
         <div>
           <label>Total Pages <span class="required-asterisk" id="ast_totalPages">*</span></label>
           <input type="text" id="totalPages" placeholder="e.g., 3">
-          <div class="error" id="totalPages">Total Pages number must contain digits only.</div>
+          <div class="error" id="totalPagesError">Total Pages number must contain digits only.</div>
         </div>
       </div>
     </fieldset>
@@ -343,6 +343,7 @@ const elems = {
     acc: qs('#accError'),
     mort: qs('#mortError'),
     mailing: qs('#mailingError'),
+    totalPages: qs('#totalPagesError'),
     phone: qs('#phoneError')
   },
   previews: {

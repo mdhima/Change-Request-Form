@@ -490,7 +490,7 @@ function updateGreyouts(){
 /* Phone digits-only validation */
 elems.phone.addEventListener('input', ()=>{
   const raw = elems.phone.value;
-  const digits = raw.replace(/\\D/g,'');
+  const digits = raw.replace(/\D/g,'');
   const hadNondigit = raw !== digits;
   if(raw !== digits) elems.phone.value = digits;
   if(hadNondigit){

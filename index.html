@@ -451,12 +451,13 @@ function updateGreyouts(){
 /* Digit-only + previews for roll & account */
 (function(){
   function formatRollMask(d){
-    return d.replace(/(\\d{2})(\\d{2})(\\d{2})(\\d{1})(\\d{3})(\\d{5})/, '$1-$2-$3-$4-$5-$6');
+    // ##-##-##-#-###-#####
+    return d.replace(/(\d{2})(\d{2})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5-$6');
   }
 
   const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
   roll.addEventListener('input', ()=>{
-    const raw = roll.value, digits = raw.replace(/\\D/g,''), hadNondigit = raw !== digits;
+    const raw = roll.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
     if(raw !== digits) roll.value = digits;
 
     if(digits.length>0){
@@ -471,7 +472,7 @@ function updateGreyouts(){
 
   const acc = elems.account, accErr = elems.errors.acc, accPrev = elems.previews.acc;
   acc.addEventListener('input', ()=>{
-    const raw = acc.value, digits = raw.replace(/\\D/g,''), hadNondigit = raw !== digits;
+    const raw = acc.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
     if(raw !== digits) acc.value = digits;
 
     if(digits.length>0){ accPrev.textContent = 'Preview: ' + (digits.length===9 ? digits : digits + ' ('+digits.length+'/9)'); }

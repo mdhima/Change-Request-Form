@@ -350,11 +350,15 @@
         </div>
       </div>
 
-      <div>
-        <label>Mailing Address <span class="required-asterisk" id="ast_mailing">*</span></label>
-        <input type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
-        <label style="margin-top:4px;"><input type="checkbox" id="sameAsSite"> Same as Site</label>
-        <div class="error" id="mailingError">Mailing Address is required for a Mailing Address Change request.</div>
+      <div class="row">
+        <div>
+          <label>Mailing Address <span class="required-asterisk" id="ast_mailing">*</span></label>
+          <input type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
+          <div class="error" id="mailingError">Mailing Address is required for a Mailing Address Change request.</div>
+        </div>
+        <div>
+          <label><input type="checkbox" id="sameAsSite"> Same as Site</label>
+        </div>
       </div>
     </fieldset>
 

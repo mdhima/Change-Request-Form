@@ -343,33 +343,31 @@
       </div>
 
       <div>
+        <label class="required-label">Owner Type <span class="required-asterisk" id="ast_ownerType">*</span></label>
+        <div class="inline">
+          <label><input type="radio" name="ownerType" value="individual" checked> Individual</label>
+          <label><input type="radio" name="ownerType" value="organization"> Organization</label>
+          <label><input type="checkbox" id="isAgent" /> Authorized Agent</label>
+        </div>
+        <label class="hint" id="orgHint">If Organization is selected, provide both Legal Name and Contact Person.</label>
+      </div>
+      <div>
+        <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
+        <input type="text" id="ownerName" placeholder="First and Last Name(s)">
+        <div><label><input type="checkbox" id="isOrganization"> Owner is an Organization</label></div>
+      </div>
+      <div class="row">
         <div>
-          <label class="required-label">Owner Type <span class="required-asterisk" id="ast_ownerType">*</span></label>
-          <div class="inline">
-            <label><input type="radio" name="ownerType" value="individual" checked> Individual</label>
-            <label><input type="radio" name="ownerType" value="organization"> Organization</label>
-            <label><input type="checkbox" id="isAgent" /> Authorized Agent</label>
-          </div>
-          <label class="hint" id="orgHint">If Organization is selected, provide both Legal Name and Contact Person.</label>
+          <label>Sale Date <span class="required-asterisk" id="ast_sale">*</span></label>
+          <input type="date" id="saleDate" placeholder="YYYY-MM-DD">
         </div>
         <div>
-          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
-          <input type="text" id="ownerName" placeholder="First and Last Name(s)">
-          <div><label><input type="checkbox" id="isOrganization"> Owner is an Organization</label></div>
-        </div>
-        <div class="row">
-          <div>
-            <label>Sale Date <span class="required-asterisk" id="ast_sale">*</span></label>
-            <input type="date" id="saleDate" placeholder="YYYY-MM-DD">
-          </div>
-          <div>
-            <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
-            <div class="radios-inline" id="actionType">
-              <label><input type="radio" id="action1" name="actionType" value="New"> New</label>
-              <label><input type="radio" id="action2" name="actionType" value="Add"> Add</label>
-              <label><input type="radio" id="action3" name="actionType" value="Remove"> Remove</label>
-              <label><input type="radio" id="action4" name="actionType" value="Correct"> Correct</label>
-            </div>
+          <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
+          <div class="radios-inline" id="actionType">
+            <label><input type="radio" id="action1" name="actionType" value="New"> New</label>
+            <label><input type="radio" id="action2" name="actionType" value="Add"> Add</label>
+            <label><input type="radio" id="action3" name="actionType" value="Remove"> Remove</label>
+            <label><input type="radio" id="action4" name="actionType" value="Correct"> Correct</label>
           </div>
         </div>
       </div>

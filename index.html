@@ -575,7 +575,7 @@ const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 function setCheckboxEnabled(enabled, inputTypes){
   inputTypes.forEach(r=>{
-    if (r.type == "checkbox" && enabled)  r.checked = true; =
+    if (r.type == "checkbox" && enabled)  r.checked = true;
     else if (r.type == "checkbox") r.checked = false; 
   });
 }

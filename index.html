@@ -661,7 +661,6 @@ function updateGreyouts(){
     const container = el.closest('div,fieldset');
     if(!id || !container) return
     if(relevant.has(id) || relevant.has(name)) {
-      console.log(id);
       el.disabled = false;
       container.classList.remove('disabled');
     } else {

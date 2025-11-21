@@ -623,9 +623,9 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
-    setInputTypeEnabled(True, elems.ownerTypes);
+    setInputTypeEnabled(true, elems.ownerTypes);
   } else {
-    setInputTypeEnabled(False, elems.ownerTypes);
+    setInputTypeEnabled(false, elems.ownerTypes);
   }
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))

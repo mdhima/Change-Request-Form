@@ -573,7 +573,7 @@ const elems = {
 const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
-function setTypeEnabled(enabled, inputTypes){
+function setInputTypeEnabled(enabled, inputTypes){
   elems.inputTypes.forEach(r=>{
     r.disabled = !enabled;
     if (r.type == "checkbox" && r.disabled)  r.checked = false; 
@@ -623,9 +623,9 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
-    setActionTypeEnabled(True, elems.ownerTypes);
+    setInputTypeEnabled(True, elems.ownerTypes);
   } else {
-    setActionTypeEnabled(False, elems.ownerTypes);
+    setInputTypeEnabled(False, elems.ownerTypes);
   }
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))

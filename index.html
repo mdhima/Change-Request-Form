@@ -351,7 +351,6 @@
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization"> Organization</label>
-            <label><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
           </div>
         </div>
         <div>
@@ -491,9 +490,9 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 
 /* Requirements per request */
 const requirements = {
-  ownership: ['ticket','roll','property','owner','sale','actionType','sigDate','printName','phone'],
+  ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
   mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
-  addremove: ['ticket','roll','property','owner','actionType','sigDate','printName','phone'],
+  addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
   agent:     ['ticket','roll','property','agentName','owner', 'actionType','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
 };

@@ -575,7 +575,6 @@ const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 function setInputTypeEnabled(enabled, inputTypes){
   inputTypes.forEach(r=>{
-    r.disabled = !enabled;
     if (r.type == "checkbox" && r.disabled)  r.checked = false; 
     else if (r.type == "checkbox" && !r.disabled) r.checked = true; 
   });
@@ -623,10 +622,8 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
-    setInputTypeEnabled(true, elems.ownerTypes);
-  } else {
-    setInputTypeEnabled(false, elems.ownerTypes);
-  }
+    if (action.has("addremove")) setInputTypeEnabled(true, elems.ownerTypes);
+  } 
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 

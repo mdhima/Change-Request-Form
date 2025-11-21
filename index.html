@@ -351,6 +351,7 @@
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization"> Organization</label>
+            <label><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
           </div>
         </div>
         <div>
@@ -493,7 +494,7 @@ const requirements = {
   ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
   mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
   addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
-  agent:     ['ticket','roll','property','agentName','owner', 'actionType','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
 };
 
@@ -572,13 +573,13 @@ const elems = {
 const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
-// function setActionRadiosEnabled(enabled){
-//   elems.actionTypes.forEach(r=>{
-//     r.disabled = !enabled;
-//     if (r.disabled)  r.checked = false; 
-//     else r.checked = true; 
-//   });
-// }
+function setActionRadiosEnabled(enabled, radio){
+  elems.radio.forEach(r=>{
+    r.disabled = !enabled;
+    if (r.disabled)  r.checked = false; 
+    else r.checked = true; 
+  });
+}
 
 
 /* Helpers */
@@ -620,6 +621,12 @@ function applyRequirements(){
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
+  if(reqSet.has('ownerType')) {
+    req(elems.ownerType, elems.ast.ownerType); 
+    setActionRadiosEnabled(True, elems.ownerTypes);
+  } else {
+    setActionRadiosEnabled(False, elems.ownerTypes);
+  }
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 

@@ -573,12 +573,13 @@ const elems = {
 const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
-function setActionRadiosEnabled(enabled){
-  qsa('input[name="actionType"]').forEach(r=>{
-    r.disabled = !enabled;
-    if(!enabled){ r.checked = false; }
-  });
-}
+// function setActionRadiosEnabled(enabled){
+//   elems.actionTypes.forEach(r=>{
+//     r.disabled = !enabled;
+//     if (r.disabled)  r.checked = false; 
+//     else r.checked = true; 
+//   });
+// }
 
 
 /* Helpers */
@@ -624,7 +625,7 @@ function applyRequirements(){
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType')) { 
     req(elems.actionType, elems.ast.actionType); 
-    setActionRadiosEnabled(true);
+    // setActionRadiosEnabled(true);
     // elems.actions.forEach(r=> {req1(r);});  
   } else setActionRadiosEnabled(false);
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }

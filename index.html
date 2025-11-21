@@ -622,12 +622,8 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
-    console.log(active);
-    console.log('addremove' in active);
-    console.log('addremove' in requirements);
-    if ('addremove' in active && 'addremove' in requirements) {
+    if ('agent' in active && 'agent' in requirements) {
       setCheckboxEnabled(true, elems.ownerTypes);
-      console.log(True);
     }
   } 
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);

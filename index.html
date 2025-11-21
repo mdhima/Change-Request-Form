@@ -259,6 +259,7 @@
     }
   }
 
+/* might erase */
   .inline{
     display:flex;
     align-items:center;
@@ -274,6 +275,8 @@
     margin-right:2px;
   }
 
+/* ----------- */
+  
   .tiny{
     font-size:9px;
     line-height:1.25;
@@ -367,7 +370,7 @@
           <input type="date" id="saleDate" placeholder="YYYY-MM-DD">
         </div>
         <div>
-          <label>Action Required <span class="required-asterisk" id="ast_action">*</span></label>
+          <label>Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
           <div class="radios-inline" id="actionType">
             <label><input type="radio" id="action1" name="actionType" value="New"> New</label>
             <label><input type="radio" id="action2" name="actionType" value="Add"> Add</label>
@@ -488,20 +491,20 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 
 /* Requirements per request */
 const requirements = {
-  ownership: ['ticket','roll','property','owner','sale','action','sigDate','printName','phone'],
+  ownership: ['ticket','roll','property','owner','sale','actionType','sigDate','printName','phone'],
   mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
-  addremove: ['ticket','roll','property','owner','action','sigDate','printName','phone'],
-  agent:     ['ticket','roll','property','agentName','owner', 'action','sigDate','printName','phone'],
+  addremove: ['ticket','roll','property','owner','actionType','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','agentName','owner', 'actionType','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','isOrganization','saleDate','action'],
+  owner: ['ownerName','isOrganization','saleDate','actionType'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: ['ownerName','isOrganization','action'],
-  agent: ['ownerName','isOrganization','action'],
+  action: ['ownerName','isOrganization','actionType'],
+  agent: ['ownerName','isOrganization','actionType'],
   mortgage: ['deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']
@@ -513,10 +516,12 @@ const elems = {
   account: qs('#accountNumber'),
   property: qs('#propertyAddress'),
   owner: qs('#ownerName'),
-  isOrg: qs('#isOrganization'),
+  /* isOrg: qs('#isOrganization'), */
+  ownerType: qs('ownerType'),
+  ownerTypes: qsa('input[name="ownerType"]'),
   sale: qs('#saleDate'),
-  action: qs('#actionType'),
-  actions: qsa('input[name="actionType"]'),
+  actionType: qs('#actionType'),
+  actionTypes: qsa('input[name="actionType"]'),
   mailing: qs('#mailingAddress'),
   sameAs: qs('#sameAsSite'),
   docsIncluded: qs('#docsIncluded'),
@@ -533,8 +538,9 @@ const elems = {
     account: qs('#ast_account'),
     property: qs('#ast_property'),
     owner: qs('#ast_owner'),
+    ownerType: qs('ast_ownerType'),
     sale: qs('#ast_sale'),
-    action: qs('#ast_action'),
+    actionType: qs('#ast_actionType'),
     mortgage: qs('#ast_mortgage'),
     mailing: qs('#ast_mailing'),
     printName: qs('#ast_printName'),
@@ -615,8 +621,8 @@ function applyRequirements(){
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('action')) { 
-    req(elems.action, elems.ast.action); 
+  if(reqSet.has('actionType')) { 
+    req(elems.action, elems.ast.actionType); 
     // elems.actions.forEach(r=> {req1(r);}); setActionRadiosEnabled(true); 
   } else { setActionRadiosEnabled(false); }
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
@@ -828,7 +834,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-if (document.getElementById('ast_action').style.display === 'none') setActionRadiosEnabled(false);
+if (document.getElementById('ast_actionType').style.display === 'none') setActionRadiosEnabled(false);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

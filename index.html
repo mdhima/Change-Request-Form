@@ -611,6 +611,7 @@ function applyRequirements(){
   clearRequiredMarkers();
   const reqSet = new Set();
   Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
+  console.log(reqSet);
 
   function req1(el) { if(el)  el.classList.add('required-border'); }
   function req2(ast){ if(ast) ast.style.display='inline'; }

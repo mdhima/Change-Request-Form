@@ -573,10 +573,10 @@ const elems = {
 const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
-function setInputTypeEnabled(enabled, inputTypes){
+function setCheckboxEnabled(enabled, inputTypes){
   inputTypes.forEach(r=>{
-    if (r.type == "checkbox" && r.disabled)  r.checked = false; 
-    else if (r.type == "checkbox" && !r.disabled) r.checked = true; 
+    if (r.type == "checkbox" && enabled)  r.checked = true; =
+    else if (r.type == "checkbox") r.checked = false; 
   });
 }
 
@@ -622,9 +622,11 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
+    console.log('addremove' in active);
+    console.log('addremove' in requirements);
     if ('addremove' in active && 'addremove' in requirements) {
-      setInputTypeEnabled(true, elems.ownerTypes);
-          console.log(True);
+      setCheckboxEnabled(true, elems.ownerTypes);
+      console.log(True);
     }
   } 
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);

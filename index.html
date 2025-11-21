@@ -622,7 +622,7 @@ function applyRequirements(){
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
-    if (action.has("addremove")) setInputTypeEnabled(true, elems.ownerTypes);
+    if (active.has("addremove")) setInputTypeEnabled(true, elems.ownerTypes);
   } 
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))

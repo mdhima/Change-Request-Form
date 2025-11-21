@@ -835,7 +835,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-if (document.getElementById('ast_actionType').style.display === 'none') setActionRadiosEnabled(false);
+// if (document.getElementById('ast_actionType').style.display === 'none') setActionRadiosEnabled(false);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

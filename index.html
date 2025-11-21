@@ -657,6 +657,9 @@ function updateGreyouts(){
     const name = el.name;
     const container = el.closest('div,fieldset');
     if(!id || !container) return
+    console.log(el);
+    console.log(relevant.has(id));
+    console.log(relevant.has(name));
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
       container.classList.remove('disabled');
@@ -839,7 +842,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-// if (document.getElementById('ast_actionType').style.display === 'none') setActionRadiosEnabled(false);
+if (document.getElementById('ast_ownerType').style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

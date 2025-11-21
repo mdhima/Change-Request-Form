@@ -612,7 +612,6 @@ function applyRequirements(){
   clearRequiredMarkers();
   const reqSet = new Set();
   Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
-  console.log(reqSet);
 
   function req1(el) { if(el)  el.classList.add('required-border'); }
   function req2(ast){ if(ast) ast.style.display='inline'; }
@@ -623,11 +622,8 @@ function applyRequirements(){
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
-  if(reqSet.has('actionType')) { 
+  if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
-    // setActionRadiosEnabled(true);
-    // elems.actions.forEach(r=> {req1(r);});  
-  } else setActionRadiosEnabled(false);
   if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
@@ -655,6 +651,8 @@ function updateGreyouts(){
     const id = el.id;
     const container = el.closest('div,fieldset');
     if(!id || !container) return
+    console.log(id);
+    console.log(id.slice(0, 6));
     if(relevant.has(id) || relevant.has(id.slice(0, 6))) {
       el.disabled = false;
       container.classList.remove('disabled');

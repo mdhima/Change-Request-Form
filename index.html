@@ -492,19 +492,19 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 /* Requirements per request */
 const requirements = {
   ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
-  mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','ownerType','mailOption','sigDate','printName','phone'],
   addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
   agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
-  mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
+  mortgage:  ['ticket','roll','property','ownerType','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','ownerType','isOrganization','saleDate','actionType'],
+  owner: ['ownerName','ownerType','saleDate','actionType'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: ['ownerName','ownerType','isOrganization','actionType'],
-  agent: ['ownerName','ownerType','isOrganization','actionType'],
+  action: ['ownerName','ownerType','actionType'],
+  agent: ['ownerName','ownerType','actionType'],
   mortgage: ['deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']
@@ -516,9 +516,9 @@ const elems = {
   account: qs('#accountNumber'),
   property: qs('#propertyAddress'),
   owner: qs('#ownerName'),
-  /* isOrg: qs('#isOrganization'), */
   ownerType: qs('ownerType'),
   ownerTypes: qsa('input[name="ownerType"]'),
+  isOrg: qs('#isOrganization'),
   sale: qs('#saleDate'),
   actionType: qs('#actionType'),
   actionTypes: qsa('input[name="actionType"]'),
@@ -569,8 +569,8 @@ const elems = {
   },
   labels: { ownerLabel: qs('#ownerLabel') }
 };
-// wrapper for the 'Owner is an Organization' hint row
-const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
+// // wrapper for the 'Owner is an Organization' hint row
+// const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
 
 function setCheckboxEnabled(enabled, inputTypes){
@@ -593,15 +593,15 @@ function updateOwnerLabelAndPlaceholder(){
   if(active.agent){
     elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
-    if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
+    // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
     elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';
-    if (orgWrap) { orgWrap.style.display = ''; }
+    // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
     elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
-    if (orgWrap) { orgWrap.style.display = ''; }
+    // if (orgWrap) { orgWrap.style.display = ''; }
   }
 }
 

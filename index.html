@@ -506,10 +506,10 @@ const requirements = {
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','ownerType','saleDate','actionType'],
+  owner: ['ownerName','ownerType','saleDate','actionType','agentName'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: ['ownerName','ownerType','actionType'],
-  agent: ['ownerName','ownerType','actionType'],
+  action: ['ownerName','ownerType','actionType','agentName'],
+  agent: ['ownerName','ownerType','actionType','agentName'],
   mortgage: ['deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']
@@ -633,6 +633,7 @@ function applyRequirements(){
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
+  if (elems.agentName && elems.isAgent && elems.isAgent.checked) req(elems.agentName, elems.ast.owner);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
     if ('agent' in active && 'agent' in requirements) {
@@ -852,8 +853,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 });
 
-
-// Show/hide Authorized Agent's Name field when the Authorized Agent checkbox is toggled
+// Show/hide Authorized Agent's Name field when Authorized Agent checkbox is toggled
 (function(){
   const isAgentCheckbox = elems.isAgent || document.querySelector('#isAgent');
   const agentNameWrapper = elems.agentNameWrapper || document.querySelector('#agentNameWrapper');

@@ -518,6 +518,7 @@ const elems = {
   owner: qs('#ownerName'),
   ownerType: qs('ownerType'),
   ownerTypes: qsa('input[name="ownerType"]'),
+  isInd: qs('#isIndividual'),
   isOrg: qs('#isOrganization'),
   sale: qs('#saleDate'),
   actionType: qs('#actionType'),
@@ -599,8 +600,8 @@ function updateOwnerLabelAndPlaceholder(){
     ownerField.placeholder = 'Organization Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else if(elems.isInd && elems.isInd.checked){
-    elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
-    ownerField.placeholder = 'Organization Name(s)';
+    elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
+    ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
     elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';

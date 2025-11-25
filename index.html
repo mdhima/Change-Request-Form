@@ -657,15 +657,12 @@ function updateGreyouts(){
   if(active.mortgage)  fieldGroups.mortgage.forEach(id=>relevant.add(id));
   if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
-  console.log(relevant);
   qsa('input,textarea,select').forEach(el=>{
     const id = el.id;
     const name = el.name;
     const container = el.closest('div,fieldset');
     if(!id || !container) return
-    console.log(el);
-    console.log(relevant.has(id));
-    console.log(relevant.has(name));
+    
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
       container.classList.remove('disabled');

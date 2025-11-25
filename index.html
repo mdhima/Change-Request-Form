@@ -359,10 +359,15 @@
           <label class="hint" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Contact Person.</label>
         </div>
       </div>
-      <div>
-        <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
-        <input type="text" id="ownerName" placeholder="First and Last Name(s)">
-        <!-- <div><label><input type="checkbox" id="isOrganization"> Owner is an Organization</label></div> -->
+      <div class="row" id="ownerAgentRow">
+        <div>
+          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
+          <input type="text" id="ownerName" placeholder="First and Last Name(s)">
+        </div>
+        <div id="agentNameWrapper" style="display:none;">
+          <label id="agentNameLabel">Authorized Agent&apos;s Name</label>
+          <input type="text" id="agentName" placeholder="Authorized Agent&apos;s Full Name">
+        </div>
       </div>
       <div class="row">
         <div>
@@ -520,6 +525,9 @@ const elems = {
   ownerTypes: qsa('input[name="ownerType"]'),
   isInd: qs('#isIndividual'),
   isOrg: qs('#isOrganization'),
+  isAgent: qs('#isAgent'),
+  agentNameWrapper: qs('#agentNameWrapper'),
+  agentName: qs('#agentName'),
   sale: qs('#saleDate'),
   actionType: qs('#actionType'),
   actionTypes: qsa('input[name="actionType"]'),
@@ -843,6 +851,27 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   btns.forEach(b=> b.classList.remove('active'));
   clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 });
+
+
+// Show/hide Authorized Agent's Name field when the Authorized Agent checkbox is toggled
+(function(){
+  const isAgentCheckbox = elems.isAgent || document.querySelector('#isAgent');
+  const agentNameWrapper = elems.agentNameWrapper || document.querySelector('#agentNameWrapper');
+  const agentNameInput = elems.agentName || document.querySelector('#agentName');
+  function syncAgentNameVisibility(){
+    if(!agentNameWrapper || !isAgentCheckbox) return;
+    if(isAgentCheckbox.checked){
+      agentNameWrapper.style.display = '';
+    } else {
+      agentNameWrapper.style.display = 'none';
+      if(agentNameInput) agentNameInput.value = '';
+    }
+  }
+  if(isAgentCheckbox){
+    isAgentCheckbox.addEventListener('change', syncAgentNameVisibility);
+  }
+  syncAgentNameVisibility();
+})();
 
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();

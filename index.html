@@ -351,7 +351,7 @@
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization"> Organization</label>
-            <label><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
+            <label id="isAgentWrapper"><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
           </div>
         </div>
         <div>
@@ -526,6 +526,7 @@ const elems = {
   isInd: qs('#isIndividual'),
   isOrg: qs('#isOrganization'),
   isAgent: qs('#isAgent'),
+  isAgentWrapper: qs('#isAgentWrapper'),
   agentNameWrapper: qs('#agentNameWrapper'),
   agentName: qs('#agentName'),
   sale: qs('#saleDate'),
@@ -603,7 +604,7 @@ function updateOwnerLabelAndPlaceholder(){
   if(active.agent){
     elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
-    elems.isAgent.style.display = 'none';
+    elems.isAgentWrapper.style.display = 'none';
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
     elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
@@ -616,7 +617,7 @@ function updateOwnerLabelAndPlaceholder(){
   } else {
     elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
-    elems.isAgent.style.display = '';
+    elems.isAgentWrapper.style.display = '';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
 }

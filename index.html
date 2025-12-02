@@ -617,8 +617,10 @@ function updateOwnerLabelAndPlaceholder(){
   } else {
     elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
-    elems.isAgentWrapper.style.display = '';
     // if (orgWrap) { orgWrap.style.display = ''; }
+  }
+  if (!active.agent) {
+    elems.isAgentWrapper.style.display = '';
   }
 }
 

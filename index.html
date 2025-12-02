@@ -603,7 +603,8 @@ function updateOwnerLabelAndPlaceholder(){
   if(active.agent){
     elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
-    elems.isAgent.style.display = 'None';
+    elems.isAgent.style.display = 'none';
+    // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
     elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';

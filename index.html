@@ -603,7 +603,7 @@ function updateOwnerLabelAndPlaceholder(){
   if(active.agent){
     elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
-    // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
+    elems.isAgent.style.display = 'None';
   } else if(elems.isOrg && elems.isOrg.checked){
     elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';
@@ -615,6 +615,7 @@ function updateOwnerLabelAndPlaceholder(){
   } else {
     elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
+    elems.isAgent.style.display = '';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
 }
@@ -644,7 +645,7 @@ function applyRequirements(){
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
-  if(reqSet.has('mortgage')) { req(document.querySelector('#deleteMortgage'), elems.ast.mortgage); }
+  if(reqSet.has('mortgage')) { req(qs('#deleteMortgage'), elems.ast.mortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) elems.effectiveDate.classList.add('required-border'); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
   if(reqSet.has('sigDate'))    req(elems.sigDate, elems.ast.sigDate);
@@ -856,9 +857,9 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 
 // Show/hide Authorized Agent's Name field when Authorized Agent checkbox is toggled
 (function(){
-  const isAgentCheckbox = elems.isAgent || document.querySelector('#isAgent');
-  const agentNameWrapper = elems.agentNameWrapper || document.querySelector('#agentNameWrapper');
-  const agentNameInput = elems.agentName || document.querySelector('#agentName');
+  const isAgentCheckbox = elems.isAgent || qs('#isAgent');
+  const agentNameWrapper = elems.agentNameWrapper || qs('#agentNameWrapper');
+  const agentNameInput = elems.agentName || qs('#agentName');
   function syncAgentNameVisibility(){
     if(!agentNameWrapper || !isAgentCheckbox) return;
     if(isAgentCheckbox.checked){

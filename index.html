@@ -10,22 +10,28 @@
 
   /* Added: visibility toggle for docs-included control and slightly adjusted signature box */
   .hidden{ display:none; }
-  #fs-docs .control-row{ display:flex; align-items:center; gap:6px; margin-bottom:4px; } /* gap/margin slightly reduced */
+  #fs-docs .control-row{
+    display:flex;
+    align-items:center;
+    gap:7px;                  /* between original 8 and 6 */
+    margin-bottom:4px;        /* was 5 */
+  }
   #docsIncludedWrap{ font-weight:600; }
+
   .signature-box{
     width:100%;
-    height:30mm;               /* was 32mm */
+    height:31mm;              /* original 32mm, last was 30mm */
     border:1px solid #000;
     border-radius:3px;
-    padding:4px;               /* was 6px */
+    padding:5px;              /* original 6px, last was 4px */
     box-sizing:border-box;
   }
   @media print{
-    /* Keep within one page — signature box slightly smaller in print to conserve space */
-    .signature-box{ height:24mm; }  /* was 27mm */
+    /* Slightly smaller than original, larger than last version */
+    .signature-box{ height:26mm; }  /* original 27mm, last was 24mm */
   }
 
-  @page { size: letter portrait; margin: 7mm; }  /* was 8mm */
+  @page { size: letter portrait; margin: 8mm; }  /* back to original margin */
 
   body{
     font-family: Arial, Helvetica, sans-serif;
@@ -37,11 +43,12 @@
   }
   .container{
     max-width:720px;
-    margin:4px auto;           /* was 5px */
+    margin:5px auto;          /* original */
     border:1px solid #000;
-    padding:5px;               /* was 6px */
+    padding:5px;              /* a bit less than original 6px */
   }
-  label { padding:3px 0; }     /* was 5px 0 */
+
+  label { padding:4px 0; }    /* original 5px, last was 3px */
 
   header{
     display:flex;
@@ -49,8 +56,8 @@
     justify-content:space-between;
     gap:6px;
     border-bottom:2px solid #000;
-    padding-bottom:3px;        /* was 4px */
-    margin-bottom:3px;         /* was 4px */
+    padding-bottom:3px;       /* a touch smaller than original 4px */
+    margin-bottom:3px;        /* a touch smaller than original 4px */
   }
   .logo img{ height:34px; display:block; }
   .hdr-text{ flex:1; text-align:right; }
@@ -67,11 +74,11 @@
     display:flex;
     gap:6px;
     flex-wrap:wrap;
-    margin:3px 0;             /* was 4px */
+    margin:4px 0;             /* original */
   }
   .btn{
     flex:1 0 140px;
-    padding:4px 5px;          /* was 5px 6px */
+    padding:5px 6px;          /* back to original */
     border:1px solid #000;
     border-radius:0;
     background:#f5f5f5;
@@ -85,25 +92,26 @@
 
   fieldset{
     border:1px solid #000;
-    padding:4px;              /* was 5px */
-    margin-bottom:3px;        /* was 4px */
+    padding:5px;              /* original */
+    margin-bottom:3px;        /* slightly less than original 4px */
   }
   legend{
     font-weight:700;
     font-size:12px;
-    padding:0 3px;            /* was 0 4px */
+    padding:0 4px;            /* original */
   }
   label{
     display:block;
     font-size:11px;
-    margin-top:1px;           /* was 2px */
+    margin-top:2px;           /* original */
   }
+
   input[type="text"],
   input[type="tel"],
   input[type="date"],
   textarea{
     width:100%;
-    padding:2px 3px;          /* was 3px 4px */
+    padding:3px 4px;          /* back to original (not super tight) */
     border:1px solid #000;
     border-radius:0;
     box-sizing:border-box;
@@ -113,12 +121,12 @@
   .row{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:3px;                   /* was 4px */
+    gap:3px;                  /* slightly tighter than original 4px */
   }
   .row-3{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
-    gap:3px;                   /* was 4px */
+    gap:3px;                  /* slightly tighter than original 4px */
   }
 
   .inline-hint{
@@ -131,30 +139,30 @@
   .radios-inline {
     display:flex;
     align-items:center;
-    gap:8px;                  /* was 10px */
+    gap:9px;                  /* between original 10 and last 8 */
     flex-wrap:wrap;
   }
   .radios-inline > label{
     display:inline-flex;
     align-items:center;
-    gap:3px;                  /* was 4px */
+    gap:3px;                  /* slightly smaller than original 4px */
     margin:0;
   }
 
   .error{
     color:#b00020;
     font-size:10px;
-    margin-top:2px;           /* was 3px */
+    margin-top:2px;           /* between 3 and 1 */
     display:none;
   }
   .preview-text{
     font-size:10px;
     color:var(--muted);
-    margin-top:2px;           /* was 3px */
+    margin-top:2px;
   }
   .required-asterisk{
     color:#b00020;
-    margin-left:3px;          /* was 4px */
+    margin-left:3px;          /* between 4 and 2-ish */
     font-weight:700;
     display:none;
   }
@@ -164,11 +172,12 @@
 
   .controls{
     display:flex;
-    gap:5px;                  /* was 6px */
-    margin:3px 0;             /* was 4px */
+    gap:5px;                  /* slightly tighter */
+    margin:3px 0;             /* slightly tighter */
   }
+
   button.action{
-    padding:5px 8px;          /* was 6px 10px */
+    padding:6px 9px;          /* between 6x10 and 5x8 */
     border:none;
     background:#000;
     color:#fff;
@@ -185,11 +194,11 @@
   .equal-boxes{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:4px;                   /* was 5px */
+    gap:4px;                  /* slightly tighter than original 5px */
   }
   .equal-boxes textarea{
-    height:150px;              /* was 170px */
-    min-height:130px;          /* was 140px */
+    height:160px;             /* between 170 and 150 */
+    min-height:135px;         /* between 140 and 130 */
     resize:vertical;
   }
 
@@ -209,18 +218,18 @@
     }
     .container{
       border:1px solid #000;
-      padding:3mm;             /* was 4mm */
+      padding:3.5mm;          /* between original 4mm and last 3mm */
       max-width:188mm;
     }
     input,
     textarea,
     label,
     legend{
-      font-size:9px !important;
+      font-size:9px !important;  /* same as last: modest print shrink */
     }
     .row,
     .row-3{
-      gap:2px !important;      /* already compact */
+      gap:2px !important;        /* compact grid on print */
     }
     .hdr-text h1{
       font-size:13.5px !important;
@@ -255,7 +264,7 @@
       display:none !important;
     }
     .equal-boxes textarea{
-      height:110px !important;   /* was 120px */
+      height:115px !important;   /* between 120 and 110 */
     }
   }
 
@@ -283,7 +292,7 @@
     color:#000;
   }
   .tiny ul{
-    margin:3px 0 0 16px;      /* was 4px 0 0 16px */
+    margin:3px 0 0 16px;      /* a bit tighter than original 4px */
     padding:0;
   }
   .tiny li{ margin:0; }

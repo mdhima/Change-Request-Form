@@ -106,16 +106,15 @@
   }
 
   /* Make date input text (mask + value) grey in WebKit-based browsers */
-  input[type="date"]:invalid::-webkit-datetime-edit,
-  input[type="date"]:invalid::-webkit-datetime-edit-text,
-  input[type="date"]:invalid::-webkit-datetime-edit-year-field,
-  input[type="date"]:invalid::-webkit-datetime-edit-month-field,
-  input[type="date"]:invalid::-webkit-datetime-edit-day-field {
+  input[type="date"].empty::-webkit-datetime-edit,
+  input[type="date"].empty::-webkit-datetime-edit-text,
+  input[type="date"].empty::-webkit-datetime-edit-year-field,
+  input[type="date"].empty::-webkit-datetime-edit-month-field,
+  input[type="date"].empty::-webkit-datetime-edit-day-field {
     color: rgb(117, 117, 117);
   }
   
-  /* Grey when empty */
-  input[type="date"]:valid::-webkit-datetime-edit {
+  input[type="date"]:not(.empty)::-webkit-datetime-edit {
     color: #000;
   }
   
@@ -405,7 +404,7 @@
       <div class="row">
         <div>
           <label>Sale Date <span class="required-asterisk" id="ast_sale">*</span></label>
-          <input type="date" id="saleDate" placeholder="YYYY-MM-DD">
+          <input type="date" id="saleDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
           <label>Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
@@ -465,7 +464,7 @@
         </div>
         <div style='margin-top: 0'>
           <label>Effective Date</label>
-          <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD">
+          <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty">
           <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
         </div>
       </div>
@@ -484,7 +483,7 @@
         </div>
         <div>
           <label id="ast_sigDate">Date</label>
-          <input type="date" id="sigDate" placeholder="YYYY-MM-DD">
+          <input type="date" id="sigDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
           <label id="ast_phone">Phone Number</label>

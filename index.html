@@ -118,6 +118,13 @@
     color: #000;
   }
 
+  /* good baseline so inputs actually obey your sizing consistently */
+  input, select, textarea {
+    box-sizing: border-box;
+    font: inherit;
+    line-height: normal;
+  }
+
   /* force date inputs to use the same box model as your other fields */
   input[type="date"]{
     appearance: none;

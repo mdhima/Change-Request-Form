@@ -106,16 +106,16 @@
   }
 
   /* Make date input text (mask + value) grey in WebKit-based browsers */
-  input[type="date"]::-webkit-datetime-edit,
+  /* input[type="date"]::-webkit-datetime-edit,
   input[type="date"]::-webkit-datetime-edit-text,
   input[type="date"]::-webkit-datetime-edit-year-field,
   input[type="date"]::-webkit-datetime-edit-month-field,
   input[type="date"]::-webkit-datetime-edit-day-field {
     color: rgb(117, 117, 117);
-  }
+  } */
   
   /* Grey when empty */
-  input[type="date"]:placeholder-shown::-webkit-datetime-edit, input[type="date"]::-webkit-input-placeholder, {
+  input[type="date"]:placeholder-shown::-webkit-datetime-edit, input[type="date"]::-webkit-input-placeholder {
     color: rgb(117, 117, 117);
   }
 

@@ -117,6 +117,12 @@
   input[type="date"]:not(.empty)::-webkit-datetime-edit {
     color: #000;
   }
+
+  /* force date inputs to use the same box model as your other fields */
+  input[type="date"]{
+    appearance: none;
+    -webkit-appearance: none;
+  }
   
   input[type="text"],
   input[type="tel"],

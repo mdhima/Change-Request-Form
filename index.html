@@ -920,6 +920,22 @@ if (document.getElementById('ast_ownerType').style.display === 'none') setCheckb
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;
+
+
+/* Date inputs: keep placeholder-style grey until a date is chosen */
+(function initDateEmptyToggles(){
+  const dateInputs = document.querySelectorAll('input[type="date"]');
+  const sync = (el) => {
+    if (el && el.value) el.classList.remove('empty');
+    else el.classList.add('empty');
+  };
+  dateInputs.forEach((el) => {
+    sync(el); // initial state
+    el.addEventListener('change', () => sync(el));
+    el.addEventListener('input',  () => sync(el)); // helps for some browsers/pickers
+  });
+})();
+
 </script>
 </body>
 </html>

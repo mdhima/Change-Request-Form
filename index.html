@@ -41,7 +41,6 @@
     border:1px solid #000;
     padding:5px;               /* was 6px */
   }
-  label { padding:3px 0; }     /* was 5px 0 */
 
   header{
     display:flex;
@@ -93,10 +92,11 @@
     font-size:14px;
     padding:0 3px;            /* was 0 4px */
   }
-  label{
+  label, label:empty {
     display:block;
     font-size:12px;
     margin-top:1px;           /* was 2px */
+    padding:3px 0;            /* was 5px 0 */
   }
   input{
     border-radius:2px;

@@ -99,6 +99,9 @@
     padding:3px 0;            /* was 5px 0 */
     min-height:14px;
   }
+  label:empty::before {
+    content: "\00a0"; /* non-breaking space */
+  }
   input{
     border-radius:2px;
     font-size:12px;

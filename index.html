@@ -727,6 +727,8 @@ function applyRequirements(){
 /* Grey out non-relevant sections */
 function updateGreyouts(){
 
+  var check = false;
+
   const relevant = new Set(fieldGroups.base);
   if(active.ownership) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.mailing)   fieldGroups.mailing.forEach(id=>relevant.add(id));
@@ -741,17 +743,17 @@ function updateGreyouts(){
     const container = el.closest('div,fieldset');
     if(!id || !container) return
     
-    console.log(el);
+    if (check == true) {console.log(el); console.log(el.name + " " + el.id);}
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
-      console.log(el.name + " " + el.id);
       container.classList.remove('disabled');
-      console.log("enabled\n")
+      if (check == true) {console.log("enabled\n")}
     } else {
       el.disabled = true;
       container.classList.add('disabled');
-      console.log("disabled\n")
+      if (check == true) {console.log("disabled\n")}
     }
+    check = false;
   }
 
   qsa('input,textarea,select').forEach(el=>{
@@ -759,6 +761,7 @@ function updateGreyouts(){
   });
 
   qsa("[name='ownerActionLabels'],#mortgageLabel").forEach(el=>{
+    check = true;
     setEnabledState(el);
   });
 }

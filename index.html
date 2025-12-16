@@ -755,7 +755,10 @@ function updateGreyouts(){
   });
 
   qsa("[name='ownerActionLabels'],[name='mortgageLabel']").forEach(el=>{
+    console.log(el);
     setEnabledState(el);
+    console.log(el);
+    console.log("\n");
   });
 }
 

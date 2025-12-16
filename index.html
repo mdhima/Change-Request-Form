@@ -434,7 +434,7 @@
           <input type="date" id="saleDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
-          <label class="mortgageLabel">Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
+          <label class="ownerActionLabels">Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
           <div class="radios-inline" id="actionType">
             <label><input type="radio" id="actionType1" name="actionType" value="New" class="nudge-up"> New</label>
             <label><input type="radio" id="actionType2" name="actionType" value="Add" class="nudge-up"> Add</label>
@@ -754,7 +754,7 @@ function updateGreyouts(){
     setEnabledState(el);
   });
 
-  qsa("[name='ownerActionLabels'],[name='mortgageLabel']").forEach(el=>{
+  qsa("[name='ownerActionLabels'],[id='mortgageLabel']").forEach(el=>{
     console.log(el);
     setEnabledState(el);
     console.log(el);

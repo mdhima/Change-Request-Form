@@ -739,11 +739,18 @@ function updateGreyouts(){
 
   function setEnabledState(el) {
     const id = el.id;
-    const name = el.name;
+    const name = null;
     const container = el.closest('div,fieldset');
-    // if(!id || !container) return
     
-    if (check == true) {console.log(container); console.log(el); console.log(id + " " + name);}
+    if (check == true) {
+      name = el.getAttribute("name");
+    }
+    else {
+      name = el.name;
+
+      if(!id || !container) return
+    }
+
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
       container.classList.remove('disabled');
@@ -754,7 +761,6 @@ function updateGreyouts(){
       if (check == true) {console.log("disabled\n")}
     }
     check = false;
-    console.log("\n");
   }
 
   qsa('input,textarea,select').forEach(el=>{

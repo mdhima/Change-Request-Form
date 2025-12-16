@@ -406,7 +406,7 @@
 
       <div class="row" style="display: flex;">
         <div style="flex: 40%;">
-          <label class="required-label ownerLabel" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
+          <label class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -415,7 +415,7 @@
         </div>
         <div>
           <label class="radios-inline"></label>
-          <label class="radios-inline ownerLabel" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
+          <label class="radios-inline" name="ownerActionLabels" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
@@ -487,7 +487,7 @@
       <legend>Mortgage</legend>
       <div class="row">
         <div>
-          <label class="radios-inline">If applicable:</label>
+          <label class="radios-inline" id="mortgageLabel">If applicable:</label>
           <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
         </div>
         <div>
@@ -561,7 +561,7 @@ const requirements = {
   mailing:   ['ticket','roll','property','mailing','ownerLabels','ownerType','mailOption','sigDate','printName','phone'],
   addremove: ['ticket','roll','property','ownerLabels','owner','ownerType','actionType','sigDate','printName','phone'],
   agent:     ['ticket','roll','property','ownerLabels','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
-  mortgage:  ['ticket','roll','property','ownerLabels','ownerType','mortgage','mortDate','sigDate','printName','phone']
+  mortgage:  ['ticket','roll','property','ownerLabels','ownerType','mortgageLabel','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
@@ -726,6 +726,7 @@ function applyRequirements(){
 
 /* Grey out non-relevant sections */
 function updateGreyouts(){
+
   const relevant = new Set(fieldGroups.base);
   if(active.ownership) fieldGroups.owner.forEach(id=>relevant.add(id));
   if(active.mailing)   fieldGroups.mailing.forEach(id=>relevant.add(id));
@@ -734,19 +735,27 @@ function updateGreyouts(){
   if(active.mortgage)  fieldGroups.mortgage.forEach(id=>relevant.add(id));
   if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
-  qsa('input,textarea,select').forEach(el=>{
+  function setEnabledState(el) {
     const id = el.id;
     const name = el.name;
     const container = el.closest('div,fieldset');
     if(!id || !container) return
     
-    if(relevant.has(id) || relevant.has(name) || relevant.has(("ownerLabels")) {
+    if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
       container.classList.remove('disabled');
     } else {
       el.disabled = true;
       container.classList.add('disabled');
     }
+  }
+
+  qsa('input,textarea,select').forEach(el=>{
+    setEnabledState(el);
+  });
+
+  qsa("[name='ownerActionLabels'],[name='mortgageLabel']").forEach(el=>{
+    setEnabledState(el);
   });
 }
 

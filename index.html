@@ -743,7 +743,7 @@ function updateGreyouts(){
     const container = el.closest('div,fieldset');
     // if(!id || !container) return
     
-    console.log(container)}
+    console.log(container);
     if (check == true) {console.log(el); console.log(el.name + " " + el.id);}
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
@@ -755,7 +755,7 @@ function updateGreyouts(){
       if (check == true) {console.log("disabled\n")}
     }
     check = false;
-    console.log("\n")}
+    console.log("\n");
   }
 
   qsa('input,textarea,select').forEach(el=>{

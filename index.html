@@ -557,21 +557,21 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 
 /* Requirements per request */
 const requirements = {
-  ownership: ['ticket','roll','property','ownerActionLabels','owner','ownerType','sale','actionType','sigDate','printName','phone'],
-  mailing:   ['ticket','roll','property','mailing','ownerActionLabels','ownerType','mailOption','sigDate','printName','phone'],
-  addremove: ['ticket','roll','property','ownerActionLabels','owner','ownerType','actionType','sigDate','printName','phone'],
-  agent:     ['ticket','roll','property','ownerActionLabels','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
-  mortgage:  ['ticket','roll','property','ownerActionLabels','ownerType','mortgageLabel','mortgage','mortDate','sigDate','printName','phone']
+  ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','ownerType','mailOption','sigDate','printName','phone'],
+  addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
+  mortgage:  ['ticket','roll','property','ownerType','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerName','ownerType','saleDate','actionType','agentName'],
+  owner: ['ownerActionLabels','ownerName','ownerType','saleDate','actionType','agentName'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: ['ownerName','ownerType','actionType','agentName'],
+  action: ['ownerActionLabels','ownerName','ownerType','actionType','agentName'],
   agent: ['ownerName','ownerType','actionType','agentName'],
-  mortgage: ['deleteMortgage','effectiveDate'],
+  mortgage: ['mortgageLabel','deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
   internal: ['ticketNumber','rollNumber','accountNumber','propertyAddress','docsIncluded','docsAttached','totalPages','sigDate','signature','printName','phone', 'notes','stamp']
 };

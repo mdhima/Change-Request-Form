@@ -406,7 +406,7 @@
 
       <div class="row" style="display: flex;">
         <div style="flex: 40%;">
-          <label class="required-label hint" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
+          <label class="required-label ownerLabel" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -415,7 +415,7 @@
         </div>
         <div>
           <label class="radios-inline"></label>
-          <label class="radios-inline hint" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
+          <label class="radios-inline ownerLabel" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
@@ -434,7 +434,7 @@
           <input type="date" id="saleDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
-          <label class="hint">Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
+          <label class="mortgageLabel">Action Required <span class="required-asterisk" id="ast_actionType">*</span></label>
           <div class="radios-inline" id="actionType">
             <label><input type="radio" id="actionType1" name="actionType" value="New" class="nudge-up"> New</label>
             <label><input type="radio" id="actionType2" name="actionType" value="Add" class="nudge-up"> Add</label>
@@ -557,11 +557,11 @@ btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; act
 
 /* Requirements per request */
 const requirements = {
-  ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
-  mailing:   ['ticket','roll','property','mailing','ownerType','mailOption','sigDate','printName','phone'],
-  addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
-  agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
-  mortgage:  ['ticket','roll','property','ownerType','mortgage','mortDate','sigDate','printName','phone']
+  ownership: ['ticket','roll','property','ownerLabels','owner','ownerType','sale','actionType','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','ownerLabels','ownerType','mailOption','sigDate','printName','phone'],
+  addremove: ['ticket','roll','property','ownerLabels','owner','ownerType','actionType','sigDate','printName','phone'],
+  agent:     ['ticket','roll','property','ownerLabels','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
+  mortgage:  ['ticket','roll','property','ownerLabels','ownerType','mortgage','mortDate','sigDate','printName','phone']
 };
 
 /* Map of field ids for greying/enabling */
@@ -740,7 +740,7 @@ function updateGreyouts(){
     const container = el.closest('div,fieldset');
     if(!id || !container) return
     
-    if(relevant.has(id) || relevant.has(name) || el.classList.has("hint")) {
+    if(relevant.has(id) || relevant.has(name) || relevant.has(("ownerLabels")) {
       el.disabled = false;
       container.classList.remove('disabled');
     } else {

@@ -754,7 +754,7 @@ function updateGreyouts(){
     setEnabledState(el);
   });
 
-  qsa("[name='ownerActionLabels'],[id='mortgageLabel']").forEach(el=>{
+  qsa("[name='ownerActionLabels'],#mortgageLabel").forEach(el=>{
     console.log(el);
     setEnabledState(el);
     console.log(el);

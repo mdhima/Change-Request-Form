@@ -699,8 +699,11 @@ function updateOwnerLabelAndPlaceholder(){
     elems.isAgent.checked = false;
   }
   if (active.addremove) {
+    console.log("here");
     if (checkedActionType) {
+      console.log(checkedActionType);
       checkedActionType.textContent + " " + ownerLabelField;
+      console.log(checkedActionType.textContent + " " + ownerLabelField;);
     }
   }
 }

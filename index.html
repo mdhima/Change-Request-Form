@@ -593,6 +593,7 @@ const elems = {
   sale: qs('#saleDate'),
   actionType: qs('#actionType'),
   actionTypes: qsa('input[name="actionType"]'),
+  checkedActionType: qs('input[name="actionType"]:checked'),
   mailing: qs('#mailingAddress'),
   sameAs: qs('#sameAsSite'),
   docsIncluded: qs('#docsIncluded'),
@@ -668,9 +669,10 @@ function updateOwnerLabelAndPlaceholder(){
   const ownerActionField = elems.labels.ownerAction;
   const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
+  const ownerLabelField = elems.labels.ownerLabel;
 
   if(active.agent){
-    elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
+    ownerLabelField.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
 
@@ -679,21 +681,24 @@ function updateOwnerLabelAndPlaceholder(){
 
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
-    elems.labels.ownerLabel.textContent = 'Organization(s) Name ';
+    ownerLabelField.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else if(elems.isInd && elems.isInd.checked){
-    elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
+    ownerLabelField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
-    elems.labels.ownerLabel.textContent = 'Property Owner(s) Name ';
+    ownerLabelField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
   if (!active.agent) {
     elems.isAgentWrapper.style.display = '';
     elems.isAgent.checked = false;
+  }
+  if (!active.addremove) {
+    checkedActionType.textContent + " " + ownerLabelField;
   }
 }
 

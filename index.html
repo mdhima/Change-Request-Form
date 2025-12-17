@@ -701,7 +701,7 @@ function updateOwnerLabelAndPlaceholder(){
     console.log("here");
     console.log(checkedActionType);
     if (checkedActionType) {
-      checkedActionType.textContent + " " + ownerLabelField;
+      ownerLabelField.textContent = checkedActionType.textContent + " " + ownerLabelField.textContent;
       console.log(checkedActionType.textContent + " " + ownerLabelField);
     }
   }

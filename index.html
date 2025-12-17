@@ -593,7 +593,6 @@ const elems = {
   sale: qs('#saleDate'),
   actionType: qs('#actionType'),
   actionTypes: qsa('input[name="actionType"]'),
-  checkedActionType: qs('input[name="actionType"]:checked'),
   mailing: qs('#mailingAddress'),
   sameAs: qs('#sameAsSite'),
   docsIncluded: qs('#docsIncluded'),
@@ -670,7 +669,7 @@ function updateOwnerLabelAndPlaceholder(){
   const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
   const ownerLabelField = elems.labels.ownerLabel;
-  const checkedActionType = elems.checkedActionType;
+  const checkedActionType = qs('input[name="actionType"]:checked');
 
   if(active.agent){
     ownerLabelField.textContent = 'Authorized Agent(s) Name ';

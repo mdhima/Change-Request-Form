@@ -406,7 +406,7 @@
 
       <div class="row" style="display: flex;">
         <div style="flex: 40%;">
-          <label class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
+          <label id="ownerAction" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -415,7 +415,7 @@
         </div>
         <div>
           <label class="radios-inline"></label>
-          <label class="radios-inline" name="ownerActionLabels" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
+          <label id="" class="radios-inline" name="ownerActionLabels" id="orgHint"><span class="required-asterisk" id="ast_ownerTypeHint">*</span> If Organization is selected, provide both Legal Name and Agent Person.</label>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
@@ -639,7 +639,11 @@ const elems = {
     sign: qs('#fs-sign'),
     internal: qs('#fs-internal')
   },
-  labels: { ownerLabel: qs('#ownerLabel') }
+  labels: { 
+    ownerAction: qs('#ownerAction'),
+    ownerActionDescription: qs('#ownerActionDescription'),
+    ownerLabel: qs('#ownerLabel') 
+  }
 };
 // // wrapper for the 'Owner is an Organization' hint row
 // const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
@@ -661,11 +665,18 @@ function clearRequiredMarkers(){
 }
 
 function updateOwnerLabelAndPlaceholder(){
+  const ownerActionField = elems.ownerAction;
+  const ownerActionDescriptionField = elems.ownerActionDescription;
   const ownerField = elems.owner;
+
   if(active.agent){
     elems.labels.ownerLabel.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
+
+    elems.labels.ownerAction = "Ownership Type";
+    elems.labels.ownerActionDescription = "";
+
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
     elems.labels.ownerLabel.textContent = 'Organization(s) Name ';

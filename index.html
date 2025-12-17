@@ -665,8 +665,8 @@ function clearRequiredMarkers(){
 }
 
 function updateOwnerLabelAndPlaceholder(){
-  const ownerActionField = elems.ownerAction;
-  const ownerActionDescriptionField = elems.ownerActionDescription;
+  const ownerActionField = elems.labels.ownerAction;
+  const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
 
   if(active.agent){
@@ -674,8 +674,8 @@ function updateOwnerLabelAndPlaceholder(){
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
 
-    elems.labels.ownerAction = "Ownership Type";
-    elems.labels.ownerActionDescription = "";
+    ownerActionField.textContent = "Ownership Type";
+    ownerActionDescriptionField.textContent = "";
 
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){

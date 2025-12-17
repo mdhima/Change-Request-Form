@@ -670,6 +670,7 @@ function updateOwnerLabelAndPlaceholder(){
   const ownerField = elems.owner;
   const ownerLabelField = elems.labels.ownerLabel;
   const checkedActionType = qs('input[name="actionType"]:checked');
+  const container = checkedActionType.closest('label');
 
   if(active.agent){
     ownerLabelField.textContent = 'Authorized Agent(s) Name ';
@@ -701,8 +702,8 @@ function updateOwnerLabelAndPlaceholder(){
     console.log("here");
     console.log(checkedActionType);
     if (checkedActionType) {
-      ownerLabelField.textContent = checkedActionType.textContent + " " + ownerLabelField.textContent;
-      console.log(checkedActionType.textContent);
+      ownerLabelField.textContent = container.textContent + " " + ownerLabelField.textContent;
+      console.log(ownerLabelField.textContent);
     }
   }
 }

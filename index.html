@@ -878,6 +878,15 @@ if(elems.isOrg) elems.isOrg.addEventListener('change', updateOwnerLabelAndPlaceh
 
 if(elems.isInd) elems.isInd.addEventListener('change', updateOwnerLabelAndPlaceholder);
 
+if(elems.actionTypes[0]) elems.elems.actionTypes[0].addEventListener('change', updateOwnerLabelAndPlaceholder);
+
+if(elems.actionTypes[1]) elems.elems.actionTypes[1].addEventListener('change', updateOwnerLabelAndPlaceholder);
+
+if(elems.actionTypes[2]) elems.elems.actionTypes[2].addEventListener('change', updateOwnerLabelAndPlaceholder);
+
+if(elems.actionTypes[3]) elems.elems.actionTypes[3].addEventListener('change', updateOwnerLabelAndPlaceholder);
+
+
 /* Print placeholder handling for date inputs */
 function updateDateValueClasses(){
   const dates = [qs('#saleDate'), qs('#effectiveDate'), qs('#sigDate')].filter(Boolean);

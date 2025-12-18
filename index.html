@@ -727,6 +727,7 @@ function applyRequirements(){
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
+  console.log(Object.keys(active));
   if (elems.agentName && elems.isAgent && elems.isAgent.checked) req(elems.agentName, elems.ast.agentName);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 

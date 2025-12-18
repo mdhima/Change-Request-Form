@@ -560,8 +560,25 @@ function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel));
 /* Toggle buttons & state */
 const btns = qsa('.btn');
 const active = {};
-btns.forEach(b=>{ b.addEventListener('click', ()=>{ const key=b.dataset.key; active[key]=!active[key]; b.classList.toggle('active', !!active[key]); applyRequirements(); updateOwnerLabelAndPlaceholder(); updateGreyouts(); }); });
+function clearActive(){ Object.keys(active).forEach(k=> delete active[k]); }
+function hasAnyActive(){ return Object.keys(active).some(k=> !!active[k]); }
+btns.forEach(b=>{
+  b.addEventListener('click', ()=>{
+    const key = b.dataset.key;
+    active[key] = !active[key];
+    b.classList.toggle('active', !!active[key]);
 
+    // If nothing is selected, clear the active map completely
+    if(!hasAnyActive()){
+      clearActive();
+      btns.forEach(x=> x.classList.remove('active'));
+    }
+
+    applyRequirements();
+    updateOwnerLabelAndPlaceholder();
+    updateGreyouts();
+  });
+});
 /* Requirements per request */
 const requirements = {
   ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
@@ -703,6 +720,7 @@ function updateOwnerLabelAndPlaceholder(){
   if (!active.agent) {
     elems.isAgentWrapper.style.display = '';
     elems.isAgent.checked = false;
+    elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
   }
   if (active.addremove) {
     if (checkedActionType) {
@@ -727,7 +745,6 @@ function applyRequirements(){
   if(reqSet.has('roll'))     req(elems.roll,     elems.ast.roll);
   if(reqSet.has('property')) req(elems.property, elems.ast.property);
   if(reqSet.has('owner'))    req(elems.owner,    elems.ast.owner);
-  console.log(Object.keys(active));
   if (elems.agentName && elems.isAgent && elems.isAgent.checked) req(elems.agentName, elems.ast.agentName);
   if(reqSet.has('ownerType')) {
     req(elems.ownerType, elems.ast.ownerType); 
@@ -970,7 +987,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   document.getElementById('changeForm').reset();
   qsa('.error').forEach(el=> el.style.display='none');
   qsa('.preview-text').forEach(el=> el.textContent='');
-  Object.keys(active).forEach(k=> active[k]=false);
+  clearActive();
   btns.forEach(b=> b.classList.remove('active'));
   clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 });

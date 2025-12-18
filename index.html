@@ -702,7 +702,11 @@ function updateOwnerLabelAndPlaceholder(){
   }
   if (!active.agent) {
     elems.isAgentWrapper.style.display = '';
-    elems.isAgent.checked = false;
+    if (elems.isAgent) {
+      elems.isAgent.checked = false;
+      // Important: if a script unchecks this box, the UI won't update unless we also trigger the change handler.
+      elems.isAgent.dispatchEvent(new Event('change', { bubbles: true }));
+    }
   }
   if (active.addremove) {
     if (checkedActionType) {

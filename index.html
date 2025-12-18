@@ -159,6 +159,13 @@
     grid-template-columns:1fr 1fr;
     gap:3px;                   /* was 4px */
   }
+  
+  /* Owner/Agent name row sizing
+     - No Authorized Agent: Owner name spans full row
+     - Authorized Agent selected: Owner name 2/3, Agent name 1/3 */
+  #ownerAgentRow{ grid-template-columns:1fr; }
+  #ownerAgentRow.agent-visible{ grid-template-columns:2fr 1fr; }
+
   .row-3{
     display:grid;
     grid-template-columns:1fr 1fr 1fr;
@@ -972,14 +979,13 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   const isAgentCheckbox = elems.isAgent || qs('#isAgent');
   const agentNameWrapper = elems.agentNameWrapper || qs('#agentNameWrapper');
   const agentNameInput = elems.agentName || qs('#agentName');
+  const ownerAgentRow = qs('#ownerAgentRow');
   function syncAgentNameVisibility(){
     if(!agentNameWrapper || !isAgentCheckbox) return;
-    if(isAgentCheckbox.checked){
-      agentNameWrapper.style.display = '';
-    } else {
-      agentNameWrapper.style.display = 'none';
-      if(agentNameInput) agentNameInput.value = '';
-    }
+    const show = !!isAgentCheckbox.checked;
+    agentNameWrapper.style.display = show ? '' : 'none';
+    if(ownerAgentRow) ownerAgentRow.classList.toggle('agent-visible', show);
+    if(!show && agentNameInput) agentNameInput.value = '';
   }
   if(isAgentCheckbox){
     isAgentCheckbox.addEventListener('change', syncAgentNameVisibility);

@@ -686,6 +686,7 @@ function setCheckboxEnabled(enabled, inputTypes){
 function clearRequiredMarkers(){
   console.log("Start")
   qsa('.required-asterisk','.required-border').forEach(el=> el.style.display = 'none');
+  qsa('.required-border').forEach(el=> el.style.display = 'none');
   // qsa('input,textarea,select').forEach(el=> {
   //   el.classList.remove('required-border'); 
   //   if (el.hasAttribute('checked')) {

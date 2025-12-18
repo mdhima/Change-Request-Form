@@ -689,6 +689,7 @@ function clearRequiredMarkers(){
   qsa('input,textarea,select').forEach(el=> {
     el.classList.remove('required-border'); 
     if (el.hasAttribute('checked')) el.checked = false;
+    console.log();
   });
   qs('#actionType').classList.remove('required-border');
   console.log("Done")

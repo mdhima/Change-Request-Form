@@ -721,6 +721,9 @@ function updateOwnerLabelAndPlaceholder(){
   if (!active.agent) {
     elems.isAgentWrapper.style.display = '';
     elems.isAgent.checked = false;
+    
+      // Important: if a script unchecks this box, the UI won't update unless we also trigger the change handler.
+    elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
   }
   if (active.addremove) {
     if (checkedActionType) {
@@ -993,7 +996,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   document.getElementById('changeForm').reset();
   qsa('.error').forEach(el=> el.style.display='none');
   qsa('.preview-text').forEach(el=> el.textContent='');
-  Object.keys(active).forEach(k=> active[k]=false);
+  clearActive();
   btns.forEach(b=> b.classList.remove('active'));
   clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 });

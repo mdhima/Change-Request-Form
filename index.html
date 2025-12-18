@@ -719,6 +719,13 @@ function updateOwnerLabelAndPlaceholder(){
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
+
+  if (!active.addremove) {
+    if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
+      ownerLabelField.textContent = 'Property Owner(s) Name ';
+    }
+  }
+
   if (!active.agent) {
     elems.isAgentWrapper.style.display = '';
 

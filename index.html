@@ -1021,7 +1021,7 @@ const printBtn=qs('#printBtn');
 if(printBtn) printBtn.addEventListener('click', ()=>{ 
   const errs = collectValidationErrors();
   if(errs.length){
-    alert('Please fix the following before printing:\n ' + errs.join('\n\n '));
+    alert('Please fix the following before printing:\n' + errs.join('\n'));
     return;
   }
   updateDateValueClasses(); 

@@ -694,11 +694,10 @@ function updateOwnerLabelAndPlaceholder(){
   const ownerActionField = elems.labels.ownerAction;
   const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
-  const ownerLabelField = elems.labels.ownerLabel;
   const checkedActionType = qs('input[name="actionType"]:checked');
 
   if(active.agent){
-    ownerLabelField.textContent = 'Authorized Agent(s) Name ';
+    ownerField.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
     elems.agentNameWrapper.style.display = 'none';
@@ -708,22 +707,22 @@ function updateOwnerLabelAndPlaceholder(){
 
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
-    ownerLabelField.textContent = 'Organization(s) Name ';
+    ownerField.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else if(elems.isInd && elems.isInd.checked){
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
+    ownerField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
+    ownerField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
 
   if (!active.addremove && !active.agent) {
-    if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
-      ownerLabelField.textContent = 'Property Owner(s) Name ';
+    if ((ownerField.textContent !== 'Organization(s) Name ') && (ownerField.textContent !== 'Property Owner(s) Name')) {
+      ownerField.textContent = 'Property Owner(s) Name ';
     }
   }
 
@@ -743,7 +742,7 @@ function updateOwnerLabelAndPlaceholder(){
   if (active.addremove) {
     if (checkedActionType) {
       const container = checkedActionType.closest('label');
-      ownerLabelField.textContent = container.textContent + " " + ownerLabelField.textContent;
+      ownerField.textContent = container.textContent + " " + ownerField.textContent;
     }
   }
 }

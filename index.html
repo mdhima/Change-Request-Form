@@ -326,18 +326,26 @@
     textarea::-webkit-input-placeholder{
       color:transparent !important;
     }
-    input[type="date"]:not(.has-value){ color:transparent !important; }
-    input[type="date"]:not(.has-value)::-webkit-datetime-edit{
+    input[type="date"]:not(.has-value){
       color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
     }
-    input[type="date"]:not(.has-value)::-webkit-datetime-edit-fields-wrapper{
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit,
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-fields-wrapper,
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-text,
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-month-field,
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-day-field,
+    input[type="date"]:not(.has-value)::-webkit-datetime-edit-year-field{
       color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
+      opacity:0 !important;
     }
     input[type="date"]:not(.has-value)::-webkit-clear-button,
     input[type="date"]:not(.has-value)::-webkit-inner-spin-button,
     input[type="date"]:not(.has-value)::-webkit-calendar-picker-indicator{
       opacity:0 !important;
     }
+
     .required-asterisk{ display:none !important; }
     .required-border{ outline:none !important; }
     .error,
@@ -1083,11 +1091,20 @@ window.addEventListener('beforeprint', updateDateValueClasses);
 let disabledBeforePrint = [];
 function enableAllForPrint(){
   disabledBeforePrint = [];
+
+  // 1) Temporarily enable all controls so they render cleanly in print
   qsa('input,textarea,select').forEach(el=>{
     if(el.disabled){ disabledBeforePrint.push(el); el.disabled = false; }
+  });
+
+  // 2) Remove greyed "disabled" styling (including label-only containers)
+  qsa('input,textarea,select,label').forEach(el=>{
     const container = el.closest('div,fieldset');
     if(container){ container.classList.remove('disabled'); }
   });
+
+  // Ensure empty date inputs do not print the native YYYY-MM-DD ghost text
+  if(typeof updateDateValueClasses === 'function') updateDateValueClasses();
 }
 function restoreDisabledAfterPrint(){
   disabledBeforePrint.forEach(el=> el.disabled = true);

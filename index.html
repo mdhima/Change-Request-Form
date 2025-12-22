@@ -523,20 +523,14 @@
           </div>
         </div>
       </div>
-      <div class="row" >
+      <div class="row" style="display: flex;">
         <div>
           <label id="mailingAddressLabel">Mailing Address <span class="required-asterisk" id="ast_mailing">*</span></label>
-        </div>
-        <div>
-          <label id="internalUseHint" style="height: 12px;">Select one action only; note additional action in ‘For Internal Use Only’<span></span></label>
-        </div>
-      </div>
-      <div class="row" style="display: flex;">
-        <div style="flex: 80%;">
-          <input type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
+          <input style="flex: 80%;" type="text" id="mailingAddress" placeholder="Street Number, Street Name, Suite/Unit, City/Town, Province, Postal Code">
           <div class="error" id="mailingError">Mailing Address is required for a Mailing Address Change request.</div>
         </div>
         <div>
+          <label id="internalUseHint" style="height: 12px;">Select one action only; note additional action in ‘'For Internal Use Only’<span></span></label>
           <input style="vertical-align: middle;" type="checkbox" id="sameAsSite"><label style="display:inline-block;">   Same as Site</label>
         </div>
       </div>

@@ -413,7 +413,7 @@
       </div>
 
       <div>
-        <label class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
+        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
         <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
           <div class="radios-inline" style="flex: 40%;">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
@@ -666,7 +666,7 @@ const elems = {
     internal: qs('#fs-internal')
   },
   labels: { 
-    ownerAction: qs('#ownerAction'),
+    ownerAction: qs('#ownerActionLabelMain'),
     ownerActionDescription: qs('#ownerActionDescription'),
     ownerLabel: qs('#ownerLabel') 
   }

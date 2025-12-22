@@ -898,7 +898,7 @@ function updateGreyouts(){
 (function(){
   function formatRollMask(d){
     // ##-##-##-#-###-#####
-    return d.replace(/(\d{2})(\d{2})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5-$6');
+    return d.replace(/(\d{4})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5');
   }
 
   const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
@@ -1059,7 +1059,7 @@ const printBtn=qs('#printBtn');
 if(printBtn) printBtn.addEventListener('click', ()=>{ 
   const errs = collectValidationErrors();
   if(errs.length){
-    alert('Please fix the following before printing:\n ' + errs.join('\n\n '));
+    alert('Please fix the following before printing:\n' + errs.join('\n'));
     return;
   }
   updateDateValueClasses(); 

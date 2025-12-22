@@ -427,7 +427,7 @@
       </div>
       <div class="row" id="ownerAgentRow">
         <div>
-          <label>Property Owner(s) Name <span class="required-asterisk" id="ast_ownerName">*</span></label>
+          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_ownerName">*</span></label>
           <input type="text" id="ownerName" placeholder="First and Last Name(s)">
         </div>
         <div id="agentNameWrapper">
@@ -694,10 +694,11 @@ function updateOwnerLabelAndPlaceholder(){
   const ownerActionField = elems.labels.ownerAction;
   const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
+  const ownerLabelField = elems.labels.ownerLabel;
   const checkedActionType = qs('input[name="actionType"]:checked');
 
   if(active.agent){
-    ownerField.textContent = 'Authorized Agent(s) Name ';
+    ownerLabelField.textContent = 'Authorized Agent(s) Name ';
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
     elems.agentNameWrapper.style.display = 'none';
@@ -707,22 +708,22 @@ function updateOwnerLabelAndPlaceholder(){
 
     // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
   } else if(elems.isOrg && elems.isOrg.checked){
-    ownerField.textContent = 'Organization(s) Name ';
+    ownerLabelField.textContent = 'Organization(s) Name ';
     ownerField.placeholder = 'Organization Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else if(elems.isInd && elems.isInd.checked){
-    ownerField.textContent = 'Property Owner(s) Name ';
+    ownerLabelField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
-    ownerField.textContent = 'Property Owner(s) Name ';
+    ownerLabelField.textContent = 'Property Owner(s) Name ';
     ownerField.placeholder = 'First and Last Name(s)';
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
 
   if (!active.addremove && !active.agent) {
-    if ((ownerField.textContent !== 'Organization(s) Name ') && (ownerField.textContent !== 'Property Owner(s) Name')) {
-      ownerField.textContent = 'Property Owner(s) Name ';
+    if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
+      ownerLabelField.textContent = 'Property Owner(s) Name ';
     }
   }
 
@@ -742,7 +743,7 @@ function updateOwnerLabelAndPlaceholder(){
   if (active.addremove) {
     if (checkedActionType) {
       const container = checkedActionType.closest('label');
-      ownerField.textContent = container.textContent + " " + ownerField.textContent;
+      ownerLabelField.textContent = container.textContent + " " + ownerLabelField.textContent;
     }
   }
 }

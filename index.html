@@ -414,8 +414,8 @@
 
       <div class="row" style="display: flex;">
         <div style="flex: 40%;">
-          <label id="ownerAction" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
-          <div class="radios-inline" id="ownerType">
+          <label class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
+          <div class="radios-inline" id="ownerAction">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
             <label id="isAgentWrapper"><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
@@ -608,7 +608,7 @@ const elems = {
   account: qs('#accountNumber'),
   property: qs('#propertyAddress'),
   owner: qs('#ownerName'),
-  ownerType: qs('ownerType'),
+  ownerType: qs('#ownerAction'),
   ownerTypes: qsa('input[name="ownerType"]'),
   isInd: qs('#isIndividual'),
   isOrg: qs('#isOrganization'),
@@ -1040,7 +1040,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-// if (document.getElementById('ast_ownerType').style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
+if (elems.ownerType.style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

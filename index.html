@@ -155,6 +155,30 @@
     align-items: center;
   }
 
+
+  /* Print-only text overlay (used for Assessment Roll Number print formatting) */
+  .print-overlay-wrap{
+    position:relative;
+  }
+  .print-overlay-text{
+    display:none;
+    position:absolute;
+    inset:0;
+    padding:4px 4px;          /* match input padding */
+    box-sizing:border-box;
+    font:inherit;
+    font-size:12px;
+    line-height:normal;
+    color:#000;
+    pointer-events:none;
+    z-index:2;
+    align-items:center;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+
   .row{
     display:grid;
     grid-template-columns:1fr 1fr;
@@ -315,6 +339,20 @@
     }
   }
 
+
+  @media print{
+    /* Show formatted roll number inside the textbox (overlay) */
+    #rollNumber{
+      color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
+      text-shadow:none !important;
+    }
+    #rollPrintOverlay{
+      display:flex !important;
+    }
+  }
+
+
   /* might erase */
   .inline{
     display:flex;
@@ -333,7 +371,7 @@
 
   /* ----------- */
   .tiny{
-    font-size:7px;
+    font-size:9px;
     line-height:1.25;
     color:#000;
     padding-bottom: 8px;
@@ -394,7 +432,10 @@
         </div>
         <div>
           <label>Assessment Roll Number <small>(15 digits)</small> <span class="required-asterisk" id="ast_roll">*</span></label>
-          <input type="text" id="rollNumber" maxlength="15" inputmode="numeric" placeholder="Enter digits only (no dashes)">
+          <div class="print-overlay-wrap">
+            <input type="text" id="rollNumber" maxlength="15" inputmode="numeric" placeholder="Enter digits only (no dashes)">
+            <div class="print-overlay-text" id="rollPrintOverlay" aria-hidden="true"></div>
+          </div>
           <div class="error" id="rollError">Roll number must be exactly 15 digits (0–9 only).</div>
           <div class="preview-text" id="rollPreview"></div>
         </div>
@@ -471,7 +512,6 @@
         <ul>
           <li>Ownership Update / Add or Remove Owner: Attach copy of Transfer/Deed, Death Certificate, Will, POA or other legal documentation.</li>
           <li>Name Change: Attach proof of name change (e.g., Marriage Certificate, Change of Name Certificate).</li>
-          <li>Authorized Agent / Executor: Attach copy of signed authorization (e.g., Letter of Authorization, Power of Attorney, or estate documentation confirming executor authority).</li>
         </ul>
       </div>
       <div class="control-row" id="docsIncludedWrap" class="control-row hidden">
@@ -903,6 +943,12 @@ function updateGreyouts(){
   }
 
   const roll = elems.roll, rollErr = elems.errors.roll, rollPrev = elems.previews.roll;
+  const rollPrintOverlay = qs('#rollPrintOverlay');
+  function setRollPrintOverlay(digits){
+    if(!rollPrintOverlay) return;
+    if(!digits){ rollPrintOverlay.textContent=''; return; }
+    rollPrintOverlay.textContent = (digits.length===15 ? formatRollMask(digits) : digits);
+  }
   roll.addEventListener('input', ()=>{
     const raw = roll.value, digits = raw.replace(/\D/g,''), hadNondigit = raw !== digits;
     if(raw !== digits) roll.value = digits;
@@ -911,10 +957,17 @@ function updateGreyouts(){
       rollPrev.textContent = 'Preview: ' + (digits.length===15 ? formatRollMask(digits) : digits + ' ('+digits.length+'/15)');
     } else { rollPrev.textContent = ''; }
 
+    setRollPrintOverlay(digits);
+
     if(hadNondigit){ rollErr.textContent='Digits only (0–9).'; rollErr.style.display='block'; }
     else if(digits.length===0){ rollErr.style.display='none'; }
     else if(digits.length!==15){ rollErr.textContent='Roll number must be exactly 15 digits.'; rollErr.style.display='block'; }
     else { rollErr.style.display='none'; }
+  });
+
+  window.addEventListener('beforeprint', ()=>{
+    const digits = (roll.value || '').replace(/\D/g,'');
+    setRollPrintOverlay(digits);
   });
 
   const acc = elems.account, accErr = elems.errors.acc, accPrev = elems.previews.acc;

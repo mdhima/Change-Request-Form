@@ -810,8 +810,37 @@ function applyRequirements(){
 
   // Mailing Address mandatory when mailing is active
   const mailingActive = !!active.mailing;
-  if(mailingActive){
+  const sameAsSiteOn = !!(elems.sameAs && elems.sameAs.checked);
+
+  // If "Same as Site" is checked, the Mailing Address field is auto-filled + disabled,
+  // so don't show the required red outline/asterisk for it.
+  if(mailingActive && !sameAsSiteOn){
     req(elems.mailing, elems.ast.mailing);
+  }
+}
+
+/* Same as Site: auto-fill + grey-out Mailing Address and clear any required styling */
+function applySameAsSiteState(){
+  if(!elems.sameAs || !elems.mailing) return;
+
+  const same = !!elems.sameAs.checked;
+  const wrap = elems.mailing.closest('div');
+
+  if(active.mailing && same){
+    if(elems.property) elems.mailing.value = elems.property.value;
+    elems.mailing.disabled = true;
+    if(wrap) wrap.classList.add('disabled');
+
+    // Remove required styling + hide any inline error for mailing
+    elems.mailing.classList.remove('required-border');
+    if(elems.ast && elems.ast.mailing) elems.ast.mailing.style.display = 'none';
+    if(elems.errors && elems.errors.mailing) elems.errors.mailing.style.display = 'none';
+  } else {
+    // Only re-enable if Mailing section is active; otherwise greyouts will handle it.
+    if(active.mailing){
+      elems.mailing.disabled = false;
+      if(wrap) wrap.classList.remove('disabled');
+    }
   }
 }
 
@@ -860,12 +889,15 @@ function updateGreyouts(){
     check = true;
     setEnabledState(el);
   });
+
+  // Enforce "Same as Site" behaviour after greyouts are applied
+  applySameAsSiteState();
 }
 
 /* Digit-only + previews for roll & account */
 (function(){
   function formatRollMask(d){
-    // ####-##-#-###-#####
+    // ##-##-##-#-###-#####
     return d.replace(/(\d{4})(\d{2})(\d{1})(\d{3})(\d{5})/, '$1-$2-$3-$4-$5');
   }
 
@@ -938,11 +970,17 @@ elems.totalPages.addEventListener('input', ()=>{
   }
 });
 
-/* Same as Site copy */
+/* Same as Site copy + grey-out */
 if(elems.sameAs) elems.sameAs.addEventListener('change', ()=>{
-  if(elems.sameAs.checked){ elems.mailing.value = elems.property.value; }
+  applySameAsSiteState();
+  applyRequirements(); // ensures the red outline doesn't stick around
 });
-if(elems.property) elems.property.addEventListener('input', ()=>{ if(elems.sameAs && elems.sameAs.checked) elems.mailing.value = elems.property.value; });
+
+if(elems.property) elems.property.addEventListener('input', ()=>{
+  if(elems.sameAs && elems.sameAs.checked){
+    elems.mailing.value = elems.property.value;
+  }
+});
 
 if(elems.isOrg) elems.isOrg.addEventListener('change', updateOwnerLabelAndPlaceholder);
 
@@ -987,7 +1025,7 @@ function collectValidationErrors(){
   if(reqSet.has('owner') && (!elems.owner.value.trim())) msgs.push((active.agent?'Agent':'Owner')+' name is required.');
   if(reqSet.has('sale') && (!elems.sale.value)) msgs.push('Sale Date is required.');
   if(reqSet.has('action') && !qsa('input[name=\"actionType\"]:checked').length) msgs.push('An Action (New/Add/Remove/Correct) must be selected.');
-  if(active.mailing && !elems.mailing.value.trim()) msgs.push('Mailing Address is required for a Mailing Address Change.');
+  if(active.mailing && !(elems.sameAs && elems.sameAs.checked) && !elems.mailing.value.trim()) msgs.push('Mailing Address is required for a Mailing Address Change.');
   if(active.mortgage){
     if(!elems.deleteMortgage.checked) msgs.push('Delete Mortgage must be checked for a Mortgage Delete request.');
     if(elems.deleteMortgage.checked && !elems.effectiveDate.value) msgs.push('Effective Date is required when Delete Mortgage is checked.');

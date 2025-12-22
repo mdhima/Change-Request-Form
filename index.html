@@ -336,6 +336,7 @@
     font-size:9px;
     line-height:1.25;
     color:#000;
+    padding-bottom: 8px;
   }
   .tiny ul{
     margin:3px 0 0 16px;      /* was 4px 0 0 16px */
@@ -413,7 +414,7 @@
       </div>
 
       <div>
-        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels" style="margin-right: -100%"><span id="ownerActionLabelText" data-label-text>Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerAction">*</span></label>
+        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels"><span id="ownerActionLabelText" data-label-text>Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerAction">*</span></label>
         <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
           <div class="radios-inline" style="flex: 40%;">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
@@ -472,7 +473,6 @@
           <li>Name Change: Attach proof of name change (e.g., Marriage Certificate, Change of Name Certificate).</li>
         </ul>
       </div>
-      <br>
       <div class="control-row" id="docsIncludedWrap" class="control-row hidden">
         <label for="docsIncluded">Documents included? <span class="required-asterisk" id="ast_docsIncluded">*</span></label>
         <input type="checkbox" id="docsIncluded" />

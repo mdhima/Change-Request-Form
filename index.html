@@ -779,7 +779,7 @@ function applyRequirements(){
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
   if(reqSet.has('mortgage')) req(elems.deleteMortgage, elems.ast.deleteMortgage);
-  if(reqSet.has('mortDate')) { if(elems.effectiveDate) req1(elems.effectiveDate); }
+  if(reqSet.has('mortDate')) req(elems.effectiveDate, elems.ast.effectiveDate);
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
   if(reqSet.has('sigDate'))    req(elems.sigDate, elems.ast.sigDate);
   if(reqSet.has('phone'))      req(elems.phone, elems.ast.phone);

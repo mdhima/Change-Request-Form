@@ -496,7 +496,7 @@
       <div class="row">
         <div>
           <label class="radios-inline" id="mortgageLabel">If applicable:</label>
-          <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
+          <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_deleteMortgage">*</span></label>
         </div>
         <div>
           <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
@@ -639,7 +639,8 @@ const elems = {
     agentName: qs('#ast_agentName'),
     sale: qs('#ast_sale'),
     actionType: qs('#ast_actionType'),
-    mortgage: qs('#ast_mortgage'),
+    deleteMortgage: qs('#ast_deleteMortgage'),
+    effectiveDate: qs('#ast_effectiveDate'),
     mailing: qs('#ast_mailing'),
     printName: qs('#ast_printName'),
     sigDate: qs('#ast_sigDate'),
@@ -777,7 +778,7 @@ function applyRequirements(){
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
-  if(reqSet.has('mortgage')) { req(qs('#deleteMortgage'), elems.ast.mortgage); }
+  if(reqSet.has('mortgage')) { req(qs('#deleteMortgage'), elems.ast.deleteMortgage); }
   if(reqSet.has('mortDate')) { if(elems.effectiveDate) req1(elems.effectiveDate); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
   if(reqSet.has('sigDate'))    req(elems.sigDate, elems.ast.sigDate);

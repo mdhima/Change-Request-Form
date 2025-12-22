@@ -97,7 +97,7 @@
     font-size:12px;
     margin-top:1px;           /* was 2px */
     padding:3px 0;            /* was 5px 0 */
-    min-height:15px;
+    min-height:14px;
   }
   label:empty::before {
     display: block;
@@ -412,22 +412,23 @@
         </div>
       </div>
 
-      <div>
-        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
-        <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
-          <div class="radios-inline" style="flex: 40%;">
+      <div class="row" style="display: flex;">
+        <div style="flex: 40%;">
+          <label id="ownerAction" class="required-label" name="ownerActionLabels" style="margin-right: -100%"><span id="ownerActionText">Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerType">*</span></label>
+          <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
             <label id="isAgentWrapper"><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
           </div>
-          <div>
-            <label id="ownerActionDescription" class="radios-inline" name="ownerActionLabels">If Organization is selected, provide both Legal Name and Agent Person. <span class="required-asterisk" id="ast_ownerActionDescription">*</span></label>
-          </div>
+        </div>
+        <div>
+          <label class="radios-inline"></label>
+          <label id="ownerActionDescription" class="radios-inline" name="ownerActionLabels">If Organization is selected, provide both Legal Name and Agent Person.</label>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
         <div>
-          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_ownerLabel">*</span></label>
+          <label id="ownerLabel"><span id="ownerLabelText">Property Owner(s) Name</span> <span class="required-asterisk" id="ast_owner">*</span></label>
           <input type="text" id="ownerName" placeholder="First and Last Name(s)">
         </div>
         <div id="agentNameWrapper">
@@ -495,10 +496,10 @@
       <div class="row">
         <div>
           <label class="radios-inline" id="mortgageLabel">If applicable:</label>
-          <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_deleteMortgage">*</span></label>
+          <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
         </div>
         <div>
-          <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
+          <label class="radios-inline">Effective Date</label>
           <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty radios-inline">
           <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
         </div>
@@ -583,7 +584,7 @@ btns.forEach(b=>{
 /* Requirements per request */
 const requirements = {
   ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
-  mailing:   ['ticket','roll','property','mailing','ownerType','mailOption','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','sigDate','printName','phone'],
   addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
   agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','ownerType','mortgage','mortDate','sigDate','printName','phone']
@@ -607,7 +608,7 @@ const elems = {
   account: qs('#accountNumber'),
   property: qs('#propertyAddress'),
   owner: qs('#ownerName'),
-  ownerType: qs('#ownerAction'),
+  ownerType: qs('#ownerType'),
   ownerTypes: qsa('input[name="ownerType"]'),
   isInd: qs('#isIndividual'),
   isOrg: qs('#isOrganization'),
@@ -634,12 +635,11 @@ const elems = {
     account: qs('#ast_account'),
     property: qs('#ast_property'),
     owner: qs('#ast_owner'),
-    ownerType: qs('#ast_ownerAction'),
+    ownerType: qs('#ast_ownerType'),
     agentName: qs('#ast_agentName'),
     sale: qs('#ast_sale'),
     actionType: qs('#ast_actionType'),
-    deleteMortgage: qs('#ast_deleteMortgage'),
-    effectiveDate: qs('#ast_effectiveDate'),
+    mortgage: qs('#ast_mortgage'),
     mailing: qs('#ast_mailing'),
     printName: qs('#ast_printName'),
     sigDate: qs('#ast_sigDate'),
@@ -666,7 +666,7 @@ const elems = {
     internal: qs('#fs-internal')
   },
   labels: { 
-    ownerAction: qs('#ownerActionLabelMain'),
+    ownerAction: qs('#ownerAction'),
     ownerActionDescription: qs('#ownerActionDescription'),
     ownerLabel: qs('#ownerLabel') 
   }
@@ -690,63 +690,80 @@ function clearRequiredMarkers(){
   qs('#actionType').classList.remove('required-border');
 }
 
+/* Preserve required asterisks inside labels by only changing dedicated text spans */
+let _ownerLabelDefaults = null;
+function _getOwnerLabelDefaults(){
+  if(_ownerLabelDefaults) return _ownerLabelDefaults;
+  _ownerLabelDefaults = {
+    ownerLabel: (qs('#ownerLabelText') ? qs('#ownerLabelText').textContent : '').trim() || 'Property Owner(s) Name',
+    ownerAction: (qs('#ownerActionText') ? qs('#ownerActionText').textContent : '').trim() || 'Owner and Authorized Agent Acting on Behalf of Owner (if applicable)',
+    ownerActionDescription: (elems.labels.ownerActionDescription ? elems.labels.ownerActionDescription.textContent : '').trim(),
+    ownerPlaceholder: (elems.owner ? elems.owner.placeholder : 'First and Last Name(s)')
+  };
+  return _ownerLabelDefaults;
+}
+function _setLabelText(spanId, fallbackLabelEl, text){
+  const span = qs('#' + spanId);
+  if(span){ span.textContent = text; return; }
+  if(fallbackLabelEl){ fallbackLabelEl.textContent = text; }
+}
+
 function updateOwnerLabelAndPlaceholder(){
-  const ownerActionField = elems.labels.ownerAction;
+  const d = _getOwnerLabelDefaults();
   const ownerActionDescriptionField = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
-  const ownerLabelField = elems.labels.ownerLabel;
   const checkedActionType = qs('input[name="actionType"]:checked');
 
+  // Reset to defaults first
+  _setLabelText('ownerActionText', elems.labels.ownerAction, d.ownerAction);
+  if(ownerActionDescriptionField) ownerActionDescriptionField.textContent = d.ownerActionDescription;
+  _setLabelText('ownerLabelText', elems.labels.ownerLabel, d.ownerLabel);
+  if(ownerField) ownerField.placeholder = d.ownerPlaceholder;
+
   if(active.agent){
-    ownerLabelField.textContent = 'Authorized Agent(s) Name ';
-    ownerField.placeholder = 'Authorized Agent Name(s)';
-    elems.isAgentWrapper.style.display = 'none';
-    elems.agentNameWrapper.style.display = 'none';
+    _setLabelText('ownerLabelText', elems.labels.ownerLabel, 'Authorized Agent(s) Name');
+    if(ownerField) ownerField.placeholder = 'Authorized Agent Name(s)';
+    if(elems.isAgentWrapper) elems.isAgentWrapper.style.display = 'none';
+    if(elems.agentNameWrapper) elems.agentNameWrapper.style.display = 'none';
 
-    ownerActionField.textContent = "Ownership Type";
-    ownerActionDescriptionField.textContent = "";
-
-    // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
-  } else if(elems.isOrg && elems.isOrg.checked){
-    ownerLabelField.textContent = 'Organization(s) Name ';
-    ownerField.placeholder = 'Organization Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
-  } else if(elems.isInd && elems.isInd.checked){
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
-    ownerField.placeholder = 'First and Last Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
+    _setLabelText('ownerActionText', elems.labels.ownerAction, 'Ownership Type');
+    if(ownerActionDescriptionField) ownerActionDescriptionField.textContent = '';
   } else {
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
-    ownerField.placeholder = 'First and Last Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
-  }
-
-  if (!active.addremove && !active.agent) {
-    if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
-      ownerLabelField.textContent = 'Property Owner(s) Name ';
-    }
-  }
-
-  if (!active.agent) {
-    ownerActionField.textContent = 'Owner and Authorized Agent Acting on Behalf of Owner (if applicable)';
-    ownerActionDescriptionField.textContent = 'If Organization is selected, provide both Legal Name and Agent Person. ';
-    elems.isAgentWrapper.style.display = '';
+    if(elems.isAgentWrapper) elems.isAgentWrapper.style.display = '';
 
     // CHANGE THIS WHEN BACK FROM BREAK
-    if(!hasAnyActive()) {
+    if(!hasAnyActive() && elems.isAgent) {
       elems.isAgent.checked = false;
     }
 
     // Important: if a script unchecks this box, the UI won't update unless we also trigger the change handler.
-    elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
+    if(elems.isAgent) elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
   }
-  if (active.addremove) {
-    if (checkedActionType) {
-      const container = checkedActionType.closest('label');
-      ownerLabelField.textContent = container.textContent + " " + ownerLabelField.textContent;
+
+  // Organization vs Individual label (only when not in Agent request mode)
+  if(!active.agent){
+    if(elems.isOrg && elems.isOrg.checked){
+      _setLabelText('ownerLabelText', elems.labels.ownerLabel, 'Organization(s) Name');
+      if(ownerField) ownerField.placeholder = 'Organization Name(s)';
+    } else {
+      _setLabelText('ownerLabelText', elems.labels.ownerLabel, d.ownerLabel);
+      if(ownerField) ownerField.placeholder = d.ownerPlaceholder;
+    }
+  }
+
+  // Add/Remove action prefix (keep asterisk)
+  if(active.addremove && checkedActionType){
+    const container = checkedActionType.closest('label');
+    const prefix = container ? container.textContent.trim() : '';
+    if(prefix){
+      let base = d.ownerLabel;
+      if(active.agent) base = 'Authorized Agent(s) Name';
+      else if(elems.isOrg && elems.isOrg.checked) base = 'Organization(s) Name';
+      _setLabelText('ownerLabelText', elems.labels.ownerLabel, prefix + ' ' + base);
     }
   }
 }
+
 
 
 /* Apply union of active requirements + make Mailing Address mandatory when 'mailing' is toggled */
@@ -779,8 +796,8 @@ function applyRequirements(){
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
-  if(reqSet.has('mortgage')) req(elems.deleteMortgage, elems.ast.deleteMortgage);
-  if(reqSet.has('mortDate')) req(elems.effectiveDate, elems.ast.effectiveDate);
+  if(reqSet.has('mortgage')) { req(qs('#deleteMortgage'), elems.ast.mortgage); }
+  if(reqSet.has('mortDate')) { if(elems.effectiveDate) req1(elems.effectiveDate); }
   if(reqSet.has('printName'))  req(elems.printName, elems.ast.printName);
   if(reqSet.has('sigDate'))    req(elems.sigDate, elems.ast.sigDate);
   if(reqSet.has('phone'))      req(elems.phone, elems.ast.phone);
@@ -822,9 +839,11 @@ function updateGreyouts(){
     if(relevant.has(id) || relevant.has(name)) {
       el.disabled = false;
       container.classList.remove('disabled');
+      if (check == true) {console.log("enabled\n")}
     } else {
       el.disabled = true;
       container.classList.add('disabled');
+      if (check == true) {console.log("disabled\n")}
     }
     check = false;
   }
@@ -1039,7 +1058,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-if (elems.ownerType.style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
+if (document.getElementById('ast_ownerType').style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

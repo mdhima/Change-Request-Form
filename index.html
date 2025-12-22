@@ -336,7 +336,6 @@
     font-size:9px;
     line-height:1.25;
     color:#000;
-    padding-bottom: 8px;
   }
   .tiny ul{
     margin:3px 0 0 16px;      /* was 4px 0 0 16px */
@@ -414,7 +413,7 @@
       </div>
 
       <div>
-        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
+        <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels" style="margin-right: -100%"><span id="ownerActionLabelText" data-label-text>Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerAction">*</span></label>
         <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
           <div class="radios-inline" style="flex: 40%;">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
@@ -422,13 +421,13 @@
             <label id="isAgentWrapper"><input type="checkbox" name="ownerType" id="isAgent"> Authorized Agent</label>
           </div>
           <div>
-            <label id="ownerActionDescription" class="radios-inline" name="ownerActionLabels">If Organization is selected, provide both Legal Name and Agent Person. <span class="required-asterisk" id="ast_ownerActionDescription">*</span></label>
+            <label id="ownerActionDescription" class="radios-inline"><span id="ownerActionDescriptionText" data-label-text>If Organization is selected, provide both Legal Name and Agent Person.</span> <span class="required-asterisk" id="ast_ownerActionDescription">*</span></label>
           </div>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
         <div>
-          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_ownerName">*</span></label>
+          <label id="ownerLabel"><span id="ownerLabelText" data-label-text>Property Owner(s) Name</span> <span class="required-asterisk" id="ast_ownerName">*</span></label>
           <input type="text" id="ownerName" placeholder="First and Last Name(s)">
         </div>
         <div id="agentNameWrapper">
@@ -473,6 +472,7 @@
           <li>Name Change: Attach proof of name change (e.g., Marriage Certificate, Change of Name Certificate).</li>
         </ul>
       </div>
+      <br>
       <div class="control-row" id="docsIncludedWrap" class="control-row hidden">
         <label for="docsIncluded">Documents included? <span class="required-asterisk" id="ast_docsIncluded">*</span></label>
         <input type="checkbox" id="docsIncluded" />
@@ -690,60 +690,83 @@ function clearRequiredMarkers(){
   qs('#actionType').classList.remove('required-border');
 }
 
+function getLabelText(labelEl){
+  if(!labelEl) return '';
+  const span = labelEl.querySelector('[data-label-text]');
+  if(span) return span.textContent.trim();
+  // fallback: remove any asterisk characters from textContent
+  return (labelEl.textContent || '').replace(/\*/g,'').trim();
+}
+
+function setLabelText(labelEl, text){
+  if(!labelEl) return;
+  const span = labelEl.querySelector('[data-label-text]');
+  if(span){
+    span.textContent = text;
+    return;
+  }
+  const ast = labelEl.querySelector('.required-asterisk');
+  if(ast){
+    labelEl.textContent = '';
+    labelEl.appendChild(document.createTextNode(text + ' '));
+    labelEl.appendChild(ast);
+  } else {
+    labelEl.textContent = text;
+  }
+}
+
+
 function updateOwnerLabelAndPlaceholder(){
-  const ownerActionField = elems.labels.ownerAction;
-  const ownerActionDescriptionField = elems.labels.ownerActionDescription;
+  const ownerActionLabel = elems.labels.ownerAction;
+  const ownerActionDescLabel = elems.labels.ownerActionDescription;
   const ownerField = elems.owner;
-  const ownerLabelField = elems.labels.ownerLabel;
+  const ownerLabel = elems.labels.ownerLabel;
   const checkedActionType = qs('input[name="actionType"]:checked');
 
   if(active.agent){
-    ownerLabelField.textContent = 'Authorized Agent(s) Name ';
+    setLabelText(ownerLabel, 'Authorized Agent(s) Name');
     ownerField.placeholder = 'Authorized Agent Name(s)';
     elems.isAgentWrapper.style.display = 'none';
     elems.agentNameWrapper.style.display = 'none';
 
-    ownerActionField.textContent = "Ownership Type";
-    ownerActionDescriptionField.textContent = "";
-
-    // if (orgWrap) { if (elems.isOrg) elems.isOrg.checked = false; orgWrap.style.display = 'none'; }
+    setLabelText(ownerActionLabel, 'Ownership Type');
+    setLabelText(ownerActionDescLabel, '');
   } else if(elems.isOrg && elems.isOrg.checked){
-    ownerLabelField.textContent = 'Organization(s) Name ';
+    setLabelText(ownerLabel, 'Organization(s) Name');
     ownerField.placeholder = 'Organization Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
   } else if(elems.isInd && elems.isInd.checked){
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
+    setLabelText(ownerLabel, 'Property Owner(s) Name');
     ownerField.placeholder = 'First and Last Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
   } else {
-    ownerLabelField.textContent = 'Property Owner(s) Name ';
+    setLabelText(ownerLabel, 'Property Owner(s) Name');
     ownerField.placeholder = 'First and Last Name(s)';
-    // if (orgWrap) { orgWrap.style.display = ''; }
   }
 
   if (!active.addremove && !active.agent) {
-    if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
-      ownerLabelField.textContent = 'Property Owner(s) Name ';
+    const cur = getLabelText(ownerLabel);
+    if (cur !== 'Organization(s) Name' && cur !== 'Property Owner(s) Name') {
+      setLabelText(ownerLabel, 'Property Owner(s) Name');
     }
   }
 
   if (!active.agent) {
-    ownerActionField.textContent = 'Owner and Authorized Agent Acting on Behalf of Owner (if applicable)';
-    ownerActionDescriptionField.textContent = 'If Organization is selected, provide both Legal Name and Agent Person. ';
+    setLabelText(ownerActionLabel, 'Owner and Authorized Agent Acting on Behalf of Owner (if applicable)');
+    setLabelText(ownerActionDescLabel, 'If Organization is selected, provide both Legal Name and Agent Person.');
     elems.isAgentWrapper.style.display = '';
 
-    // CHANGE THIS WHEN BACK FROM BREAK
+    // If a script unchecks this box, the UI won't update unless we also trigger the change handler.
     if(!hasAnyActive()) {
       elems.isAgent.checked = false;
     }
-
-    // Important: if a script unchecks this box, the UI won't update unless we also trigger the change handler.
     elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
   }
+
   if (active.addremove) {
     if (checkedActionType) {
       const container = checkedActionType.closest('label');
-      ownerLabelField.textContent = container.textContent + " " + ownerLabelField.textContent;
+      const base = getLabelText(ownerLabel);
+      const prefix = container ? container.textContent.trim() : '';
+      if(prefix) setLabelText(ownerLabel, prefix + ' ' + base);
     }
   }
 }

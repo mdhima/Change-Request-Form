@@ -184,6 +184,18 @@
     grid-template-columns:1fr 1fr;
     gap:3px;                   /* was 4px */
   }
+
+  /* Documents Attached + Total Pages sizing */
+  #docsPagesRow{
+    grid-template-columns: 6fr 1.5fr; /* docs wide, pages narrow */
+  }
+  #docsPagesRow > div:last-child{
+    justify-self: start;
+  }
+  #docsPagesRow #totalPages{
+    max-width: 100%;
+  }
+
   
   /* Owner/Agent name row sizing
      - No Authorized Agent: Owner name spans full row
@@ -519,7 +531,7 @@
         <label for="docsIncluded">Documents included? <span class="required-asterisk" id="ast_docsIncluded">*</span></label>
         <input type="checkbox" id="docsIncluded" />
       </div>
-      <div class="row">
+      <div class="row" id="docsPagesRow">
         <div>
           <label>Documents Attached <span class="required-asterisk" id="ast_docsAttached">*</span></label>
           <input type="text" id="docsAttached" placeholder="e.g., Transfer Deed, Death Certificate">
@@ -1086,6 +1098,15 @@ function collectValidationErrors(){
     if(elems.deleteMortgage.checked && !elems.effectiveDate.value) msgs.push('Effective Date is required when Delete Mortgage is checked.');
   }
   if(elems.phone.value && /\D/.test(elems.phone.value)) msgs.push('Phone number must contain digits only.');
+  
+  // Authorized Agent checkbox: enforce Authorized Agent's Name when checked
+  const agentNameVisible = elems.agentNameWrapper && elems.agentNameWrapper.style.display !== 'none';
+  if(elems.isAgent && elems.isAgent.checked && agentNameVisible){
+    if(!elems.agentName || !elems.agentName.value.trim()){
+      msgs.push("Authorized Agent's Name is required when Authorized Agent is checked.");
+    }
+  }
+
   return msgs;
 }
 
@@ -1112,6 +1133,7 @@ if(previewBtn) previewBtn.addEventListener('click', ()=>{
 });
 const printBtn=qs('#printBtn');
 if(printBtn) printBtn.addEventListener('click', ()=>{ 
+  applyRequirements();
   const errs = collectValidationErrors();
   if(errs.length){
     alert('Please fix the following before printing:\n' + errs.join('\n'));

@@ -414,7 +414,7 @@
 
       <div class="row" style="display: flex;">
         <div style="flex: 40%;">
-          <label id="ownerAction" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerType">*</span></label>
+          <label id="ownerAction" class="required-label" name="ownerActionLabels" style="margin-right: -100%">Owner and Authorized Agent Acting on Behalf of Owner (if applicable) <span class="required-asterisk" id="ast_ownerAction">*</span></label>
           <div class="radios-inline" id="ownerType">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -423,16 +423,16 @@
         </div>
         <div>
           <label class="radios-inline"></label>
-          <label id="ownerActionDescription" class="radios-inline" name="ownerActionLabels">If Organization is selected, provide both Legal Name and Agent Person.</label>
+          <label id="ownerActionDescription" class="radios-inline" name="ownerActionLabels">If Organization is selected, provide both Legal Name and Agent Person. <span class="required-asterisk" id="ast_ownerActionDescription">*</span></label>
         </div>
       </div>
       <div class="row" id="ownerAgentRow">
         <div>
-          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_owner">*</span></label>
+          <label id="ownerLabel">Property Owner(s) Name <span class="required-asterisk" id="ast_ownerLabel">*</span></label>
           <input type="text" id="ownerName" placeholder="First and Last Name(s)">
         </div>
         <div id="agentNameWrapper">
-          <label id="ast_agentName">Authorized Agent&apos;s Name <span class="required-asterisk" id="ast_ownerTypeHint">*</span></label>
+          <label id="agentName">Authorized Agent&apos;s Name <span class="required-asterisk" id="ast_agentName">*</span></label>
           <input type="text" id="agentName" placeholder="Authorized Agent&apos;s Full Name">
         </div>
       </div>
@@ -499,7 +499,7 @@
           <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
         </div>
         <div>
-          <label class="radios-inline">Effective Date</label>
+          <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
           <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty radios-inline">
           <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
         </div>
@@ -514,15 +514,15 @@
       </div>
       <div class="row-3" >
         <div>
-          <label id="ast_printName">Print Name</label>
+          <label id="printName">Print Name <span class="required-asterisk" id="ast_printName">*</span></label>
           <input type="text" id="printName" placeholder="Your printed name">
         </div>
         <div>
-          <label id="ast_sigDate">Date</label>
+          <label id="sigDate">Date <span class="required-asterisk" id="ast_sigDate">*</span></label>
           <input type="date" id="sigDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
-          <label id="ast_phone">Phone Number</label>
+          <label id="phone">Phone Number <span class="required-asterisk" id="ast_phone">*</span></label>
           <input type="tel" id="phone" maxlength="15" placeholder="Digits only">
           <div class="error" id="phoneError">Phone number must contain digits only.</div>
         </div>

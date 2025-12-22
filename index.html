@@ -295,6 +295,18 @@
   .disabled label{ color:#777; }
 
   @media print{
+    /* Print: do not show greyed/disabled styling */
+    .greyed{ background:transparent !important; }
+    .disabled input,
+    .disabled textarea,
+    .disabled select{
+      background:#fff !important;
+      color:#000 !important;
+      -webkit-text-fill-color:#000 !important;
+      opacity:1 !important;
+    }
+    .disabled label{ color:#000 !important; }
+    
     .menu,
     .controls{
       display:none !important;
@@ -404,6 +416,7 @@
     font-size:7px;
     line-height:1.25;
     color:#000;
+    padding-left: 2.5px;
   }
   .microscopic ul{
     margin:3px 0 0 16px;      /* was 4px 0 0 16px */
@@ -930,6 +943,12 @@ function updateGreyouts(){
   if(active.ownership || active.addremove){
     fieldGroups.mailing.forEach(id=>relevant.add(id));
   }
+
+  // Authorized Agent checkbox: Mailing Address should be editable (optional)
+  if(elems.isAgent && elems.isAgent.checked){
+    fieldGroups.mailing.forEach(id=>relevant.add(id));
+  }
+
 
   if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 

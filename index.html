@@ -635,7 +635,7 @@ const elems = {
     account: qs('#ast_account'),
     property: qs('#ast_property'),
     owner: qs('#ast_owner'),
-    ownerType: qs('#ast_ownerType'),
+    ownerType: qs('#ast_ownerAction'),
     agentName: qs('#ast_agentName'),
     sale: qs('#ast_sale'),
     actionType: qs('#ast_actionType'),
@@ -1040,7 +1040,7 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
 /* On load */
 applyRequirements(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
 // ensure initial state of action radios respects requirement
-if (document.getElementById('ast_ownerType').style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
+// if (document.getElementById('ast_ownerType').style.display === 'none') setCheckboxEnabled(false, elems.ownerTypes);
 // ensure initial org hint visibility matches agent toggle
 if (typeof orgWrap !== 'undefined' && orgWrap) { orgWrap.style.display = active.agent ? 'none' : ''; }
 const orgWrapInitApplied = true;

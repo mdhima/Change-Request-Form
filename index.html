@@ -720,7 +720,7 @@ function updateOwnerLabelAndPlaceholder(){
     // if (orgWrap) { orgWrap.style.display = ''; }
   }
 
-  if (!active.addremove) {
+  if (!active.addremove && !active.agent) {
     if ((ownerLabelField.textContent !== 'Organization(s) Name ') && (ownerLabelField.textContent !== 'Property Owner(s) Name')) {
       ownerLabelField.textContent = 'Property Owner(s) Name ';
     }

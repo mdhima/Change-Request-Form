@@ -499,7 +499,7 @@
           <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_mortgage">*</span></label>
         </div>
         <div>
-          <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
+          <label id="effectiveDateLabel" class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDateLabel">*</span></label>
           <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty radios-inline">
           <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
         </div>
@@ -514,15 +514,15 @@
       </div>
       <div class="row-3" >
         <div>
-          <label id="printName">Print Name <span class="required-asterisk" id="ast_printName">*</span></label>
+          <label>Print Name <span class="required-asterisk" id="ast_printName">*</span></label>
           <input type="text" id="printName" placeholder="Your printed name">
         </div>
         <div>
-          <label id="sigDate">Date <span class="required-asterisk" id="ast_sigDate">*</span></label>
+          <label>Date <span class="required-asterisk" id="ast_sigDate">*</span></label>
           <input type="date" id="sigDate" placeholder="YYYY-MM-DD" class="empty">
         </div>
         <div>
-          <label id="phone">Phone Number <span class="required-asterisk" id="ast_phone">*</span></label>
+          <label>Phone Number <span class="required-asterisk" id="ast_phone">*</span></label>
           <input type="tel" id="phone" maxlength="15" placeholder="Digits only">
           <div class="error" id="phoneError">Phone number must contain digits only.</div>
         </div>

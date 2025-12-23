@@ -1298,6 +1298,11 @@ function collectValidationErrors(){
     if(elems.deleteMortgage.checked && !elems.effectiveDate.value) msgs.push('Effective Date is required when Delete Mortgage is checked.');
   }
   if(elems.phone.value && /\D/.test(elems.phone.value)) msgs.push('Phone number must contain digits only.');
+  // Required: Print Name, Date, Phone
+  if(reqSet.has('printName') && (!elems.printName || !elems.printName.value.trim())) msgs.push('Print Name is required.');
+  if(reqSet.has('sigDate') && (!elems.sigDate || !elems.sigDate.value)) msgs.push('Date is required.');
+  if(reqSet.has('phone') && (!elems.phone || !elems.phone.value.trim())) msgs.push('Phone Number is required.');
+
   
   // Authorized Agent checkbox: enforce Authorized Agent's Name when checked
   const agentNameVisible = elems.agentNameWrapper && elems.agentNameWrapper.style.display !== 'none';

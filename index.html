@@ -318,7 +318,6 @@
     .tiny.disabled *{
       color:#000 !important;
     }
-
     
     .menu,
     .controls{
@@ -471,6 +470,7 @@
   <div class="controls">
     <button class="action" id="previewBtn">Preview Form (clean)</button>
     <button class="action" id="printBtn">Print Form</button>
+    <button class="action" id="pdfBtn" title="Opens your browser print dialog so you can choose Save as PDF">Save as PDF</button>
     <button class="secondary" id="resetBtn">Clear</button>
   </div>
 
@@ -509,7 +509,7 @@
 
       <div>
         <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels"><span id="ownerActionLabelText" data-label-text>Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerAction">*</span></label>
-        <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
+        <div id="ownerAction" class="row" style="display: flex; align-items: center;">
           <div class="radios-inline" style="flex: 40%;">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -1221,6 +1221,20 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
   updateDateValueClasses(); 
   window.print(); 
 });
+
+  // Save as PDF (opens browser print dialog; choose "Save as PDF" as destination)
+  const pdfBtn=qs('#pdfBtn');
+  if(pdfBtn) pdfBtn.addEventListener('click', ()=>{ 
+    applyRequirements();
+    const errs = collectValidationErrors();
+    if(errs.length){
+      alert('Please fix the following before saving as PDF:\n' + errs.join('\n'));
+      return;
+    }
+    updateDateValueClasses(); 
+    window.print(); 
+  });
+
 const resetBtn=qs('#resetBtn');
 if(resetBtn) resetBtn.addEventListener('click', ()=>{
   document.getElementById('changeForm').reset();

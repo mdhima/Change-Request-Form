@@ -313,12 +313,6 @@
       opacity:1 !important;
     }
     .disabled label{ color:#000 !important; }
-    /* Print: documentation hint text should not appear greyed out */
-    .tiny.disabled,
-    .tiny.disabled *{
-      color:#000 !important;
-    }
-
     
     .menu,
     .controls{
@@ -439,12 +433,6 @@
     padding:0;
   }
   .microscopic li{ margin:0; }
-
-  /* Grey out documentation hint text when no action buttons are selected */
-  .tiny.disabled,
-  .tiny.disabled *{
-    color:#777 !important;
-  }
 </style>
 
 </head>
@@ -471,6 +459,7 @@
   <div class="controls">
     <button class="action" id="previewBtn">Preview Form (clean)</button>
     <button class="action" id="printBtn">Print Form</button>
+    <button class="action" id="pdfBtn" title="Opens your browser print dialog so you can choose Save as PDF">Save as PDF</button>
     <button class="secondary" id="resetBtn">Clear</button>
   </div>
 
@@ -1006,14 +995,6 @@ function updateGreyouts(){
     setEnabledState(el);
   });
 
-
-  // Grey out documentation hint text (the bullet list) when no buttons are selected
-  const docsTiny = qs('#fs-docs .tiny');
-  if(docsTiny){
-    const anyActive = Object.values(active).includes(true);
-    docsTiny.classList.toggle('disabled', !anyActive);
-  }
-
   // Enforce "Same as Site" behaviour after greyouts are applied
   applySameAsSiteState();
 }
@@ -1221,6 +1202,20 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
   updateDateValueClasses(); 
   window.print(); 
 });
+
+  // Save as PDF (opens browser print dialog; choose "Save as PDF" as destination)
+  const pdfBtn=qs('#pdfBtn');
+  if(pdfBtn) pdfBtn.addEventListener('click', ()=>{ 
+    applyRequirements();
+    const errs = collectValidationErrors();
+    if(errs.length){
+      alert('Please fix the following before saving as PDF:\n' + errs.join('\n'));
+      return;
+    }
+    updateDateValueClasses(); 
+    window.print(); 
+  });
+
 const resetBtn=qs('#resetBtn');
 if(resetBtn) resetBtn.addEventListener('click', ()=>{
   document.getElementById('changeForm').reset();

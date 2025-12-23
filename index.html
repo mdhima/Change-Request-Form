@@ -314,9 +314,14 @@
     }
     .disabled label{ color:#000 !important; }
     /* Print: documentation hint text should not appear greyed out */
+    #fs-docs .tiny.disabled,
+    #fs-docs .tiny.disabled *,
     .tiny.disabled,
     .tiny.disabled *{
       color:#000 !important;
+      -webkit-text-fill-color:#000 !important;
+      opacity:1 !important;
+      filter:none !important;
     }
     
     .menu,
@@ -1289,6 +1294,26 @@ const orgWrapInitApplied = true;
     el.addEventListener('input',  () => sync(el)); // helps for some browsers/pickers
   });
 })();
+
+
+/* Print/PDF safeguard: ensure Documentation hint text is not greyed out in print preview */
+(function(){
+  const docsTiny = document.querySelector('#fs-docs .tiny');
+  const restore = () => {
+    try{
+      if(typeof applyEnabledState === 'function') applyEnabledState();
+    }catch(e){}
+  };
+
+  window.addEventListener('beforeprint', () => {
+    if(docsTiny) docsTiny.classList.remove('disabled');
+  });
+
+  window.addEventListener('afterprint', () => {
+    restore();
+  });
+})();
+
 
 </script>
 </body>

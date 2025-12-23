@@ -791,7 +791,7 @@ btns.forEach(b=>{
 /* Requirements per request */
 const requirements = {
   ownership: ['ticket','roll','property','owner','ownerType','sale','actionType','sigDate','printName','phone'],
-  mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone'],
+  mailing:   ['ticket','roll','property','mailing','mailOption','sigDate','printName','phone', 'isAgent'],
   addremove: ['ticket','roll','property','owner','ownerType','actionType','sigDate','printName','phone'],
   agent:     ['ticket','roll','property','agentName','owner','ownerType','actionType','sigDate','printName','phone'],
   mortgage:  ['ticket','roll','property','mortgage','mortDate','sigDate','printName','phone']
@@ -800,9 +800,9 @@ const requirements = {
 /* Map of field ids for greying/enabling */
 const fieldGroups = {
   base: [],
-  owner: ['ownerActionLabels','ownerName','ownerType','saleDate','actionType','agentName'],
+  owner: ['ownerActionLabels','ownerName','ownerType','saleDate','actionType','agentName', 'isAgent'],
   mailing: ['mailingAddress','sameAsSite'],
-  action: ['ownerActionLabels','ownerName','ownerType','actionType','agentName'],
+  action: ['ownerActionLabels','ownerName','ownerType','actionType','agentName', 'isAgent'],
   agent: ['ownerActionLabels','ownerName','ownerType','actionType','agentName'],
   mortgage: ['mortgageLabel','deleteMortgage','effectiveDate'],
   docs: ['docsAttached','totalPages'],
@@ -1002,11 +1002,9 @@ function applyRequirements(){
   }
 
   if(reqSet.has('ownerType')) {
-    req(elems.ownerType, elems.ast.ownerType); 
-    if ('agent' in active && 'agent' in requirements) {
-      setCheckboxEnabled(true, elems.ownerTypes);
-    }
-  } 
+    req(elems.ownerType, elems.ast.ownerType);
+    // Do not auto-check any Owner/Agent checkboxes. The user controls these.
+  }
   if(reqSet.has('sale'))     req(elems.sale,     elems.ast.sale);
   if(reqSet.has('actionType'))
     req(elems.actionType, elems.ast.actionType); 
@@ -1121,6 +1119,13 @@ function setEnabledState(el) {
     check = true;
     setEnabledState(el);
   });
+  // Safety: prevent the Authorized Agent checkbox from getting stuck checked while disabled
+  if(elems.isAgent && elems.isAgent.disabled && elems.isAgent.checked){
+    elems.isAgent.checked = false;
+    elems.isAgent.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+
+
 
 
   // Grey out documentation hint text (the bullet list) when no buttons are selected
@@ -1355,6 +1360,13 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
       return;
     }
 
+    // Fix: avoid occasional top whitespace in PDF export caused by scroll offset/layout timing
+    const __scrollX = window.scrollX || 0;
+    const __scrollY = window.scrollY || 0;
+    try{ window.scrollTo(0,0); }catch(e){}
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+
     // Mimic print styling (hide controls, un-grey disabled fields, show roll overlay, etc.)
     document.body.classList.add('pdf-export');
 
@@ -1378,13 +1390,19 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
       }
     });
 
+    // Let layout settle after applying export-only styles (prevents occasional top whitespace)
+    try{
+      if(document.fonts && document.fonts.ready){ await document.fonts.ready; }
+    }catch(e){}
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
     const el = qs('.container') || qs('.form-area') || document.body;
 
     const opt = {
       margin: 7,
       filename: 'Change_Request_Form.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true },
+      html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0, windowWidth: document.documentElement.scrollWidth, windowHeight: document.documentElement.scrollHeight },
       jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
       pagebreak: { mode: ['css','legacy'] }
     };
@@ -1409,6 +1427,8 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
       }catch(e){}
 
       document.body.classList.remove('pdf-export');
+      try{ window.scrollTo(__scrollX, __scrollY); }catch(e){}
+
       if(typeof restoreDisabledAfterPrint === 'function'){ try{ restoreDisabledAfterPrint(); }catch(e){} }
     }
   }

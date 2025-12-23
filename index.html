@@ -978,7 +978,11 @@ function updateGreyouts(){
 
   if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
-  function setEnabledState(el) {
+  
+
+  // Mortgage Delete: Utility Account # should be greyed out
+  if(active.mortgage) relevant.delete('accountNumber');
+function setEnabledState(el) {
     const id = el.id;
     var name = null;
     const container = el.closest('div,fieldset');

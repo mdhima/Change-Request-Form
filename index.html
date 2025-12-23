@@ -313,6 +313,11 @@
       opacity:1 !important;
     }
     .disabled label{ color:#000 !important; }
+    /* Print: documentation hint text should not appear greyed out */
+    .tiny.disabled,
+    .tiny.disabled *{
+      color:#000 !important;
+    }
     
     .menu,
     .controls{
@@ -433,6 +438,12 @@
     padding:0;
   }
   .microscopic li{ margin:0; }
+
+  /* Grey out documentation hint text when no action buttons are selected */
+  .tiny.disabled,
+  .tiny.disabled *{
+    color:#777 !important;
+  }
 </style>
 
 </head>
@@ -498,7 +509,7 @@
 
       <div>
         <label id="ownerActionLabelMain" class="required-label" name="ownerActionLabels"><span id="ownerActionLabelText" data-label-text>Owner and Authorized Agent Acting on Behalf of Owner (if applicable)</span> <span class="required-asterisk" id="ast_ownerAction">*</span></label>
-        <div id="ownerAction" class="row" style="display: flex; alignItems: center;">
+        <div id="ownerAction" class="row" style="display: flex; align-items: center;">
           <div class="radios-inline" style="flex: 40%;">
             <label><input type="radio" name="ownerType" id="isIndividual" class="nudge-up" checked> Individual</label>
             <label><input type="radio" name="ownerType" id="isOrganization" class="nudge-up"> Organization</label>
@@ -994,6 +1005,14 @@ function updateGreyouts(){
     check = true;
     setEnabledState(el);
   });
+
+
+  // Grey out documentation hint text (the bullet list) when no buttons are selected
+  const docsTiny = qs('#fs-docs .tiny');
+  if(docsTiny){
+    const anyActive = Object.values(active).includes(true);
+    docsTiny.classList.toggle('disabled', !anyActive);
+  }
 
   // Enforce "Same as Site" behaviour after greyouts are applied
   applySameAsSiteState();

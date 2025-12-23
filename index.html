@@ -1291,7 +1291,7 @@ function collectValidationErrors(){
   if(reqSet.has('property') && (!elems.property.value.trim())) msgs.push('Property Address is required.');
   if(reqSet.has('owner') && (!elems.owner.value.trim())) msgs.push((active.agent?'Agent':'Owner')+' name is required.');
   if(reqSet.has('sale') && (!elems.sale.value)) msgs.push('Sale Date is required.');
-  if(reqSet.has('action') && !qsa('input[name=\"actionType\"]:checked').length) msgs.push('An Action (New/Add/Remove/Correct) must be selected.');
+  if(reqSet.has('actionType') && !qsa('input[name=\"actionType\"]:checked').length) msgs.push('An Action (New/Add/Remove/Correct) must be selected.');
   if(active.mailing && !(elems.sameAs && elems.sameAs.checked) && !elems.mailing.value.trim()) msgs.push('Mailing Address is required for a Mailing Address Change.');
   if(active.mortgage){
     if(!elems.deleteMortgage.checked) msgs.push('Delete Mortgage must be checked for a Mortgage Delete request.');

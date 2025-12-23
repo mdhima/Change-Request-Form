@@ -449,6 +449,114 @@
   .tiny.disabled *{
     color:#777 !important;
   }
+
+  /* PDF export: apply print-only styling without opening the print dialog */
+  .pdf-export /* Keep within one page — signature box slightly smaller in print to conserve space */
+    .signature-box{
+    height:24mm;
+  }
+  .pdf-export /* Print: do not show greyed/disabled styling */
+    .greyed{
+    background:transparent !important;
+  }
+  .pdf-export .disabled input,
+    .pdf-export .disabled textarea,
+    .pdf-export .disabled select{
+    background:#fff !important;
+      color:#000 !important;
+      -webkit-text-fill-color:#000 !important;
+      opacity:1 !important;
+  }
+  .pdf-export .disabled label{
+    color:#000 !important;
+  }
+  .pdf-export /* Print: documentation hint text should not appear greyed out */
+    #fs-docs .tiny.disabled,
+    .pdf-export #fs-docs .tiny.disabled *,
+    .pdf-export .tiny.disabled,
+    .pdf-export .tiny.disabled *{
+    color:#000 !important;
+      -webkit-text-fill-color:#000 !important;
+      opacity:1 !important;
+      filter:none !important;
+  }
+  .pdf-export .menu,
+    .pdf-export .controls{
+    display:none !important;
+  }
+  .pdf-export .container{
+    padding:3mm;             /* was 4mm */
+      max-width:188mm;
+  }
+  .pdf-export input,
+    .pdf-export textarea,
+    .pdf-export label{
+    font-size:12px !important;
+  }
+  .pdf-export .row,
+    .pdf-export .row-3{
+    gap:2px !important;      /* already compact */
+  }
+  .pdf-export .hdr-text h1{
+    font-size:18px !important;
+  }
+  .pdf-export .logo img{
+    height:24px !important;
+  }
+  .pdf-export input::placeholder,
+    .pdf-export textarea::placeholder{
+    color:transparent !important;
+  }
+  .pdf-export input::-webkit-input-placeholder,
+    .pdf-export textarea::-webkit-input-placeholder{
+    color:transparent !important;
+  }
+  .pdf-export input[type="date"]:not(.has-value){
+    color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
+  }
+  .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit-fields-wrapper,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit-text,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit-month-field,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit-day-field,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-datetime-edit-year-field{
+    color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
+      opacity:0 !important;
+  }
+  .pdf-export input[type="date"]:not(.has-value)::-webkit-clear-button,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-inner-spin-button,
+    .pdf-export input[type="date"]:not(.has-value)::-webkit-calendar-picker-indicator{
+    opacity:0 !important;
+  }
+  .pdf-export .required-asterisk{
+    display:none !important;
+  }
+  .pdf-export .required-border{
+    outline:none !important;
+  }
+  .pdf-export .error,
+    .pdf-export .preview-text{
+    display:none !important;
+  }
+  .pdf-export .equal-boxes textarea{
+    height:110px !important;   /* was 120px */
+  }
+  .pdf-export #internalUseHint{
+    font-size: 8px !important;
+  }
+  .pdf-export /* Show formatted roll number inside the textbox (overlay) */
+    #rollNumber{
+    color:transparent !important;
+      -webkit-text-fill-color:transparent !important;
+      text-shadow:none !important;
+  }
+  .pdf-export #rollPrintOverlay{
+    display:flex !important;
+  }
+
+
 </style>
 
 </head>
@@ -475,7 +583,7 @@
   <div class="controls">
     <button class="action" id="previewBtn">Preview Form (clean)</button>
     <button class="action" id="printBtn">Print Form</button>
-    <button class="action" id="pdfBtn" title="Opens your browser print dialog so you can choose Save as PDF">Save as PDF</button>
+    <button class="action" id="pdfBtn" title="Downloads a PDF file (no print dialog)">Save as PDF</button>
     <button class="secondary" id="resetBtn">Clear</button>
   </div>
 
@@ -652,6 +760,7 @@
   </form>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
 <script>
 function qs(sel, root=document){ return root.querySelector(sel); }
 function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
@@ -927,7 +1036,7 @@ function applySameAsSiteState(){
 
   // Mailing Address is editable (and optional) for Ownership Update and Add/Remove Owner,
   // and required (unless Same as Site is checked) for Mailing Address Change.
-  const mailingRelevant = !!(active.mailing || active.ownership || active.addremove);
+  const mailingRelevant = !!(active.mailing || active.ownership || active.addremove || active.agent || (elems.isAgent && elems.isAgent.checked));
 
   if(mailingRelevant && same){
     if(elems.property) elems.mailing.value = elems.property.value;
@@ -1229,18 +1338,82 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
   window.print(); 
 });
 
-  // Save as PDF (opens browser print dialog; choose "Save as PDF" as destination)
+  // Save as PDF (downloads a PDF file directly; does not open the print dialog)
   const pdfBtn=qs('#pdfBtn');
-  if(pdfBtn) pdfBtn.addEventListener('click', ()=>{ 
+
+  async function exportAsPdf(){
     applyRequirements();
     const errs = collectValidationErrors();
     if(errs.length){
       alert('Please fix the following before saving as PDF:\n' + errs.join('\n'));
       return;
     }
-    updateDateValueClasses(); 
-    window.print(); 
-  });
+    updateDateValueClasses();
+
+    if(typeof window.html2pdf !== 'function'){
+      alert('PDF export library failed to load. If you are offline, connect to the internet and try again.');
+      return;
+    }
+
+    // Mimic print styling (hide controls, un-grey disabled fields, show roll overlay, etc.)
+    document.body.classList.add('pdf-export');
+
+    // Reuse existing print prep helpers if present
+    if(typeof enableAllForPrint === 'function'){ try{ enableAllForPrint(); }catch(e){} }
+
+    // Strip placeholders so they don't render into the exported PDF (html2canvas can capture them)
+    const __phStash = [];
+    qsa('input[placeholder], textarea[placeholder]').forEach((node) => {
+      __phStash.push([node, node.getAttribute('placeholder')]);
+      node.removeAttribute('placeholder');
+    });
+
+    // Hide the Chrome/WebKit date mask (yyyy-mm-dd) on empty date inputs during export
+    const __dateStash = [];
+    document.querySelectorAll('input[type="date"]').forEach((d) => {
+      if(!d.value){
+        __dateStash.push([d, d.style.color, d.style.webkitTextFillColor]);
+        d.style.color = 'transparent';
+        d.style.webkitTextFillColor = 'transparent';
+      }
+    });
+
+    const el = qs('.container') || qs('.form-area') || document.body;
+
+    const opt = {
+      margin: 7,
+      filename: 'Change_Request_Form.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, useCORS: true },
+      jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
+      pagebreak: { mode: ['css','legacy'] }
+    };
+
+    try{
+      await window.html2pdf().set(opt).from(el).save();
+    }finally{
+      // Restore placeholders
+      try{
+        __phStash.forEach(([node, ph]) => {
+          if(node && ph != null) node.setAttribute('placeholder', ph);
+        });
+      }catch(e){}
+
+      // Restore date input styles
+      try{
+        __dateStash.forEach(([d, c, w]) => {
+          if(!d) return;
+          d.style.color = c || '';
+          d.style.webkitTextFillColor = w || '';
+        });
+      }catch(e){}
+
+      document.body.classList.remove('pdf-export');
+      if(typeof restoreDisabledAfterPrint === 'function'){ try{ restoreDisabledAfterPrint(); }catch(e){} }
+    }
+  }
+
+  if(pdfBtn) pdfBtn.addEventListener('click', exportAsPdf);
 
 const resetBtn=qs('#resetBtn');
 if(resetBtn) resetBtn.addEventListener('click', ()=>{
@@ -1264,8 +1437,11 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
     agentNameWrapper.style.display = show ? '' : 'none';
     if(ownerAgentRow) {
       ownerAgentRow.classList.toggle('agent-visible', show);
-      applyRequirements();
     }
+    // Keep Mailing Address / Same-as-Site state in sync when Authorized Agent is toggled
+    updateGreyouts();
+    applySameAsSiteState();
+    applyRequirements();
     if(!show && agentNameInput) agentNameInput.value = '';
   }
   if(isAgentCheckbox){

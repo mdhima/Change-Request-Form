@@ -119,27 +119,33 @@
     font-weight:bold;
   }
 
-  /* Make date input text (mask + value) grey in WebKit-based browsers */
+  /* Date inputs: default mask/value text should be BLACK when enabled */
   input[type="date"].empty::-webkit-datetime-edit,
   input[type="date"].empty::-webkit-datetime-edit-text,
   input[type="date"].empty::-webkit-datetime-edit-year-field,
   input[type="date"].empty::-webkit-datetime-edit-month-field,
   input[type="date"].empty::-webkit-datetime-edit-day-field {
-    color: rgb(117, 117, 117);
-  }
-  
-  input[type="date"]:not(.empty)::-webkit-datetime-edit {
     color: #000;
+    -webkit-text-fill-color: #000;
   }
 
-  
-  /* When sections are greyed-out (no work selected), ensure date VALUES also display grey (not black) */
-  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit,
-  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-text,
-  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-year-field,
-  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-month-field,
-  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-day-field{
+  input[type="date"]:not(.empty)::-webkit-datetime-edit,
+  input[type="date"]:not(.empty)::-webkit-datetime-edit-text,
+  input[type="date"]:not(.empty)::-webkit-datetime-edit-year-field,
+  input[type="date"]:not(.empty)::-webkit-datetime-edit-month-field,
+  input[type="date"]:not(.empty)::-webkit-datetime-edit-day-field {
+    color: #000;
+    -webkit-text-fill-color: #000;
+  }
+
+/* When sections are greyed-out (no work selected), force date mask/value text to grey (works even when empty) */
+  body:not(.pdf-export) .disabled input[type="date"]::-webkit-datetime-edit,
+  body:not(.pdf-export) .disabled input[type="date"]::-webkit-datetime-edit-text,
+  body:not(.pdf-export) .disabled input[type="date"]::-webkit-datetime-edit-year-field,
+  body:not(.pdf-export) .disabled input[type="date"]::-webkit-datetime-edit-month-field,
+  body:not(.pdf-export) .disabled input[type="date"]::-webkit-datetime-edit-day-field{
     color: rgb(117, 117, 117) !important;
+    -webkit-text-fill-color: rgb(117, 117, 117) !important;
   }
 /* good baseline so inputs actually obey your sizing consistently */
   input, select, textarea {
@@ -1724,7 +1730,17 @@ if(resetBtn) resetBtn.addEventListener('click', ()=>{
   qsa('.preview-text').forEach(el=> el.textContent='');
   clearActive();
   btns.forEach(b=> b.classList.remove('active'));
-  clearRequiredMarkers(); updateOwnerLabelAndPlaceholder(); updateDateValueClasses(); updateGreyouts();
+  clearRequiredMarkers();
+  updateOwnerLabelAndPlaceholder();
+  updateDateValueClasses();
+
+  // After programmatic reset, re-sync date emptiness classes so the mm/dd/yyyy mask greys-out consistently
+  qsa('input[type="date"]').forEach(d=>{
+    if(d.value && d.value.trim()!=='') d.classList.remove('empty');
+    else d.classList.add('empty');
+  });
+
+  updateGreyouts();
 });
 
 // Show/hide Authorized Agent's Name field when Authorized Agent checkbox is toggled

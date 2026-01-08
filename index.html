@@ -527,8 +527,9 @@
     display:none !important;
   }
   .pdf-export .container{
+        zoom:1 !important;          /* ensure PDF export ignores on-screen zoom */
     padding:3mm;             /* was 4mm */
-      max-width:188mm;
+    max-width:188mm;
   }
   .pdf-export input,
     .pdf-export textarea,
@@ -656,6 +657,11 @@
   body.pdf-export .collapse-toggle .caret{
     display:none !important;
   }
+  /* Hide hover help during Save as PDF (html2pdf capture) */
+  body.pdf-export .help-icon,
+  body.pdf-export .help-bubble{
+    display:none !important;
+  }
 
   /* ===== "?" help tooltip for Documents Included ===== */
   #docsIncludedWrap{ font-weight:600; }
@@ -665,6 +671,7 @@
     gap:6px;
     margin:0;
     padding:0;
+    overflow:visible;
   }
   #docsIncluded{
     transform:scale(1.2);
@@ -685,6 +692,7 @@
     background:#f5f5f5;
     cursor:help;
     position:relative;
+    overflow:visible;
   }
   .help-icon:focus{ outline:2px solid #000; outline-offset:1px; }
   .help-bubble{
@@ -693,14 +701,16 @@
     z-index:50;
     top:18px;
     left:0;
-    min-width:310px;
-    max-width:420px;
+    width:640px;
+    max-width:90vw;
+    min-width:520px;
     background:#fff;
     border:1px solid #000;
-    padding:8px 10px;
+    padding:10px 12px;
     box-shadow:2px 2px 0 rgba(0,0,0,0.15);
     font-weight:400;
     font-size:12px;
+    line-height:1.25;
   }
   .help-bubble ul{ margin:0; padding-left:18px; }
   .help-bubble li{ margin:2px 0; }

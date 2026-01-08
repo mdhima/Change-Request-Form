@@ -282,6 +282,8 @@
     display:flex;
     gap:5px;                  /* was 6px */
     margin:3px 0;             /* was 4px */
+    align-items:center;
+    flex-wrap:wrap;
   }
   button.action{
     padding:5px 8px;          /* was 6px 10px */
@@ -297,6 +299,19 @@
     color:#000;
     border:1px solid #000;
   }
+
+  .work-selected-notice{
+    display:none;
+    margin-left:8px;
+    font-size:11px;
+    font-weight:700;
+    line-height:1.2;
+    padding:3px 6px;
+    border:1px solid #444;
+    background:#f0f0f0;
+    border-radius:3px;
+  }
+
 
   .equal-boxes{
     display:grid;
@@ -762,7 +777,8 @@
     <button class="action" id="printBtn">Print Form</button>
     <button class="action" id="pdfBtn" title="Downloads a PDF file (no print dialog)">Save as PDF</button>
     <button class="secondary" id="resetBtn">Clear</button>
-  </div>
+      <span id="workSelectedNotice" class="work-selected-notice" aria-live="polite"></span>
+</div>
 
   <form id="changeForm" class="form-area" onsubmit="return false;">
     <fieldset id="fs-account">
@@ -985,6 +1001,24 @@ const btns = qsa('.btn');
 const active = {};
 function clearActive(){ Object.keys(active).forEach(k=> delete active[k]); }
 function hasAnyActive(){ return Object.keys(active).some(k=> !!active[k]); }
+
+const workSelectedNotice = qs('#workSelectedNotice');
+function updateWorkSelectedNotice(){
+  if(!workSelectedNotice) return;
+  const keys = Object.keys(active).filter(k=> !!active[k]);
+  if(!keys.length){
+    workSelectedNotice.style.display = 'none';
+    workSelectedNotice.textContent = '';
+    return;
+  }
+  const labels = keys.map(k=>{
+    const b = qs(`.btn[data-key="${k}"]`);
+    return b ? b.textContent.trim() : k;
+  });
+  workSelectedNotice.textContent = 'Selected: ' + labels.join(', ');
+  workSelectedNotice.style.display = 'inline';
+}
+
 btns.forEach(b=>{
   b.addEventListener('click', ()=>{
     const key = b.dataset.key;
@@ -1000,6 +1034,7 @@ btns.forEach(b=>{
     applyRequirements();
     updateOwnerLabelAndPlaceholder();
     updateGreyouts();
+    updateWorkSelectedNotice();
   });
 });
 
@@ -1101,6 +1136,7 @@ if(elems.docsIncluded){
     const d = qs('#fs-docs');
     if(d) setCollapsed(d, false);
     updateGreyouts();
+    updateWorkSelectedNotice();
   });
 }
 // // wrapper for the 'Owner is an Organization' hint row
@@ -1544,6 +1580,8 @@ function enableAllForPrint(){
 
 // Ensure empty date inputs do not print the native YYYY-MM-DD ghost text
   if(typeof updateDateValueClasses === 'function') updateDateValueClasses();
+  updateWorkSelectedNotice();
+
 }
 function restoreDisabledAfterPrint(){
   disabledBeforePrint.forEach(el=> el.disabled = true);

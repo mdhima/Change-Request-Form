@@ -132,7 +132,16 @@
     color: #000;
   }
 
-  /* good baseline so inputs actually obey your sizing consistently */
+  
+  /* When sections are greyed-out (no work selected), ensure date VALUES also display grey (not black) */
+  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit,
+  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-text,
+  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-year-field,
+  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-month-field,
+  body:not(.pdf-export) .disabled input[type="date"]:not(.empty)::-webkit-datetime-edit-day-field{
+    color: rgb(117, 117, 117) !important;
+  }
+/* good baseline so inputs actually obey your sizing consistently */
   input, select, textarea {
     box-sizing: border-box;
     font: inherit;
@@ -295,11 +304,14 @@
   }
 
   .greyed{ background:#f0f0f0 !important; }
-  .disabled input,
-  .disabled textarea,
-  .disabled select{
+  body:not(.pdf-export) .disabled input,
+  body:not(.pdf-export) .disabled textarea,
+  body:not(.pdf-export) .disabled select{
     background:#f0f0f0 !important;
     pointer-events:none;
+    color:#777 !important;
+    -webkit-text-fill-color:#777 !important;
+    opacity:1 !important;
   }
   .disabled label{ color:#777; }
 

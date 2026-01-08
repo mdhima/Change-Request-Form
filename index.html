@@ -749,6 +749,15 @@
     filter:saturate(1.08) contrast(1.05);
   }
 
+
+  /* ===== Screen-only viewing scale =====
+     Makes the on-page (HTML) view bigger without changing print/PDF output. */
+  @media screen{
+    .container{
+      zoom: 1.15; /* increase on-screen size */
+    }
+  }
+
 </style>
 
 </head>

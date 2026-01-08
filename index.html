@@ -753,7 +753,7 @@
         <div>
           <label>Ticket # <span class="required-asterisk" id="ast_ticket">*</span></label>
           <input type="text" id="ticketNumber" maxlength="7" minlength="7" inputmode="numeric" pattern="[0-9]{7}" placeholder="Enter Ticket Number">
-          <div class="error" id="ticketError">Ticket number must be 7 digits (0 to 7 only).</div>
+          <div class="error" id="ticketError">Ticket number must be 7 digits (0 to 9 only).</div>
         </div>
         <div>
           <label>Assessment Roll Number <small>(15 digits)</small> <span class="required-asterisk" id="ast_roll">*</span></label>
@@ -1449,7 +1449,7 @@ elems.ticket.addEventListener('input', ()=>{
 
   // Show error while typing if: a non-digit was entered OR only 1 to 6 digits are present
   if(hadNondigit){
-    elems.errors.ticket.textContent = 'Digits only (0 to 7). Ticket number must be 7 digits.';
+    elems.errors.ticket.textContent = 'Digits only (0 to 9). Ticket number must be 7 digits.';
     elems.errors.ticket.style.display = 'block';
   } else if(digits.length > 0 && digits.length < 7){
     elems.errors.ticket.textContent = 'Ticket number must be 7 digits (0 to 9 only).';

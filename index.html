@@ -752,8 +752,8 @@
       <div class="row">
         <div>
           <label>Ticket # <span class="required-asterisk" id="ast_ticket">*</span></label>
-          <input type="text" id="ticketNumber" maxlength="7" placeholder="Enter Ticket Number">
-          <div class="error" id="ticketError">Ticket number must be exactly 7 digits (0–9 only).</div>
+          <input type="text" id="ticketNumber" maxlength="7" minlength="7" inputmode="numeric" pattern="[0-9]{7}" placeholder="Enter Ticket Number">
+          <div class="error" id="ticketError">Ticket number must be 7 digits (0 to 9 only).</div>
         </div>
         <div>
           <label>Assessment Roll Number <small>(15 digits)</small> <span class="required-asterisk" id="ast_roll">*</span></label>
@@ -1440,19 +1440,24 @@ elems.phone.addEventListener('input', ()=>{
   }
 });
 
-/* Ticket digits-only validation */
+/* Ticket validation: digits only, must be 7 digits */
 elems.ticket.addEventListener('input', ()=>{
-  const raw = elems.ticket.value;
+  const raw = elems.ticket.value || '';
   const digits = raw.replace(/\D/g,'');
   const hadNondigit = raw !== digits;
   if(raw !== digits) elems.ticket.value = digits;
+
+  // Show error while typing if: a non-digit was entered OR only 1 to 6 digits are present
   if(hadNondigit){
-    elems.errors.ticket.style.display='block';
+    elems.errors.ticket.textContent = 'Digits only (0 to 9). Ticket number must be 7 digits.';
+    elems.errors.ticket.style.display = 'block';
+  } else if(digits.length > 0 && digits.length < 7){
+    elems.errors.ticket.textContent = 'Ticket number must be 7 digits (0 to 9 only).';
+    elems.errors.ticket.style.display = 'block';
   } else {
     elems.errors.ticket.style.display = 'none';
   }
 });
-
 /* Total Pages digits-only validation */
 elems.totalPages.addEventListener('input', ()=>{
   const raw = elems.totalPages.value;
@@ -1532,7 +1537,20 @@ function collectValidationErrors(){
   const msgs = [];
   const reqSet = new Set();
   Object.keys(active).forEach(k=>{ if(active[k]){ (requirements[k]||[]).forEach(r=>reqSet.add(r)); }});
-  if(reqSet.has('ticket') && (!elems.ticket.value.trim())) msgs.push('Ticket # is required.');
+  const ticketDigits = (elems.ticket.value || '').replace(/\D/g,'');
+  if(reqSet.has('ticket')){
+    if(ticketDigits.length !== 7){
+      // Show inline error (especially important on Print / Save as PDF)
+      if(elems.errors && elems.errors.ticket){
+        elems.errors.ticket.textContent = (ticketDigits.length===0)
+          ? 'Ticket number is required and must be 7 digits (0 to 9 only).'
+          : 'Ticket number must be 7 digits (0 to 9 only).';
+        elems.errors.ticket.style.display = 'block';
+      }
+      if(ticketDigits.length===0) msgs.push('Ticket # is required.');
+      else msgs.push('Ticket # must be 7 digits.');
+    }
+  }
   const rollDigits = (elems.roll.value||'').replace(/\D/g,'');
   if(reqSet.has('roll') && rollDigits.length !== 15) msgs.push('Assessment Roll Number must be exactly 15 digits.');
   if(reqSet.has('property') && (!elems.property.value.trim())) msgs.push('Property Address is required.');

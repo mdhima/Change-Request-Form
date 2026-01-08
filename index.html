@@ -10,11 +10,14 @@
 
   /* Added: visibility toggle for docs-included control and slightly adjusted signature box */
   .hidden{ display:none; }
-  #fs-docs .control-row{ display:flex; align-items:center; gap:6px; margin-bottom:4px; } /* gap/margin slightly reduced */
+
+  #fs-docs .control-row{ display:flex; align-items:center; gap:12px; margin-bottom:4px; } /* gap/margin slightly reduced */
   #docsIncludedWrap{ font-weight:600; }
   .signature-box{
     width:100%;
-    height:30mm;               /* was 32mm */
+    display:block;
+    resize:none;
+    height: 15mm;               /* was 32mm */
     border:1px solid #000;
     border-radius:3px;
     padding:4px;               /* was 6px */
@@ -22,7 +25,13 @@
   }
   @media print{
     /* Keep within one page — signature box slightly smaller in print to conserve space */
-    .signature-box{ height:24mm; }  /* was 27mm */
+    .signature-box{ height: 15mm; }  /* was 27mm */
+    .microscopic{
+      font-size: 8.25px;
+      line-height: 1.16;
+    }
+    /* Do not print hover help */
+    .help-icon, .help-bubble{ display:none !important; }
   }
 
   @page { size: letter portrait; margin: 7mm; }  /* was 8mm */
@@ -433,8 +442,8 @@
   .tiny li{ margin:0; }
   
   .microscopic{
-    font-size:7px;
-    line-height:1.25;
+    font-size: 8.5px;
+    line-height: 1.16;
     color:#000;
     padding-left: 2.5px;
   }
@@ -453,7 +462,7 @@
   /* PDF export: apply print-only styling without opening the print dialog */
   .pdf-export /* Keep within one page — signature box slightly smaller in print to conserve space */
     .signature-box{
-    height:24mm;
+    height:15mm;
   }
   .pdf-export /* Print: do not show greyed/disabled styling */
     .greyed{
@@ -556,6 +565,156 @@
     display:flex !important;
   }
 
+
+
+
+    /* ===== Collapsible sections (Documentation / Mortgage) ===== */
+  fieldset.collapsible-fieldset{
+    position:relative;
+  }
+  fieldset.collapsible-fieldset.collapsed{
+    padding-bottom:2px;
+  }
+  fieldset.collapsible-fieldset > legend.collapsible-legend{
+    padding:0 3px;
+  }
+  .collapse-toggle{
+    appearance:none;
+    -webkit-appearance:none;
+    border:0;
+    background:transparent;
+    font:inherit;
+    font-weight:700;
+    font-size:14px;
+    padding:0;
+    margin:0;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+  .collapse-toggle .caret{ font-weight:700; }
+  .collapse-toggle:focus{
+    outline:2px solid #000;
+    outline-offset:2px;
+  }
+  fieldset.collapsible-fieldset.collapsed .collapsible-body{
+    display:none;
+  }
+
+  /* When Mortgage Delete is selected, keep it open and make it non-collapsible */
+  fieldset.collapsible-fieldset.locked-open .collapse-toggle{
+    cursor:default;
+  }
+  fieldset.collapsible-fieldset.locked-open .collapse-toggle .caret{
+    display:none;
+  }
+
+  /* Always show collapsed contents in print/PDF exports */
+  @media print{
+    fieldset.collapsible-fieldset.collapsed .collapsible-body{
+      display:block !important;
+    }
+    .collapse-toggle .caret{ display:none !important; }
+  }
+  body.pdf-export fieldset.collapsible-fieldset.collapsed .collapsible-body{
+    display:block !important;
+  }
+  body.pdf-export .collapse-toggle .caret{
+    display:none !important;
+  }
+
+  /* ===== "?" help tooltip for Documents Included ===== */
+  #docsIncludedWrap{ font-weight:600; }
+  #docsIncludedWrap .docs-included-label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin:0;
+    padding:0;
+  }
+  #docsIncluded{
+    transform:scale(1.2);
+    transform-origin:left center;
+    cursor:pointer;
+    accent-color:#000;
+  }
+  .help-icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:16px;
+    height:16px;
+    border:1px solid #000;
+    border-radius:50%;
+    font-size:11px;
+    line-height:1;
+    background:#f5f5f5;
+    cursor:help;
+    position:relative;
+  }
+  .help-icon:focus{ outline:2px solid #000; outline-offset:1px; }
+  .help-bubble{
+    display:none;
+    position:absolute;
+    z-index:50;
+    top:18px;
+    left:0;
+    min-width:310px;
+    max-width:420px;
+    background:#fff;
+    border:1px solid #000;
+    padding:8px 10px;
+    box-shadow:2px 2px 0 rgba(0,0,0,0.15);
+    font-weight:400;
+    font-size:12px;
+  }
+  .help-bubble ul{ margin:0; padding-left:18px; }
+  .help-bubble li{ margin:2px 0; }
+  .help-icon:hover .help-bubble,
+  .help-icon:focus .help-bubble{
+    display:block;
+  }
+
+  /* ===== Per-button colours (always-on, matched to reference) ===== */
+  :root{
+    --btn-ownership:#2E6AA0; /* Ownership Update */
+    --btn-mailing:#51AA51;   /* Mailing Address Change */
+    --btn-addremove:#45B6D8; /* Add/Remove Owner */
+    --btn-agent:#EDA033;     /* Authorized Agent */
+    --btn-mortgage:#CD403C;  /* Mortgage Delete */
+  }
+
+  /* Base button look */
+  .btn{
+    border-radius:4px;
+    border:1px solid rgba(0,0,0,0.65);
+    color:#fff;
+    background-color:#777;
+    background-image:linear-gradient(to bottom, rgba(255,255,255,0.20), rgba(0,0,0,0.18));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.20), 0 1px 0 rgba(0,0,0,0.10);
+  }
+  .btn:hover{ filter:brightness(1.03); }
+  .btn:active{ filter:brightness(0.98); }
+
+  /* Colour by type (even when not selected) */
+  .btn[data-key="ownership"]{ background-color:var(--btn-ownership); }
+  .btn[data-key="mailing"]{ background-color:var(--btn-mailing); }
+  .btn[data-key="addremove"]{ background-color:var(--btn-addremove); }
+  .btn[data-key="agent"]{ background-color:var(--btn-agent); }
+  .btn[data-key="mortgage"]{ background-color:var(--btn-mortgage); }
+
+  /* Selected state: unmistakable highlight (supports multiple selections) */
+  .btn.active{
+    outline:3px solid #111;
+    outline-offset:-3px;
+    box-shadow:
+      inset 0 0 0 2px rgba(255,255,255,0.38),
+      inset 0 -10px 0 rgba(0,0,0,0.18),
+      0 2px 8px rgba(0,0,0,0.35);
+    background-image:linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(0,0,0,0.38));
+    filter:saturate(1.08) contrast(1.05);
+  }
 
 </style>
 
@@ -671,44 +830,58 @@
       </div>
     </fieldset>
 
-    <fieldset id="fs-docs">
-      <legend>Documentation</legend>
-      <div class="tiny">
-        <ul>
-          <li>Ownership Update / Add or Remove Owner: Attach copy of Transfer/Deed, Death Certificate, Will, POA or other legal documentation.</li>
-          <li>Name Change: Attach proof of name change (e.g., Marriage Certificate, Change of Name Certificate).</li>
-          <li>Authorized Agent / Executor: Attach copy of signed authorization (e.g., Letter of Authorization, Power of Attorney, or estate documentation confirming executor authority).</li>
-        </ul>
-      </div>
-      <div class="control-row" id="docsIncludedWrap" class="control-row hidden">
-        <label for="docsIncluded">Documents included? <span class="required-asterisk" id="ast_docsIncluded">*</span></label>
-        <input type="checkbox" id="docsIncluded" />
-      </div>
-      <div class="row" id="docsPagesRow">
-        <div>
-          <label>Documents Attached <span class="required-asterisk" id="ast_docsAttached">*</span></label>
-          <input type="text" id="docsAttached" placeholder="e.g., Transfer Deed, Death Certificate">
-        </div>
-        <div>
-          <label>Total Pages <span class="required-asterisk" id="ast_totalPages">*</span></label>
-          <input type="text" id="totalPages" placeholder="e.g., 3">
-          <div class="error" id="totalPagesError">Total Pages number must contain digits only.</div>
-        </div>
+        <fieldset id="fs-docs" class="collapsible-fieldset collapsed">
+      <legend class="collapsible-legend">
+        <button type="button" class="collapse-toggle" id="docsToggle" aria-expanded="false" aria-controls="docsBody">Documentation <span class="caret" aria-hidden="true">▸</span></button>
+      </legend>
+      <div id="docsBody" class="collapsible-body">
+        <div class="control-row" id="docsIncludedWrap">
+                  <label for="docsIncluded" class="docs-included-label">
+                    Documents included? <span class="required-asterisk" id="ast_docsIncluded">*</span>
+                    <span class="help-icon" tabindex="0" aria-label="Documentation requirements">?
+                      <span class="help-bubble" role="tooltip">
+                        <ul>
+                          <li>Ownership Update / Add or Remove Owner: Attach copy of Transfer/Deed, Death Certificate, Will, POA or other legal documentation.</li>
+                          <li>Name Change: Attach proof of name change (e.g., Marriage Certificate, Change of Name Certificate).</li>
+                          <li>Authorized Agent / Executor: Attach copy of signed authorization (e.g., Letter of Authorization, Power of Attorney, or estate documentation confirming executor authority).</li>
+                        </ul>
+                      </span>
+                    </span>
+                  </label>
+                  <input type="checkbox" id="docsIncluded" />
+                </div>
+                <div class="row" id="docsPagesRow">
+                  <div>
+                    <label>Documents Attached <span class="required-asterisk" id="ast_docsAttached">*</span></label>
+                    <input type="text" id="docsAttached" placeholder="e.g., Transfer/Deed, Death Certificate">
+                  </div>
+                  <div>
+                    <label>Total Pages <span class="required-asterisk" id="ast_totalPages">*</span></label>
+                    <input type="text" id="totalPages" placeholder="e.g., 3">
+                    <div class="error" id="totalPagesError">Total Pages number must contain digits only.</div>
+                  </div>
+                </div>
+      
       </div>
     </fieldset>
 
-    <fieldset id="fs-mortgage">
-      <legend>Mortgage</legend>
-      <div class="row">
-        <div>
-          <label class="radios-inline" id="mortgageLabel">If applicable:</label>
-          <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_deleteMortgage">*</span></label>
-        </div>
-        <div>
-          <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
-          <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty radios-inline">
-          <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
-        </div>
+        <fieldset id="fs-mortgage" class="collapsible-fieldset collapsed">
+      <legend class="collapsible-legend">
+        <button type="button" class="collapse-toggle" id="mortgageToggle" aria-expanded="false" aria-controls="mortgageBody">Mortgage <span class="caret" aria-hidden="true">▸</span></button>
+      </legend>
+      <div id="mortgageBody" class="collapsible-body">
+        <div class="row">
+                <div>
+                  <label class="radios-inline" id="mortgageLabel">If applicable:</label>
+                  <label class="radios-inline"><input type="checkbox" id="deleteMortgage"> Delete Mortgage <span class="required-asterisk" id="ast_deleteMortgage">*</span></label>
+                </div>
+                <div>
+                  <label class="radios-inline">Effective Date <span class="required-asterisk" id="ast_effectiveDate">*</span></label>
+                  <input type="date" id="effectiveDate" placeholder="YYYY-MM-DD" class="empty radios-inline">
+                  <div class="error" id="mortError">Effective date is required when deleting mortgage.</div>
+                </div>
+              </div>
+      
       </div>
     </fieldset>
 
@@ -716,7 +889,7 @@
       <legend>Signature</legend>
       <div>
         <label>Owner/Agent Signature</label>
-        <input style="padding: 20px" type="text" id="signature" placeholder="Sign here">
+        <textarea id="signature" class="signature-box" placeholder="Sign here"></textarea>
       </div>
       <div class="row-3" >
         <div>
@@ -743,7 +916,7 @@
       </div>
     </fieldset>
 
-    <div class="microscopic" style="margin-top:6px;">
+    <div class="microscopic" style="margin-top:4px;">
       <strong>Consent & Acknowledgement</strong>
       <ul>
         <li>By signing this Change Request Form, I authorize the City of Toronto to follow my expressed wishes with regard to where and to whom my Tax/Utility Bill and notices are mailed. I further agree:</li>
@@ -752,7 +925,7 @@
       </ul>
     </div>
 
-    <div class="microscopic" style="margin-top:6px;">
+    <div class="microscopic" style="margin-top:4px;">
       <strong>Notice of Collection</strong><br/>
       Personal information on this form is collected under the authority of City of Toronto Act, S.O. 2006, Chapter 11, Schedule A, s.136 (c), 261 and 264, Ontario Regulation 594/06 (Fees and Charges–Priority Lien Status) and the City of Toronto Municipal Code, Chapter 849 (Water and Sewage Services and Utility Bill). The information will be used for proper administration of taxes, fees, and charges that are imposed by the City for the supply of services, which will include but is not limited to the updating of ownership/mailing information concerning the tax/utility bill account(s) for the affected properties, mailing required bills and notices and collection of unpaid amounts. The information may also be used for purposes of identifying agents of owners for purposes of authorizing changes to Tax/Utility accounts on behalf of the owner. Questions about this collection can be directed to the Manager, Customer Service, Revenue Services, 5100 Yonge St, Toronto ON M2N 5V7 or by phone at 416-395-1048.
     </div>
@@ -764,6 +937,30 @@
 <script>
 function qs(sel, root=document){ return root.querySelector(sel); }
 function qsa(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
+
+/* Collapsible fieldsets (Documentation / Mortgage) */
+const fsDocs = qs('#fs-docs');
+const fsMort = qs('#fs-mortgage');
+const btnDocsToggle = qs('#docsToggle');
+const btnMortToggle = qs('#mortgageToggle');
+
+function setCollapsed(fs, collapsed){
+  if(!fs) return;
+  fs.classList.toggle('collapsed', !!collapsed);
+  const btn = fs.querySelector('.collapse-toggle');
+  if(btn) btn.setAttribute('aria-expanded', (!collapsed).toString());
+  const caret = fs.querySelector('.collapse-toggle .caret');
+  if(caret) caret.textContent = collapsed ? '▸' : '▾';
+}
+function toggleCollapsed(fs){
+  if(!fs) return;
+  if(fs.classList.contains('locked-open')) return;
+  setCollapsed(fs, !fs.classList.contains('collapsed'));
+}
+
+if(btnDocsToggle && fsDocs) btnDocsToggle.addEventListener('click', ()=>toggleCollapsed(fsDocs));
+if(btnMortToggle && fsMort) btnMortToggle.addEventListener('click', ()=>toggleCollapsed(fsMort));
+
 
 /* Toggle buttons & state */
 const btns = qsa('.btn');
@@ -879,6 +1076,15 @@ const elems = {
     ownerLabel: qs('#ownerLabel') 
   }
 };
+// Documents Included? -> enable/disable Documents Attached + Total Pages, and auto-open Documentation
+if(elems.docsIncluded){
+  elems.docsIncluded.addEventListener('change', ()=>{
+    // open the section when the checkbox is interacted with
+    const d = qs('#fs-docs');
+    if(d) setCollapsed(d, false);
+    updateGreyouts();
+  });
+}
 // // wrapper for the 'Owner is an Organization' hint row
 // const orgWrap = elems.isOrg ? elems.isOrg.closest('.inline-hint') : null;
 
@@ -1135,6 +1341,38 @@ function setEnabledState(el) {
     docsTiny.classList.toggle('disabled', !anyActive);
   }
 
+
+  // Documentation + Mortgage collapsibles
+  const docsFs = qs('#fs-docs');
+  if(docsFs){
+    const da = elems.docsAttached, tp = elems.totalPages;
+    const hasVals = ((da && da.value) ? da.value.trim() : '') || ((tp && tp.value) ? tp.value.trim() : '');
+    if((elems.docsIncluded && elems.docsIncluded.checked) || hasVals){ setCollapsed(docsFs, false); }
+  }
+
+  const mortFs = qs('#fs-mortgage');
+  if(mortFs){
+    const mortActive = !!active.mortgage;
+    mortFs.classList.toggle('locked-open', mortActive);
+    if(mortActive) setCollapsed(mortFs, false);
+  }
+
+// If "Documents included?" is not checked, grey out + disable the docs fields
+  const docsRow = qs('#docsPagesRow');
+  if(elems.docsIncluded && docsRow){
+    const include = !!elems.docsIncluded.checked;
+    if(!include){
+      if(elems.docsAttached) elems.docsAttached.disabled = true;
+      if(elems.totalPages) elems.totalPages.disabled = true;
+      docsRow.classList.add('disabled');
+      if(elems.errors && elems.errors.totalPages) elems.errors.totalPages.style.display='none';
+    }else{
+      docsRow.classList.remove('disabled');
+      if(elems.docsAttached) elems.docsAttached.disabled = false;
+      if(elems.totalPages) elems.totalPages.disabled = false;
+    }
+  }
+
   // Enforce "Same as Site" behaviour after greyouts are applied
   applySameAsSiteState();
 }
@@ -1271,8 +1509,17 @@ function enableAllForPrint(){
     const container = el.closest('div,fieldset');
     if(container){ container.classList.remove('disabled'); }
   });
+  // Also remove greyed styling applied directly on section rows
+  const __docsRow = qs('#docsPagesRow');
+  if(__docsRow) __docsRow.classList.remove('disabled');
 
-  // Ensure empty date inputs do not print the native YYYY-MM-DD ghost text
+  // Ensure collapsible sections are expanded for print/PDF output
+  const __docsFs = qs('#fs-docs');
+  if(__docsFs) setCollapsed(__docsFs, false);
+  const __mortFs2 = qs('#fs-mortgage');
+  if(__mortFs2) setCollapsed(__mortFs2, false);
+
+// Ensure empty date inputs do not print the native YYYY-MM-DD ghost text
   if(typeof updateDateValueClasses === 'function') updateDateValueClasses();
 }
 function restoreDisabledAfterPrint(){

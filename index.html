@@ -446,6 +446,18 @@
     label{
       font-size:12px !important;
     }
+    /* Print: never show scrollbars inside textareas */
+    textarea{
+      overflow:hidden !important;
+      resize:none !important;
+      scrollbar-width:none !important; /* Firefox */
+      -ms-overflow-style:none !important; /* IE/Edge legacy */
+    }
+    textarea::-webkit-scrollbar{
+      width:0 !important;
+      height:0 !important;
+      display:none !important;
+    }
     .row,
     .row-3{
       gap:2px !important;      /* already compact */

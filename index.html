@@ -34,7 +34,7 @@
     .help-icon, .help-bubble{ display:none !important; }
   }
 
-  @page { size: letter portrait; margin: 7mm; }  /* was 8mm */
+  @page { size: letter portrait; margin: 6mm; }  /* was 8mm */
 
   body{
     font-family: Arial, Helvetica, sans-serif;
@@ -71,13 +71,19 @@
   .hdr-text .dept{ font-size:14px; margin-top:2px; }
 
   .menu{
-    display:flex;
+    display:grid;
+    grid-template-columns:repeat(5, minmax(0, 1fr));
     gap:6px;
-    flex-wrap:wrap;
     margin:3px 0;             /* was 4px */
   }
+  @media (max-width: 820px){
+    .menu{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 821px) and (max-width: 1080px){
+    .menu{ grid-template-columns:repeat(3, minmax(0, 1fr)); }
+  }
   .btn{
-    flex:1 0 140px;
+    flex:unset;
     padding:4px 5px;          /* was 5px 6px */
     border:1px solid #000;
     border-radius:0;
@@ -88,6 +94,14 @@
     cursor:pointer;
     user-select:none;
   }
+  /* Center button labels both vertically and horizontally */
+  .menu .btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+  }
+
   .btn.active{ background:#000; color:#fff; }
 
   fieldset{
@@ -261,6 +275,29 @@
     margin-top:2px;           /* was 3px */
     display:none;
   }
+  .error-summary{
+    display:none;
+    border:2px solid #b00020;
+    background:#fff5f6;
+    padding:8px 10px;
+    margin:6px 0 8px 0;
+    font-size:12px;
+  }
+  .error-summary .title{
+    font-weight:700;
+    margin-bottom:4px;
+  }
+  .error-summary ul{
+    margin:4px 0 0 18px;
+    padding:0;
+  }
+  .error-summary li{
+    margin:2px 0;
+  }
+  @media print{
+    .error-summary{ display:none !important; }
+  }
+
   .preview-text{
     font-size:10px;
     color:var(--muted);
@@ -345,6 +382,20 @@
 
   @media print{
     /* Print: do not show greyed/disabled styling */
+    /* Print: remove outer section boxes; add breathing room under section titles */
+    fieldset{
+      border:0 !important;
+      padding:0 !important;
+      margin:0 0 2mm 0 !important;
+    }
+    legend{
+      display:block;
+      width:100%;
+      padding:0 0 2px 0 !important;
+      margin:0 0 2mm 0 !important;
+      border-bottom:1px solid #000;
+    }
+
     .greyed{ background:transparent !important; }
     .disabled input,
     .disabled textarea,
@@ -371,8 +422,9 @@
       display:none !important;
     }
     .container{
-      padding:3mm;             /* was 4mm */
-      max-width:188mm;
+      padding:2.5mm;             /* was 4mm */
+      width:202mm;
+      max-width:202mm;
     }
     input,
     textarea,
@@ -389,6 +441,8 @@
     .logo img{
       height:24px !important;
     }
+    header{ padding-bottom:2px !important; margin-bottom:2px !important; }
+
     input::placeholder,
     textarea::placeholder{
       color:transparent !important;
@@ -493,6 +547,19 @@
   }
 
   /* PDF export: apply print-only styling without opening the print dialog */
+  .pdf-export fieldset{
+    border:0 !important;
+    padding:0 !important;
+    margin:0 0 2mm 0 !important;
+  }
+  .pdf-export legend{
+    display:block;
+    width:100%;
+    padding:0 0 2px 0 !important;
+    margin:0 0 2mm 0 !important;
+    border-bottom:1px solid #000;
+  }
+
   .pdf-export /* Keep within one page — signature box slightly smaller in print to conserve space */
     .signature-box{
     height:15mm;
@@ -528,8 +595,9 @@
   }
   .pdf-export .container{
         zoom:1 !important;          /* ensure PDF export ignores on-screen zoom */
-    padding:3mm;             /* was 4mm */
-    max-width:188mm;
+    padding:2.5mm;             /* was 4mm */
+    width:202mm;
+    max-width:202mm;
   }
   .pdf-export input,
     .pdf-export textarea,
@@ -546,6 +614,8 @@
   .pdf-export .logo img{
     height:24px !important;
   }
+  .pdf-export header{ padding-bottom:2px !important; margin-bottom:2px !important; }
+
   .pdf-export input::placeholder,
     .pdf-export textarea::placeholder{
     color:transparent !important;
@@ -799,6 +869,11 @@
       <span id="workSelectedNotice" class="work-selected-notice" aria-live="polite"></span>
 </div>
 
+  <div id="errorSummary" class="error-summary" role="alert" aria-live="assertive" tabindex="-1">
+    <div class="title" id="errorSummaryTitle">Please correct the following:</div>
+    <ul id="errorSummaryList"></ul>
+  </div>
+
   <form id="changeForm" class="form-area" onsubmit="return false;">
     <fieldset id="fs-account">
       <legend>Account Information — Mailing Address</legend>
@@ -821,9 +896,9 @@
 
       <div class="row">
         <div>
-          <label>Utility Account # <small>(first 9 digits)</small> <span class="required-asterisk" id="ast_account"></span></label>
+          <label>Utility Account Number <small>(first 9 digits)</small> <span class="required-asterisk" id="ast_account"></span></label>
           <input type="text" id="accountNumber" maxlength="9" inputmode="numeric" placeholder="Enter 9 digits">
-          <div class="error" id="accError">Utility Account # must be exactly 9 digits (0–9 only).</div>
+          <div class="error" id="accError">Utility Account Number must be exactly 9 digits (0–9 only).</div>
           <div class="preview-text" id="accPreview"></div>
         </div>
         <div>
@@ -1022,6 +1097,39 @@ function clearActive(){ Object.keys(active).forEach(k=> delete active[k]); }
 function hasAnyActive(){ return Object.keys(active).some(k=> !!active[k]); }
 
 const workSelectedNotice = qs('#workSelectedNotice');
+/* Error summary (more official than alert) */
+const errorSummary = qs('#errorSummary');
+const errorSummaryTitle = qs('#errorSummaryTitle');
+const errorSummaryList = qs('#errorSummaryList');
+
+function hideErrorSummary(){
+  if(!errorSummary || !errorSummaryList) return;
+  errorSummary.style.display = 'none';
+  errorSummaryList.innerHTML = '';
+}
+
+function showErrorSummary(title, errs){
+  if(!errorSummary || !errorSummaryList || !errorSummaryTitle) return;
+  errorSummaryTitle.textContent = title || 'Please correct the following:';
+  errorSummaryList.innerHTML = '';
+  (errs||[]).forEach(msg=>{
+    const li = document.createElement('li');
+    li.textContent = msg;
+    errorSummaryList.appendChild(li);
+  });
+  errorSummary.style.display = 'block';
+  try{ errorSummary.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ try{ errorSummary.scrollIntoView(); }catch(e2){} }
+  try{ errorSummary.focus(); }catch(e){}
+
+  // Try to focus the first invalid field (if any)
+  const firstInvalid = document.querySelector('.required-border:not([disabled])');
+  if(firstInvalid && firstInvalid.focus){ setTimeout(()=>{ try{ firstInvalid.focus(); }catch(e){} }, 0); }
+}
+
+// Hide summary as soon as the user starts correcting things
+document.addEventListener('input', ()=>{ if(errorSummary && errorSummary.style.display==='block') hideErrorSummary(); }, true);
+document.addEventListener('change', ()=>{ if(errorSummary && errorSummary.style.display==='block') hideErrorSummary(); }, true);
+
 function updateWorkSelectedNotice(){
   if(!workSelectedNotice) return;
   const keys = Object.keys(active).filter(k=> !!active[k]);
@@ -1361,15 +1469,19 @@ function updateGreyouts(){
     fieldGroups.mailing.forEach(id=>relevant.add(id));
   }
 
-  if(Object.values(active).includes(true)) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
+  if(hasAnyActive()) fieldGroups.internal.forEach(id=>relevant.add(id)); // always available
 
-  // Mortgage Delete: Utility Account # should be greyed out
+  // Mortgage Delete: Utility Account Number should be greyed out
   if(active.mortgage && !Object.entries(active).some(([k,v])=>k!=='mortgage' && v)) relevant.delete('accountNumber');
   
 function setEnabledState(el) {
     const id = el.id;
     var name = null;
-    const container = el.closest('div,fieldset');
+    let container = el.closest('div,fieldset');
+    // If the input is inside a print-overlay wrapper, apply disabled styling to the outer field container
+    if(container && container.classList && container.classList.contains('print-overlay-wrap') && container.parentElement){
+      container = container.parentElement;
+    }
     
     if (check == true) {
       name = el.getAttribute("name");
@@ -1410,7 +1522,7 @@ function setEnabledState(el) {
   // Grey out documentation hint text (the bullet list) when no buttons are selected
   const docsTiny = qs('#fs-docs .tiny');
   if(docsTiny){
-    const anyActive = Object.values(active).includes(true);
+    const anyActive = hasAnyActive();
     docsTiny.classList.toggle('disabled', !anyActive);
   }
 
@@ -1495,7 +1607,7 @@ function setEnabledState(el) {
 
     if(hadNondigit){ accErr.textContent='Digits only (0–9).'; accErr.style.display='block'; }
     else if(digits.length===0){ accErr.style.display='none'; }
-    else if(digits.length!==9){ accErr.textContent='Utility Account # must be exactly 9 digits.'; accErr.style.display='block'; }
+    else if(digits.length!==9){ accErr.textContent='Utility Account Number must be exactly 9 digits.'; accErr.style.display='block'; }
     else { accErr.style.display='none'; }
   });
 })();
@@ -1681,7 +1793,7 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
   applyRequirements();
   const errs = collectValidationErrors();
   if(errs.length){
-    alert('Please fix the following before printing:\n' + errs.join('\n'));
+    showErrorSummary('Please fix the following before printing:', errs);
     return;
   }
   updateDateValueClasses(); 
@@ -1695,13 +1807,13 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
     applyRequirements();
     const errs = collectValidationErrors();
     if(errs.length){
-      alert('Please fix the following before saving as PDF:\n' + errs.join('\n'));
+      showErrorSummary('Please fix the following before saving as PDF:', errs);
       return;
     }
     updateDateValueClasses();
 
     if(typeof window.html2pdf !== 'function'){
-      alert('PDF export library failed to load. If you are offline, connect to the internet and try again.');
+      showErrorSummary('Unable to save as PDF:', ['PDF export library failed to load. If you are offline, connect to the internet and try again.']);
       return;
     }
 
@@ -1744,12 +1856,12 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
     const el = qs('.container') || qs('.form-area') || document.body;
 
     const opt = {
-      margin: 7,
+      margin: 6,
       filename: 'Change_Request_Form.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0, windowWidth: document.documentElement.scrollWidth, windowHeight: document.documentElement.scrollHeight },
       jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' },
-      pagebreak: { mode: ['css','legacy'] }
+      pagebreak: { mode: ['avoid-all','css','legacy'] }
     };
 
     try{

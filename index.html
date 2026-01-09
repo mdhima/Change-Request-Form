@@ -178,9 +178,8 @@
   
   input[type="text"],
   input[type="tel"],
-  input[type="date"],
-  textarea{
-    height: 22;
+  input[type="date"]{
+    height:22px;
     font-family: Arial;
     width:100%;
     padding: 4px 4px;       /* was 2px 3px and then was 3px 4px */
@@ -188,8 +187,23 @@
     border-radius:0;
     box-sizing:border-box;
     font-size:12px;
-    display: flex;
-    align-items: center;
+    display:flex;
+    align-items:center;
+  }
+
+  /* Textareas must behave like multi-line fields (top-left text, wraps normally) */
+  textarea{
+    font-family: Arial;
+    width:100%;
+    padding: 4px 4px;
+    border:1px solid #000;
+    border-radius:0;
+    box-sizing:border-box;
+    font-size:12px;
+    display:block;
+    line-height:1.2;
+    white-space:pre-wrap;
+    overflow-wrap:break-word;
   }
 
 
@@ -1021,7 +1035,7 @@
       <legend>Signature</legend>
       <div>
         <label>Owner/Agent Signature</label>
-        <textarea id="signature" class="signature-box" placeholder="Customer signs here"></textarea>
+        <textarea id="signature" class="signature-box" placeholder="Signature required upon printing"></textarea>
       </div>
       <div class="row-3" >
         <div>
@@ -1839,6 +1853,10 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
 
     // Strip placeholders so they don't render into the exported PDF (html2canvas can capture them)
     const __phStash = [];
+
+    // Workaround: html2pdf/html2canvas can mis-render textarea text (centered, no wrap).
+    // We temporarily replace textareas with styled divs containing their value for the capture only.
+    const __taRepl = [];
     qsa('input[placeholder], textarea[placeholder]').forEach((node) => {
       __phStash.push([node, node.getAttribute('placeholder')]);
       node.removeAttribute('placeholder');
@@ -1854,6 +1872,53 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
       }
     });
 
+    
+    // Replace textareas with divs so html2canvas captures their content correctly (wrap + top-left).
+    try{
+      qsa('textarea').forEach((ta) => {
+        const cs = window.getComputedStyle(ta);
+        const div = document.createElement('div');
+        div.className = 'pdf-textarea-replacement';
+        div.textContent = ta.value || '';
+        // Copy key box + typography styles so it looks identical.
+        div.style.boxSizing = cs.boxSizing;
+        div.style.width = cs.width;
+        div.style.height = cs.height;
+        div.style.minHeight = cs.height;
+        div.style.paddingTop = cs.paddingTop;
+        div.style.paddingRight = cs.paddingRight;
+        div.style.paddingBottom = cs.paddingBottom;
+        div.style.paddingLeft = cs.paddingLeft;
+        div.style.borderTop = cs.borderTop;
+        div.style.borderRight = cs.borderRight;
+        div.style.borderBottom = cs.borderBottom;
+        div.style.borderLeft = cs.borderLeft;
+        div.style.borderRadius = cs.borderRadius;
+        div.style.backgroundColor = cs.backgroundColor;
+        div.style.color = cs.color;
+        div.style.fontFamily = cs.fontFamily;
+        div.style.fontSize = cs.fontSize;
+        div.style.fontWeight = cs.fontWeight;
+        div.style.lineHeight = cs.lineHeight;
+        div.style.letterSpacing = cs.letterSpacing;
+        div.style.textAlign = cs.textAlign;
+        div.style.display = 'block';
+        div.style.whiteSpace = 'pre-wrap';
+        div.style.overflowWrap = 'break-word';
+        div.style.wordBreak = 'break-word';
+        div.style.overflow = 'hidden';
+
+        // Insert replacement right before the textarea and temporarily REMOVE the textarea during capture.
+        // (html2canvas can still render <textarea> even when display:none, causing "double boxes".)
+        const parent = ta.parentNode;
+        const next = ta.nextSibling;
+        const prevDisplay = ta.style.display;
+        parent.insertBefore(div, ta);
+        try{ parent.removeChild(ta); }catch(e){}
+        __taRepl.push([ta, parent, next, div, prevDisplay]);
+      });
+    }catch(e){}
+
     // Let layout settle after applying export-only styles (prevents occasional top whitespace)
     try{
       if(document.fonts && document.fonts.ready){ await document.fonts.ready; }
@@ -1863,7 +1928,7 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
     const el = qs('.container') || qs('.form-area') || document.body;
 
     const opt = {
-      margin: 6,
+      margin: 4,
       filename: 'Change_Request_Form.pdf',
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, scrollY: 0, scrollX: 0, windowWidth: document.documentElement.scrollWidth, windowHeight: document.documentElement.scrollHeight },
@@ -1874,6 +1939,22 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
     try{
       await window.html2pdf().set(opt).from(el).save();
     }finally{
+      // Restore textarea replacements (remove divs, bring back textareas)
+      try{
+        __taRepl.forEach(([ta, parent, next, div, prevDisplay]) => {
+          // Remove replacement div
+          if(div && div.parentNode) div.parentNode.removeChild(div);
+          // Put textarea back exactly where it was
+          if(ta && parent){
+            try{
+              if(next) parent.insertBefore(ta, next);
+              else parent.appendChild(ta);
+            }catch(e){}
+            ta.style.display = prevDisplay || '';
+          }
+        });
+      }catch(e){}
+
       // Restore placeholders
       try{
         __phStash.forEach(([node, ph]) => {

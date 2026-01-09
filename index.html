@@ -382,18 +382,18 @@
 
   @media print{
     /* Print: do not show greyed/disabled styling */
-    /* Print: remove outer section boxes; add breathing room under section titles */
+    /* Print: keep section borders like the on-screen form */
     fieldset{
-      border:0 !important;
-      padding:0 !important;
-      margin:0 0 2mm 0 !important;
+      border:1px solid #000 !important;
+      padding:4px !important;
+      margin:0 0 3px 0 !important;
     }
     legend{
       display:block;
-      width:100%;
-      padding:0 0 2px 0 !important;
-      margin:0 0 2mm 0 !important;
-      border-bottom:1px solid #000;
+      width:auto;
+      padding:0 3px !important;
+      margin:0;
+      border-bottom:0 !important;
     }
 
     .greyed{ background:transparent !important; }
@@ -422,6 +422,7 @@
       display:none !important;
     }
     .container{
+      box-sizing:border-box;
       padding:2.5mm;             /* was 4mm */
       width:202mm;
       max-width:202mm;
@@ -474,7 +475,8 @@
     .required-asterisk{ display:none !important; }
     .required-border{ outline:none !important; }
     .error,
-    .preview-text{
+    .preview-text,
+    .error-summary{
       display:none !important;
     }
     .equal-boxes textarea{
@@ -594,7 +596,8 @@
     display:none !important;
   }
   .pdf-export .container{
-        zoom:1 !important;          /* ensure PDF export ignores on-screen zoom */
+    box-sizing:border-box;
+    zoom:1 !important;          /* ensure PDF export ignores on-screen zoom */
     padding:2.5mm;             /* was 4mm */
     width:202mm;
     max-width:202mm;
@@ -650,7 +653,8 @@
     outline:none !important;
   }
   .pdf-export .error,
-    .pdf-export .preview-text{
+    .pdf-export .preview-text,
+    .pdf-export .error-summary{
     display:none !important;
   }
   .pdf-export .equal-boxes textarea{

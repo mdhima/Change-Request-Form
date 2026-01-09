@@ -1727,13 +1727,7 @@ function collectValidationErrors(){
   const ticketDigits = (elems.ticket.value || '').replace(/\D/g,'');
   if(reqSet.has('ticket')){
     if(ticketDigits.length !== 7){
-      // Show inline error (especially important on Print / Save as PDF)
-      if(elems.errors && elems.errors.ticket){
-        elems.errors.ticket.textContent = (ticketDigits.length===0)
-          ? 'Ticket number is required and must be 7 digits (0 to 9 only).'
-          : 'Ticket number must be 7 digits (0 to 9 only).';
-        elems.errors.ticket.style.display = 'block';
-      }
+      // Do not force inline field errors during Print / Save; use the error summary + required highlighting instead.
       if(ticketDigits.length===0) msgs.push('Ticket # is required.');
       else msgs.push('Ticket # must be 7 digits.');
     }
@@ -1796,6 +1790,11 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
     showErrorSummary('Please fix the following before printing:', errs);
     return;
   }
+
+  // Clean up any previously shown validation text so it never appears in print preview/output.
+  try{ hideErrorSummary(); }catch(e){}
+  try{ qsa('.error').forEach(el=> el.style.display='none'); }catch(e){}
+
   updateDateValueClasses(); 
   window.print(); 
 });
@@ -1810,8 +1809,12 @@ if(printBtn) printBtn.addEventListener('click', ()=>{
       showErrorSummary('Please fix the following before saving as PDF:', errs);
       return;
     }
-    updateDateValueClasses();
 
+    // Clean up any previously shown validation text so it never appears in the exported PDF.
+    try{ hideErrorSummary(); }catch(e){}
+    try{ qsa('.error').forEach(el=> el.style.display='none'); }catch(e){}
+
+    updateDateValueClasses();
     if(typeof window.html2pdf !== 'function'){
       showErrorSummary('Unable to save as PDF:', ['PDF export library failed to load. If you are offline, connect to the internet and try again.']);
       return;
